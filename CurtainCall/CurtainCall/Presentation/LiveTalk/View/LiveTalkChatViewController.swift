@@ -235,9 +235,6 @@ final class LiveTalkChatViewController: UIViewController {
             emptyView.snp.updateConstraints {
                 $0.height.equalTo(keyboardRectangle.height - 21)
             }
-//            bottomView.snp.updateConstraints {
-//                $0.bottom.equalTo(emptyView.snp.top).inset(30)
-//            }
         }
     }
     
