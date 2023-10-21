@@ -145,8 +145,10 @@ final class PartyMemberViewController: UIViewController {
         configureUI()
         addTargets()
         view.layoutIfNeeded()
-        drawViewDotLine(view: productView)
-        drawViewDotLine(view: foodView)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.drawViewDotLine(view: self.productView)
+            self.drawViewDotLine(view: self.foodView)
+        }
     }
     
     // MARK: - Helpers
@@ -231,8 +233,8 @@ final class PartyMemberViewController: UIViewController {
         layer.lineDashPattern = [2, 2]
              
         let path = UIBezierPath()
-        let point1 = CGPoint(x: view.bounds.minX, y: view.bounds.maxY - 18)
-        let point2 = CGPoint(x: view.bounds.maxX, y: view.bounds.maxY - 18)
+        let point1 = CGPoint(x: view.bounds.minX, y: view.bounds.maxY)
+        let point2 = CGPoint(x: view.bounds.maxX, y: view.bounds.maxY)
         
         path.move(to: point1)
         path.addLine(to: point2)
