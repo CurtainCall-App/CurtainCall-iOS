@@ -1079,7 +1079,8 @@
 			children = (
 				EE5251BD2A8E5BDC003DFEE3 /* Secret.swift */,
 			);
-			path = Secret;
+			name = Secret;
+			path = ../Secret;
 			sourceTree = "<group>";
 		};
 		EE5251C32A8E639A003DFEE3 /* Report */ = {
