@@ -233,7 +233,7 @@ final class LiveTalkChatViewController: UIViewController {
         if let keyboardFrame:NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
             emptyView.snp.updateConstraints {
-                $0.height.equalTo(keyboardRectangle.height)
+                $0.height.equalTo(keyboardRectangle.height - 21)
             }
 //            bottomView.snp.updateConstraints {
 //                $0.bottom.equalTo(emptyView.snp.top).inset(30)
