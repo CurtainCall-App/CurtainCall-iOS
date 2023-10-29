@@ -403,7 +403,7 @@ extension ReviewWriteViewController: UITextViewDelegate {
                 return true
             }
         }
-        guard content.count < 21 else { return false }
+        guard content.count < 20 else { return false }
         return true
     }
 }
