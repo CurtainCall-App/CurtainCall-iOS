@@ -300,9 +300,10 @@ final class ReviewWriteViewController: UIViewController {
     
     private func bind() {
         viewModel.$isValidReview
+            .combineLatest(viewModel.$reviewScore)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isValid in
-                self?.completeButton.setNextButton(isSelected: isValid)
+            .sink { [weak self] (isValidContent, reviewScore) in
+                self?.completeButton.setNextButton(isSelected: isValidContent && reviewScore > 0)
             }.store(in: &cancellables)
         viewModel.$isWriteReview
             .receive(on: DispatchQueue.main)
@@ -325,6 +326,7 @@ final class ReviewWriteViewController: UIViewController {
                 }
             }
         }
+        viewModel.reviewScore = value
     }
     
     @objc
@@ -359,13 +361,17 @@ final class ReviewWriteViewController: UIViewController {
         self.view.transform = .identity
     }
     
-    
+    @objc
+    private func contentChanged() {
+        
+    }
     
 }
 
 extension ReviewWriteViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         updateCountLabel(count: textView.text.count)
+        viewModel.reviewTextViewChanged(text: textView.text)
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -380,7 +386,6 @@ extension ReviewWriteViewController: UITextViewDelegate {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.text = Constants.REVIEW_WRITE_TEXTVIEW_PLACEHOLDER
             textView.textColor = .hexBEC2CA
-            viewModel.reviewTextViewChanged(text: textView.text)
             return
         }
         
@@ -392,14 +397,13 @@ extension ReviewWriteViewController: UITextViewDelegate {
         replacementText text: String
     ) -> Bool {
         guard let content = textView.text else { return false }
-        viewModel.reviewTextViewChanged(text: textView.text)
         if let char = text.cString(using: String.Encoding.utf8) {
             let isBackSpace = strcmp(char, "\\b")
             if isBackSpace == -92 {
                 return true
             }
         }
-        guard content.count <= 20 else { return false }
+        guard content.count < 20 else { return false }
         return true
     }
 }

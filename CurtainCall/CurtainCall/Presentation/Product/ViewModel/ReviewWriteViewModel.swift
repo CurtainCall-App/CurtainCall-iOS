@@ -17,10 +17,15 @@ final class ReviewWriteViewModel {
     
     @Published var isValidReview: Bool = false
     @Published var isWriteReview: Bool = false
+    @Published var reviewScore: Int = 0
     private var provider = MoyaProvider<ReviewAPI>()
     private var subscriptions: Set<AnyCancellable> = []
     
-    // MARK: - Helpers
+    // MARK: - Helper
+    
+    func reviewScoreChanged(value: Int) {
+        reviewScore = value
+    }
     
     func reviewTextViewChanged(text: String?) {
         guard let text, !text.isEmpty, text != Constants.REVIEW_WRITE_TEXTVIEW_PLACEHOLDER else {
