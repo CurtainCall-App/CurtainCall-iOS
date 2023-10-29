@@ -10,6 +10,7 @@ import UIKit
 import KakaoSDKCommon
 import FacebookCore
 import NMapsMap
+import FirebaseCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         KakaoSDK.initSDK(appKey: Secret.KAKAO_NATIVE_APP_KEY)
         ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         NMFAuthManager.shared().clientId = Secret.NAVER_CLIENT_ID
+        FirebaseApp.configure()
         return true
     }
 
