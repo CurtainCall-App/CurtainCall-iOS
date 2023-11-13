@@ -211,6 +211,14 @@ final class MyPageViewController: UIViewController {
         return label
     }()
     
+    private let copyrightLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Copyright 2023. Curtain Call all rights reserved."
+        label.font = .body5
+        label.textColor = .hex828996
+        return label
+    }()
+    
     // MARK: - Properties
     
     private let viewModel: MyPageViewModel
@@ -267,7 +275,7 @@ final class MyPageViewController: UIViewController {
         saveView.addSubviews(saveIcon, saveLabel, saveButton)
         noticeView.addSubviews(noticeLabel, noticeArrowImage, noticeButton)
         FAQView.addSubviews(FAQLabel, FAQArrowImage, FAQButton)
-        footerView.addSubviews(footerHeadTitle, emailLabel, footerSeperator, sourceLabel)
+        footerView.addSubviews(footerHeadTitle, emailLabel, footerSeperator, sourceLabel, copyrightLabel)
     }
     
     private func configureConstraints() {
@@ -452,8 +460,13 @@ final class MyPageViewController: UIViewController {
         sourceLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(26)
             $0.top.equalTo(footerSeperator.snp.bottom).offset(18)
-            $0.bottom.equalToSuperview().inset(50)
         }
+        copyrightLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(26)
+            $0.top.equalTo(sourceLabel.snp.bottom).offset(14)
+            $0.bottom.equalToSuperview().inset(62)
+        }
+        
         noticeButton.snp.makeConstraints { $0.edges.equalToSuperview() }
         FAQButton.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
