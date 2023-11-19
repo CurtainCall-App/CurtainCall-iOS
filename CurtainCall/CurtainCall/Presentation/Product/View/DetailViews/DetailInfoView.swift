@@ -245,6 +245,9 @@ final class DetailInfoView: UIView {
     @Published var sameShow: [SameShowContent] = []
     var count: Int = 0
     @Published var isAllImageUpdate: Bool = false
+    private var initLatitude: Double?
+    private var initLongitude: Double?
+    private var initPlaceName: String?
     
     enum Section { case main }
     typealias Item = SameShowContent
@@ -255,6 +258,8 @@ final class DetailInfoView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
+        let mapViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTappedMapView))
+        mapView.addGestureRecognizer(mapViewTapGesture)
         $isAllImageUpdate.sink { isFinished in
             if isFinished {
                 LodingIndicator.hideLoading()
@@ -372,6 +377,9 @@ final class DetailInfoView: UIView {
         concertHallLabel.text = content.name.isEmpty ? "정보 없음" : content.name
         websiteLabel.text = content.homepage.isEmpty ? "정보 없음"
         : content.homepage
+        initLatitude = content.latitude
+        initLongitude = content.longitude
+        initPlaceName = content.name
         let marker = NMFMarker(position: NMGLatLng(lat: content.latitude, lng: content.longitude))
         let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: content.latitude, lng: content.longitude), zoomTo: 15)
         mapView.moveCamera(cameraUpdate)
@@ -464,5 +472,19 @@ final class DetailInfoView: UIView {
                 return cell
             }
         )
+    }
+    
+    @objc
+    private func didTappedMapView() {
+        guard let lat = initLatitude, 
+              let lng = initLongitude,
+              let placeName = initPlaceName,
+              let url = URL(string: "nmap://place?lat=\(lat)&lng=\(lng)&zoom=15&name=\(placeName)&appname=com.mandos.curtain.call"),
+              let appStoreURL = URL(string: "http://itunes.apple.com/app/id311867728?mt=8") else { return }
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        } else {
+            UIApplication.shared.open(appStoreURL)
+        }
     }
 }
