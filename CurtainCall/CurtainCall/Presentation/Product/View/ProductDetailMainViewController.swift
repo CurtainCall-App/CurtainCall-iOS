@@ -816,7 +816,7 @@ extension ProductDetailMainViewController: NotLoginPopupDelegate {
 
 extension ProductDetailMainViewController: UIScrollViewDelegate {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        print("#########")
+        //
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
