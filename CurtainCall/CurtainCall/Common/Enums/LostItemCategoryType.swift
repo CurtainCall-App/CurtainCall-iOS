@@ -8,7 +8,8 @@
 import Foundation
 
 enum LostItemCategoryType: Int {
-    case bag = 1
+    case all = 0
+    case bag
     case wallet
     case cash
     case card
@@ -20,6 +21,7 @@ enum LostItemCategoryType: Int {
     
     var name: String {
         switch self {
+        case .all: return "전체"
         case .bag: return "가방"
         case .wallet: return "지갑"
         case .cash: return "현금"
@@ -34,6 +36,7 @@ enum LostItemCategoryType: Int {
     
     var apiName: String {
         switch self {
+        case .all: return "ALL" // MARK: 서버 name으로 변경 필요
         case .bag: return "BAG"
         case .wallet:
             return "WALLET"
@@ -56,6 +59,7 @@ enum LostItemCategoryType: Int {
     
     init(apiName: String) {
         switch apiName {
+        case "ALL": self = .all
         case "BAG": self = .bag
         case "WALLET": self = .wallet
         case "CASH": self = .cash

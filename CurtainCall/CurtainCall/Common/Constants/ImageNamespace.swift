@@ -85,6 +85,7 @@ enum ImageNamespace {
     
     static let expandBottomArrow = "expand_bottom_arrow"
     
+    static let lostItemCategoryAll60px = "lostItem_category_all_60px"
     static let lostItemCategoryBag60px = "lostItem_category_bag_60px"
     static let lostItemCategoryBook60px = "lostItem_category_book_60px"
     static let lostItemCategoryCard60px = "lostItem_category_card_60px"
@@ -95,6 +96,7 @@ enum ImageNamespace {
     static let lostItemCategoryPhone60px = "lostItem_category_phone_60px"
     static let lostItemCategoryWallet60px = "lostItem_category_wallet_60px"
     
+    static let lostItemCategoryAll50px = "lostItem_category_all_50px"
     static let lostItemCategoryBag50px = "lostItem_category_bag_50px"
     static let lostItemCategoryBook50px = "lostItem_category_book_50px"
     static let lostItemCategoryCard50px = "lostItem_category_card_50px"
