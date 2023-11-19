@@ -27,10 +27,29 @@ final class LostItemLargeCategoryView: UIView {
         return stackView
     }()
     
-    private let bagView: UIView = {
-        let view = UIView()
-        return view
+    private let allView = UIView()
+    
+    private let allImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: ImageNamespace.lostItemCategoryAll60px)
+        return imageView
     }()
+    
+    private let allLabel: UILabel = {
+        let label = UILabel()
+        label.font = .body1
+        label.textColor = .hex161A20
+        label.text = "전체"
+        return label
+    }()
+    
+    private let allButton: UIButton = {
+        let button = UIButton()
+        button.tag = LostItemCategoryType.all.rawValue
+        return button
+    }()
+    
+    private let bagView = UIView()
     
     private let bagImageView = {
         let imageView = UIImageView()
@@ -268,6 +287,22 @@ final class LostItemLargeCategoryView: UIView {
         return button
     }()
     
+    private let imageStackView4: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 49
+        return stackView
+    }()
+    
+    private let empty1View = UIView()
+    private let empty1ImageView = UIImageView()
+    private let empty1Label = UILabel ()
+    
+    private let empty2View = UIView()
+    private let empty2ImageView = UIImageView()
+    private let empty2Label = UILabel ()
+    
     // MARK: Property
     
     weak var delegate: LostItemViewDelegate?
@@ -295,21 +330,26 @@ final class LostItemLargeCategoryView: UIView {
     private func configureSubviews() {
         backgroundColor = .white
         addSubviews(wholeStackView)
-        wholeStackView.addArrangedSubviews(imageStackView1, imageStackView2, imageStackView3)
-        imageStackView1.addArrangedSubviews(bagView, walletView, cashView)
+        wholeStackView.addArrangedSubviews(imageStackView1, imageStackView2, imageStackView3, imageStackView4)
+        imageStackView1.addArrangedSubviews(allView, bagView, walletView)
+        allView.addSubviews(allImageView, allLabel, allButton)
         bagView.addSubviews(bagImageView, bagLabel, bagButton)
         walletView.addSubviews(walletImageView, walletLabel, walletButton)
-        cashView.addSubviews(cashImageView, cashLabel, cashButton)
         
-        imageStackView2.addArrangedSubviews(cardView, jewelView, phoneView)
+        imageStackView2.addArrangedSubviews(cashView, cardView, jewelView)
+        cashView.addSubviews(cashImageView, cashLabel, cashButton)
         cardView.addSubviews(cardImageView, cardLabel, cardButton)
         jewelView.addSubviews(jewelImageView, jewelLabel, jewelButton)
-        phoneView.addSubviews(phoneImageView, phoneLabel, phoneButton)
         
-        imageStackView3.addArrangedSubviews(bookView, clothesView, otherView)
+        
+        imageStackView3.addArrangedSubviews(phoneView, bookView, clothesView)
+        phoneView.addSubviews(phoneImageView, phoneLabel, phoneButton)
         bookView.addSubviews(bookImageView, bookLabel, bookButton)
         clothesView.addSubviews(clothesImageView, clothesLabel, clothesButton)
+        
+        imageStackView4.addArrangedSubviews(otherView, empty1View, empty2View)
         otherView.addSubviews(otherImageView, otherLabel, otherButton)
+        
     }
     
     private func configureConstarints() {
@@ -319,6 +359,16 @@ final class LostItemLargeCategoryView: UIView {
             $0.bottom.equalToSuperview().inset(20)
         }
 
+        allImageView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.width.equalTo(60)
+        }
+        allLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(bagImageView.snp.bottom).offset(8)
+            $0.bottom.equalToSuperview()
+        }
+        
         bagImageView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.width.equalTo(60)
@@ -403,10 +453,9 @@ final class LostItemLargeCategoryView: UIView {
     }
     
     private func setButton() {
-        [
-            bagButton, walletButton, cashButton, cardButton, jewelButton, phoneButton,
-            bookButton, clothesButton, otherButton
-        ].forEach {
+        [allButton, bagButton, walletButton, cashButton, cardButton,
+         jewelButton, phoneButton, bookButton, clothesButton, otherButton]
+            .forEach {
             $0.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }

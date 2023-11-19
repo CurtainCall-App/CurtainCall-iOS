@@ -21,8 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         
-        window?.rootViewController = SplashViewController()
-        
+        window?.rootViewController = LostItemViewController(id: "", name: "")
 //        let rootViewController = LoginViewController(
 //            viewModel: LoginViewModel(
 //            useCase: LoginInteractor())
