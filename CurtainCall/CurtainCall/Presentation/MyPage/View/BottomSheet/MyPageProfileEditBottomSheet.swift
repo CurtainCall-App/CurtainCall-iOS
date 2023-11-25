@@ -46,6 +46,8 @@ final class MyPageProfileEditBottomSheet: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureUI()
+        moveToLibraryButton.addTarget(self, action: #selector(moveToLibraryButtonTouchUpInside), for: .touchUpInside)
+        convertToBasicImageButton.addTarget(self, action: #selector(convertToBasicImageButtonTouchUpInside), for: .touchUpInside)
     }
     
     // MARK: Configure
@@ -72,6 +74,9 @@ final class MyPageProfileEditBottomSheet: UIViewController {
             $0.left.equalToSuperview()
             $0.centerY.equalToSuperview()
         }
+        moveToLibraryButton.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
         
         convertToBasicImageView.snp.makeConstraints {
             $0.top.equalTo(moveToLibraryView.snp.bottom)
@@ -82,6 +87,10 @@ final class MyPageProfileEditBottomSheet: UIViewController {
         convertToBasicImageLabel.snp.makeConstraints {
             $0.left.equalToSuperview()
             $0.centerY.equalToSuperview()
+        }
+        
+        convertToBasicImageButton.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
