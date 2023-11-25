@@ -245,6 +245,7 @@
 		EED302132A8A63C000957566 /* GuideSale.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EED302122A8A63C000957566 /* GuideSale.storyboard */; };
 		EED52EEA2A9F3F9800DBF55F /* MyFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED52EE92A9F3F9800DBF55F /* MyFavoriteViewController.swift */; };
 		EED52EEC2A9F3FA400DBF55F /* MyFavoriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED52EEB2A9F3FA400DBF55F /* MyFavoriteViewModel.swift */; };
+		EED9C92F2B11DAE000B0748D /* MyPageProfileEditBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED9C92E2B11DAE000B0748D /* MyPageProfileEditBottomSheet.swift */; };
 		EEE272C12AA8AC540014B266 /* ChatAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE272C02AA8AC540014B266 /* ChatAPI.swift */; };
 		EEE6875A2A7276060063B94A /* ProductDetailMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE687592A7276060063B94A /* ProductDetailMainViewController.swift */; };
 		EEE8F0B92A5195F300E31597 /* LoginError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE8F0B82A5195F300E31597 /* LoginError.swift */; };
@@ -513,6 +514,7 @@
 		EED302122A8A63C000957566 /* GuideSale.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GuideSale.storyboard; sourceTree = "<group>"; };
 		EED52EE92A9F3F9800DBF55F /* MyFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFavoriteViewController.swift; sourceTree = "<group>"; };
 		EED52EEB2A9F3FA400DBF55F /* MyFavoriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFavoriteViewModel.swift; sourceTree = "<group>"; };
+		EED9C92E2B11DAE000B0748D /* MyPageProfileEditBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileEditBottomSheet.swift; sourceTree = "<group>"; };
 		EEE272C02AA8AC540014B266 /* ChatAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAPI.swift; sourceTree = "<group>"; };
 		EEE687592A7276060063B94A /* ProductDetailMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailMainViewController.swift; sourceTree = "<group>"; };
 		EEE8F0B82A5195F300E31597 /* LoginError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginError.swift; sourceTree = "<group>"; };
@@ -1204,6 +1206,7 @@
 			isa = PBXGroup;
 			children = (
 				EE5251E02A8E63B3003DFEE3 /* MyPageEditBottomSheet.swift */,
+				EED9C92E2B11DAE000B0748D /* MyPageProfileEditBottomSheet.swift */,
 			);
 			path = BottomSheet;
 			sourceTree = "<group>";
@@ -2115,6 +2118,7 @@
 				EEE8F0F82A57025000E31597 /* String + Extension.swift in Sources */,
 				EE3A428A2A9C67AA00273F94 /* PartyInPopup.swift in Sources */,
 				EE2BDF392AA98B5600E9AFFF /* PartyTalkViewController.swift in Sources */,
+				EED9C92F2B11DAE000B0748D /* MyPageProfileEditBottomSheet.swift in Sources */,
 				EE5DED032A6511AB0027B0D4 /* TimeSelectView.swift in Sources */,
 				EE8437BE2A8143F900ADD3D8 /* HomeLiveTalkCell.swift in Sources */,
 				EEC60A4C2A4ACB4C001DDC2A /* LoginUsecase.swift in Sources */,

@@ -21,7 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         
-        window?.rootViewController = SplashViewController()
+//        window?.rootViewController = SplashViewController()
+        window?.rootViewController = MyPageEditViewController(viewModel: MyPageEditViewModel(), profileImage: nil, nickname: "mandos")
 //        let rootViewController = LoginViewController(
 //            viewModel: LoginViewModel(
 //            useCase: LoginInteractor())

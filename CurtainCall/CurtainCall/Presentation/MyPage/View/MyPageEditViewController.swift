@@ -204,7 +204,20 @@ final class MyPageEditViewController: UIViewController {
     
     @objc
     private func profileEditButtonTapped() {
-        openLibrary()
+        let sheet = MyPageProfileEditBottomSheet()
+        sheet.modalPresentationStyle = .pageSheet
+        sheet.delegate = self
+        let fraction = UISheetPresentationController.Detent.custom { _ in
+                return 154
+        }
+        if let sheet = sheet.sheetPresentationController {
+            sheet.detents = [fraction]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+            
+        }
+        present(sheet, animated: true)
+//        openLibrary()
     }
     
     @objc
@@ -247,4 +260,16 @@ extension MyPageEditViewController: UIImagePickerControllerDelegate & UINavigati
             dismiss(animated: true)
         }
     }
+}
+
+extension MyPageEditViewController: ProfileEditBottomSheetDelegate {
+    func moveToLibrary() {
+        print("moveTo")
+    }
+    
+    func convertToBasicImage() {
+        print("convertToBasic")
+    }
+    
+    
 }
