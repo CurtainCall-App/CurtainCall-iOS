@@ -272,8 +272,13 @@ extension MyPageEditViewController: ProfileEditBottomSheetDelegate {
     }
     
     func convertToBasicImage() {
+        defer { sheet?.dismissView() }
+        if profileImageView.image == UIImage(named: ImageNamespace.defaultProfile) {
+            return
+        }
         profileImageView.image = UIImage(named: ImageNamespace.defaultProfile)
-        sheet?.dismissView()
+        viewModel.imageID = nil
+        completeButton.setNextButton(isSelected: true)
     }
     
     
