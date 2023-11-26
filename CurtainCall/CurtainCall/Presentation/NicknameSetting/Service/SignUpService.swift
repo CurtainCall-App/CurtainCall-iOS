@@ -47,7 +47,15 @@ extension SignUpAPI: TargetType {
     }
     
     var headers: [String : String]? {
-        let accessToken = KeychainWrapper.standard.string(forKey: .accessToken) ?? ""
-        return ["Authorization": "Bearer \(accessToken)"]
+        switch self {
+        case .duplicate:
+            return nil
+        case .signUp:
+            guard let idToken = KeychainWrapper.standard.string(forKey: .idToken) else {
+                return nil
+            }
+            return ["Authorization": "Bearer \(idToken)"]
+        }
+        
     }
 }

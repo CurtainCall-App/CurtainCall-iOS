@@ -59,6 +59,7 @@ final class NicknameSettingViewModel: NicknameSettingViewModelInput,
                     return
                 }
             } receiveValue: { response in
+                print(String(data: response.data, encoding: .utf8)!)
                 if let data = try? response.map(NicknameDuplicateResponse.self) {
                     if !data.result {
                         self.isValidRegexNickname.send(.success)

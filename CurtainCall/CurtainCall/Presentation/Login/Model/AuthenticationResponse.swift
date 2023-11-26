@@ -11,6 +11,6 @@ struct AuthenticationResponse: Decodable {
     let memberId: Int?
     let accessToken: String
     let accessTokenExpiresAt: String?
-    let refreshToken: String
+    let refreshToken: String?
     let refreshTokenExpiresAt: String?
 }

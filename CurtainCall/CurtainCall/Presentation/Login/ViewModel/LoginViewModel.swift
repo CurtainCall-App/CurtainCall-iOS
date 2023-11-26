@@ -78,8 +78,8 @@ final class LoginViewModel: LoginViewModelIO {
         if let error {
             loginPublisher.send(completion: .failure(error))
         }
-        if let oauthToken {
-            self.loginProvider.requestPublisher(.kakao(oauthToken.accessToken))
+        if let oauthToken, let idToken = oauthToken.idToken {
+            self.loginProvider.requestPublisher(.kakao(idToken))
                 .sink(receiveCompletion: { [weak self] completion in
                     guard let self else { return }
                     switch completion {
@@ -89,13 +89,13 @@ final class LoginViewModel: LoginViewModelIO {
                         return
                     }
                 }, receiveValue: { [weak self] response in
-                    if let data = try? response.map(AuthenticationResponse.self) {
+                    if response.statusCode == 404 {
+                        KeychainWrapper.standard[.idToken] = idToken
+                        self?.loginPublisher.send((.kakao, nil))
+                        
+                    } else if let data = try? response.map(AuthenticationResponse.self) {
                         KeychainWrapper.standard[.accessToken] = data.accessToken
-                        KeychainWrapper.standard[.refreshToken] = data.refreshToken
-                        
-                        print("##AUTH: ", data)
                         self?.loginPublisher.send((.kakao, data.memberId))
-                        
                     }
                 }).store(in: &self.cancellables)
         }
