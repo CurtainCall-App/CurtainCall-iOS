@@ -12,7 +12,7 @@ import SnapKit
 import Moya
 import CombineMoya
 
-final class MyPageEditViewController: UIViewController {
+final class MyPageEditViewController: UIViewController, UISheetPresentationControllerDelegate {
     
     // MARK: - UI properties
     
@@ -80,6 +80,7 @@ final class MyPageEditViewController: UIViewController {
     private var profileImage: UIImage?
     private var nickname: String
     private let viewModel: MyPageEditViewModel
+    private var sheet: MyPageProfileEditBottomSheet?
     
     // MARK: - Lifecycles
     
@@ -204,7 +205,22 @@ final class MyPageEditViewController: UIViewController {
     
     @objc
     private func profileEditButtonTapped() {
-        openLibrary()
+        sheet = MyPageProfileEditBottomSheet()
+        sheet?.modalPresentationStyle = .pageSheet
+        let fraction = UISheetPresentationController.Detent.custom { _ in
+                return 154
+        }
+        if let sheet = sheet?.sheetPresentationController {
+            sheet.detents = [fraction]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+            
+        }
+        guard let sheet else { return }
+        sheet.delegate = self
+        present(sheet, animated: true)
+        
+//        openLibrary()
     }
     
     @objc
@@ -247,4 +263,23 @@ extension MyPageEditViewController: UIImagePickerControllerDelegate & UINavigati
             dismiss(animated: true)
         }
     }
+}
+
+extension MyPageEditViewController: ProfileEditBottomSheetDelegate {
+    func moveToLibrary() {
+        sheet?.dismissView()
+        openLibrary()
+    }
+    
+    func convertToBasicImage() {
+        defer { sheet?.dismissView() }
+        if profileImageView.image == UIImage(named: ImageNamespace.defaultProfile) {
+            return
+        }
+        profileImageView.image = UIImage(named: ImageNamespace.defaultProfile)
+        viewModel.imageID = nil
+        completeButton.setNextButton(isSelected: true)
+    }
+    
+    
 }
