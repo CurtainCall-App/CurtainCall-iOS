@@ -42,7 +42,7 @@ final class ReviewViewController: UIViewController {
         label.font = .body1
         label.textColor = .hexBEC2CA
         label.numberOfLines = 0
-        label.text = "아직 한 줄 리뷰가 없어요!\n간단한 리뷰 작성으로 감상 후기를\n공유해보세요 :)"
+        label.text = "아직 공연 리뷰가 없어요!\n간단한 리뷰 작성으로 감상 후기를\n공유해보세요 :)"
         label.textAlignment = .center
         return label
     }()
@@ -115,7 +115,7 @@ final class ReviewViewController: UIViewController {
     
     private func configureNavigation() {
         configureBackbarButton()
-        title = "한 줄 리뷰"
+        title = "공연 리뷰"
     }
     
     private func addTarget() {

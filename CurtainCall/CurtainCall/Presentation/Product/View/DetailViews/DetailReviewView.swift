@@ -57,7 +57,7 @@ final class DetailReviewView: UIView {
         let label = UILabel()
         label.font = .body1
         label.textColor = .hexBEC2CA
-        label.text = "아직 한 줄 리뷰가 없어요!"
+        label.text = "아직 공연 리뷰가 없어요!"
         return label
     }()
     
