@@ -137,7 +137,7 @@ final class ReviewWriteViewController: UIViewController {
     
     private let textCountLimitLabel: UILabel = {
         let label = UILabel()
-        label.text = "글자수 제한 (0/20)"
+        label.text = "글자수 제한 (0/500)"
         label.textColor = .hex828996
         label.font = .body5
         return label
@@ -340,7 +340,7 @@ final class ReviewWriteViewController: UIViewController {
     }
     
     private func updateCountLabel(count: Int) {
-        textCountLimitLabel.text = "글자수 제한 (\(count)/20)"
+        textCountLimitLabel.text = "글자수 제한 (\(count)/500)"
     }
     
     @objc
@@ -403,7 +403,7 @@ extension ReviewWriteViewController: UITextViewDelegate {
                 return true
             }
         }
-        guard content.count < 20 else { return false }
+        guard content.count < 500 else { return false }
         return true
     }
 }
