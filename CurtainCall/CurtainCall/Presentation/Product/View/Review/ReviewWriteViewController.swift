@@ -34,7 +34,7 @@ final class ReviewWriteViewController: UIViewController {
         let label = UILabel()
         label.font = .subTitle4
         label.textColor = .white
-        label.text = "한 줄 리뷰 작성"
+        label.text = "공연 리뷰 작성"
         return label
     }()
     
@@ -116,7 +116,7 @@ final class ReviewWriteViewController: UIViewController {
     
     private let reviewWriteLabel: UILabel = {
         let label = UILabel()
-        label.text = "한 줄 리뷰를 남겨주세요!"
+        label.text = "공연 리뷰를 남겨주세요!"
         label.textColor = .title
         label.font = .subTitle4
         return label

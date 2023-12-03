@@ -34,7 +34,7 @@ final class MyWriteViewController: UIViewController {
     
     private let reviewButton: MyWriteCategoryButton = {
         let button = MyWriteCategoryButton()
-        button.setTitle("한 줄 리뷰", for: .normal)
+        button.setTitle("공연 리뷰", for: .normal)
         button.isSelected = true
         button.setBackground(true)
         return button

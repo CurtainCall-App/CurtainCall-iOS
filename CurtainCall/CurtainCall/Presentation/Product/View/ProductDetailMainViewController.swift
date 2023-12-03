@@ -283,7 +283,7 @@ final class ProductDetailMainViewController: UIViewController {
     
     private let reviewButtonLabel: UILabel = {
         let label = UILabel()
-        label.text = "한 줄 리뷰"
+        label.text = "공연 리뷰"
         label.font = .body1
         label.textColor = .title
         return label
@@ -788,7 +788,7 @@ final class ProductDetailMainViewController: UIViewController {
         ageProductLabel.text = data.age
         priceProductLabel.text = data.ticketPrice.isEmpty ? "정보 없음" : data.ticketPrice
         locationProductLabel.text = data.facilityName
-        detailReviewView.titleLabel.text = "총 \(Int(data.reviewCount))개의 한 줄 리뷰"
+        detailReviewView.titleLabel.text = "\(Int(data.reviewCount))개의 공연 리뷰"
     }
 }
 
