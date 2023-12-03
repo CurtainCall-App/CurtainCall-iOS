@@ -20,7 +20,7 @@ final class PartyMemberRecruitingDateViewModel {
     // MARK: - Helpers
     
     func countValueChanged(_ value: Int) {
-        if !(2...10 ~= (countValue + value)) {
+        if !(2...100 ~= (countValue + value)) {
             return
         }
         countValue = countValue + value

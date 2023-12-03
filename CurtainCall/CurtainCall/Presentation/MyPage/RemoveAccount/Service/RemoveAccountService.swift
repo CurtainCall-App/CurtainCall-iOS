@@ -36,8 +36,11 @@ extension RemoveAccountAPI: TargetType {
     }
     
     var headers: [String : String]? {
-        let accessToken = KeychainWrapper.standard.string(forKey: .accessToken) ?? ""
-        return ["Authorization": "Bearer \(accessToken)"]
+        if let accessToken = KeychainWrapper.standard.string(forKey: .accessToken) {
+            return ["Authorization": "Bearer \(accessToken)"]
+        } else {
+            return nil
+        }
     }
     
     
