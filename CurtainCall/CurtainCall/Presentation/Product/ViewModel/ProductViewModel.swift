@@ -48,7 +48,7 @@ final class ProductViewModel {
                         }
                     }
                 } else {
-                    print("## RequestShow Decoding Error##")
+                    print("## RequestShow Decoding Error \(String(data: response.data, encoding: .utf8))")
                 }
             }.store(in: &subscriptions)
 

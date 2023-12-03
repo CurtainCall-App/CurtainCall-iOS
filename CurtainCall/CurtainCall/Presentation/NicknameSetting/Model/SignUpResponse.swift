@@ -9,4 +9,6 @@ import Foundation
 
 struct SignUpResponse: Decodable {
     let id: Int
+    let memberId: Int
+    let accessToken: String
 }

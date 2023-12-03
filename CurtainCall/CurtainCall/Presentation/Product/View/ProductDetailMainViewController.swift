@@ -337,7 +337,7 @@ final class ProductDetailMainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        LodingIndicator.showLoading()
+//        LodingIndicator.showLoading()
         configureUI()
         addTarget()
         setupInfoView()

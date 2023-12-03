@@ -20,7 +20,7 @@ extension LoginAPI: TargetType {
         case .kakao:
             return "/login"
         case .apple:
-            return "/login/oauth2/token/apple"
+            return "/login"
         }
     }
     

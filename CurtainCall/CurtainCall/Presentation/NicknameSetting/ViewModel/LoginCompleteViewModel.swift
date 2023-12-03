@@ -15,6 +15,7 @@ import SwiftKeychainWrapper
 final class LoginCompleteViewModel {
     
     private let signupProvider = MoyaProvider<SignUpAPI>()
+    private let loginProvider = MoyaProvider<LoginAPI>()
     private var cancellables: Set<AnyCancellable> = []
     var isSuccessSignUp = PassthroughSubject<Bool, Error>()
     
@@ -26,10 +27,11 @@ final class LoginCompleteViewModel {
                     return
                 }
             } receiveValue: { [weak self] response in
-                print("#SignUp", String(data: response.data, encoding: .utf8))
+                print("###", String(data: response.data, encoding: .utf8))
                 if let data = try? response.map(SignUpResponse.self) {
                     self?.isSuccessSignUp.send(true)
                     KeychainWrapper.standard[.userID] = data.id
+                    KeychainWrapper.standard[.accessToken] = data.accessToken
                     KeychainWrapper.standard[.isGuestUser] = false
                 } else {
                     self?.isSuccessSignUp.send(false)
