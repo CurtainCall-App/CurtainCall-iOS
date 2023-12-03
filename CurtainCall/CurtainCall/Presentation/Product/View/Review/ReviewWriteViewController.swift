@@ -268,7 +268,7 @@ final class ReviewWriteViewController: UIViewController {
         reviewTextView.snp.makeConstraints {
             $0.top.equalTo(reviewWriteLabel.snp.bottom).offset(12)
             $0.horizontalEdges.equalToSuperview().inset(24)
-            $0.height.equalTo(51)
+            $0.height.equalTo(97)
         }
         textCountLimitLabel.snp.makeConstraints {
             $0.top.equalTo(reviewTextView.snp.bottom).offset(10)
