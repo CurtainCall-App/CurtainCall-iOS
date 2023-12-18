@@ -186,7 +186,7 @@ final class HomeViewModel {
                 }
             } receiveValue: { [weak self] response in
                 if let data = try? response.map(RequestTokenResponse.self) {
-                    KeychainWrapper.standard[.chatToken] = data.value
+                    UserDefaults.standard[.chatToken] = data.value
                     let id = UserDefaults.standard[.userId] ?? 0
                     let nickname = UserInfoManager.shared.userInfo?.nickname ?? "no name"
                     print("$$$", UserInfoManager.shared.userInfo)

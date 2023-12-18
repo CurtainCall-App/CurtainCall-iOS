@@ -68,4 +68,5 @@ extension UserDefaults.Key {
     static var userId: Key<Int> { return Key<Int>("userId") }
     static var isNotFirstUser: Key<Bool> { return Key<Bool>("isFirstUser") }
     static var isNotGuestUser: Key<Bool> { return Key<Bool>("isGuestUser") }
+    static var chatToken: Key<String> { return Key<String>("chatToken") }
 }
