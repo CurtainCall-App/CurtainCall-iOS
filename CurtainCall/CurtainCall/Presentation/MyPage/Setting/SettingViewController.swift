@@ -235,7 +235,6 @@ extension SettingViewController: LogoutPopupDelegate {
         changeRootViewController(UINavigationController(rootViewController: loginViewController))
         UserDefaults.standard[.accessToken] = nil
         UserDefaults.standard[.userId] = nil
-        UserDefaults.standard[.isNotFirstUser] = nil
         UserDefaults.standard[.isNotGuestUser] = nil
 //        KeychainWrapper.standard.remove(forKey: .accessToken)
 //        KeychainWrapper.standard.remove(forKey: .refreshToken)
