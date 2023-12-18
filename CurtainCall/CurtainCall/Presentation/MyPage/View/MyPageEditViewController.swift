@@ -257,7 +257,7 @@ extension MyPageEditViewController: UIImagePickerControllerDelegate & UINavigati
                 .sink { isLoading in
                     if !isLoading {
                         self.profileImageView.image = image
-
+                        self.completeButton.setNextButton(isSelected: true)
                     }
                 }.store(in: &subscriptions)
             dismiss(animated: true)
