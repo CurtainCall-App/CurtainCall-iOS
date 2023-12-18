@@ -492,7 +492,7 @@ final class PartyMemberRecruitingDetailViewController: UIViewController {
                 if let data = try? response.map(PartyDetailResponse.self) {
                     draw(partyInfo: data)
                     item = data
-                    let currentUserId = KeychainWrapper.standard.integer(forKey: .userID) ?? 0
+                    let currentUserId = UserDefaults.standard[.userId]
                     
                     if data.creatorId != currentUserId {
                         configureReportButton()

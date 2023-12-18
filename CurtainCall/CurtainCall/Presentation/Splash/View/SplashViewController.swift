@@ -51,16 +51,17 @@ final class SplashViewController: UIViewController {
         UIView.animate(withDuration: 1.0, delay: 0.5, options: .curveEaseOut, animations: {
             self.logoImageView.alpha = 1
         }, completion: { [weak self] _ in
-            if KeychainWrapper.standard.bool(forKey: .isFirstUser) == nil {
+            if !UserDefaults.standard[.isNotFirstUser] {
                 self?.pushToOnboardingViewController()
-                KeychainWrapper.standard[.isFirstUser] = false
-            } else if KeychainWrapper.standard.bool(forKey: .isGuestUser) ?? true {
+                UserDefaults.standard[.isNotFirstUser] = true
+            } else if let accessToken = UserDefaults.standard[.accessToken] {
+                UserDefaults.standard[.isNotGuestUser] = true
+                self?.changeRootViewController(TempMainTabBarController())
+            } else {
                 let loginViewController = LoginViewController(
                     viewModel: LoginViewModel()
                 )
                 self?.changeRootViewController(UINavigationController(rootViewController: loginViewController))
-            } else {
-                self?.changeRootViewController(TempMainTabBarController())
             }
         })
     }

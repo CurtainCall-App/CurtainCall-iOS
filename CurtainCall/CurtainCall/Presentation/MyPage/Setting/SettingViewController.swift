@@ -233,10 +233,14 @@ extension SettingViewController: LogoutPopupDelegate {
     func logoutButtonTapped() {
         let loginViewController = LoginViewController(viewModel: LoginViewModel())
         changeRootViewController(UINavigationController(rootViewController: loginViewController))
-        KeychainWrapper.standard.remove(forKey: .accessToken)
-        KeychainWrapper.standard.remove(forKey: .refreshToken)
-        KeychainWrapper.standard.remove(forKey: .userID)
-        KeychainWrapper.standard.remove(forKey: .isGuestUser)
+        UserDefaults.standard[.accessToken] = nil
+        UserDefaults.standard[.userId] = nil
+        UserDefaults.standard[.isNotFirstUser] = nil
+        UserDefaults.standard[.isNotGuestUser] = nil
+//        KeychainWrapper.standard.remove(forKey: .accessToken)
+//        KeychainWrapper.standard.remove(forKey: .refreshToken)
+//        KeychainWrapper.standard.remove(forKey: .userID)
+//        KeychainWrapper.standard.remove(forKey: .isGuestUser)
         print("logout")
     }
 }

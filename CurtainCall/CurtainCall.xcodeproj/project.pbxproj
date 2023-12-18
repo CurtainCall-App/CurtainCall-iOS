@@ -284,6 +284,7 @@
 		EEF8154D2A73A7A4009C1C57 /* LostItemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF8154C2A73A7A4009C1C57 /* LostItemInfo.swift */; };
 		EEF8154F2A73AE69009C1C57 /* ReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF8154E2A73AE69009C1C57 /* ReviewViewController.swift */; };
 		EEF815512A73B2D5009C1C57 /* ProductReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF815502A73B2D5009C1C57 /* ProductReviewCell.swift */; };
+		EEFC740A2B2D5EE9009B6C31 /* UserDefault + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFC74092B2D5EE9009B6C31 /* UserDefault + Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -552,6 +553,7 @@
 		EEF8154C2A73A7A4009C1C57 /* LostItemInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LostItemInfo.swift; sourceTree = "<group>"; };
 		EEF8154E2A73AE69009C1C57 /* ReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewViewController.swift; sourceTree = "<group>"; };
 		EEF815502A73B2D5009C1C57 /* ProductReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductReviewCell.swift; sourceTree = "<group>"; };
+		EEFC74092B2D5EE9009B6C31 /* UserDefault + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefault + Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1617,6 +1619,7 @@
 				EEC5573B2A9B7794005CD281 /* UILabel + Extension.swift */,
 				EE3A42872A9C61C600273F94 /* UINavigationController + Extension.swift */,
 				EE2BDF2B2AA829BC00E9AFFF /* UITextView + Extension.swift */,
+				EEFC74092B2D5EE9009B6C31 /* UserDefault + Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -2144,6 +2147,7 @@
 				EE5251E92A8E63B3003DFEE3 /* MyRecruitmentViewController.swift in Sources */,
 				EE2BDF2C2AA829BC00E9AFFF /* UITextView + Extension.swift in Sources */,
 				EEA9443D2A5D2F140081E784 /* ProductPartyInfo.swift in Sources */,
+				EEFC740A2B2D5EE9009B6C31 /* UserDefault + Extension.swift in Sources */,
 				EE1DF3832A94F60E003AD078 /* NoticeDetailViewController.swift in Sources */,
 				EE02831F2A98A7B7008F8100 /* LostItemService.swift in Sources */,
 				EEE8F0C52A52C1EF00E31597 /* SplashViewController.swift in Sources */,

@@ -187,7 +187,7 @@ final class ProductSearchCell: UICollectionViewCell {
         let button = UIButton()
         button.setBackgroundImage(UIImage(named: ImageNamespace.productKeepDeselect), for: .normal)
         button.setBackgroundImage(UIImage(named: ImageNamespace.productKeepSelect), for: .selected)
-        button.isUserInteractionEnabled = !(KeychainWrapper.standard.bool(forKey: .isGuestUser) ?? true)
+        button.isUserInteractionEnabled = UserDefaults.standard[.isNotGuestUser]
         return button
     }()
     

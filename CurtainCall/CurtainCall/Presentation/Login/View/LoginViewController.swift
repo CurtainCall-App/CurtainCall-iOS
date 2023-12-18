@@ -111,7 +111,7 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         bind()
-        print("##ACESSTOKEN: ", KeychainWrapper.standard.string(forKey: .accessToken) ?? "X")
+        print("##ACESSTOKEN: ", UserDefaults.standard[.accessToken] ?? "X")
     }
     
     // MARK: - Helpers
@@ -173,8 +173,8 @@ final class LoginViewController: UIViewController {
                 
                 // 홈
                 if let id = loginInfo.1 {
-                    KeychainWrapper.standard[.userID] = id
-                    KeychainWrapper.standard[.isGuestUser] = false
+                    UserDefaults.standard[.userId] = id
+                    UserDefaults.standard[.isNotGuestUser] = true
                     self?.changeRootViewController(TempMainTabBarController())
                 } else {
                     self?.pushToTermOfServiceViewController()
@@ -228,10 +228,10 @@ final class LoginViewController: UIViewController {
     
     @objc
     private func noLoginButtonTouchUpInside() {
-        KeychainWrapper.standard.remove(forKey: .accessToken)
-        KeychainWrapper.standard.remove(forKey: .refreshToken)
-        KeychainWrapper.standard.remove(forKey: .userID)
-        KeychainWrapper.standard[.isGuestUser] = true
+//        KeychainWrapper.standard.remove(forKey: .accessToken)
+//        KeychainWrapper.standard.remove(forKey: .refreshToken)
+//        KeychainWrapper.standard.remove(forKey: .userID)
+//        KeychainWrapper.standard[.isGuestUser] = true
         changeRootViewController(TempMainTabBarController())
     }
 }

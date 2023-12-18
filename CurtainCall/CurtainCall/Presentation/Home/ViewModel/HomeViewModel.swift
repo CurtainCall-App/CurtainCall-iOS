@@ -26,11 +26,7 @@ final class HomeViewModel {
     var participationList = PassthroughSubject<[MyRecruitmentContent], Never>()
     @Published var requestCount = 0
     func requestUserInfo() {
-        guard let userId = KeychainWrapper.standard.integer(forKey: .userID) else {
-            print("UserId not exist")
-            requestCount += 1
-            return
-        }
+        let userId = UserDefaults.standard[.userId]
         userInfoProvider.requestPublisher(.detailProfile(id: userId))
             .sink { completion in
                 if case let .failure(error) = completion {
@@ -137,10 +133,7 @@ final class HomeViewModel {
     
     func requestMyRecuritment() {
         let provider = MoyaProvider<MyPageAPI>()
-        guard let userId = KeychainWrapper.standard.integer(forKey: .userID) else {
-            requestCount += 1
-            return
-        }
+        let userId = UserDefaults.standard[.userId]
         provider.requestPublisher(.recruitments(id: userId, page: 0, size: 20, category: nil))
             .sink { completion in
                 if case let .failure(error) = completion {
@@ -163,10 +156,7 @@ final class HomeViewModel {
     
     func requestMyParticipation() {
         let provider = MoyaProvider<MyPageAPI>()
-        guard let userId = KeychainWrapper.standard.integer(forKey: .userID) else {
-            requestCount += 1
-            return
-        }
+        let userId = UserDefaults.standard[.userId] 
         provider.requestPublisher(.participations(id: userId, page: 0, size: 20, category: nil))
             .sink { completion in
                 if case let .failure(error) = completion {
@@ -197,7 +187,7 @@ final class HomeViewModel {
             } receiveValue: { [weak self] response in
                 if let data = try? response.map(RequestTokenResponse.self) {
                     KeychainWrapper.standard[.chatToken] = data.value
-                    let id = KeychainWrapper.standard.integer(forKey: .userID) ?? 0
+                    let id = UserDefaults.standard[.userId] ?? 0
                     let nickname = UserInfoManager.shared.userInfo?.nickname ?? "no name"
                     print("$$$", UserInfoManager.shared.userInfo)
                     let token = try? Token(rawValue: data.value)

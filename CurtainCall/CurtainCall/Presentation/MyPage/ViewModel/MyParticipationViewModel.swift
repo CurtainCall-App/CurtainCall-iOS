@@ -20,7 +20,7 @@ final class MyParticipationViewModel {
     var page = 0
     
     func requestRecruitment(category: PartyCategoryType) {
-        guard let userId = KeychainWrapper.standard.integer(forKey: .userID) else { return }
+        let userId = UserDefaults.standard[.userId]
         provider.requestPublisher(.participations(id: userId, page: page, size: 20, category: category))
             .sink { completion in
                 if case let .failure(error) = completion {

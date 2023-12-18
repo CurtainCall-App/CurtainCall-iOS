@@ -113,8 +113,8 @@ final class TempMainTabBarController: UIViewController {
         configureUI()
         addTarget()
         tabbarButtonTapped(tabbarButtons.first ?? UIButton())
-        print("User AccessToKen: ", KeychainWrapper.standard.string(forKey: .accessToken) ?? "nil")
-        print("User ID: ", KeychainWrapper.standard.integer(forKey: .userID) ?? "nil")
+        print("User AccessToKen: ", UserDefaults.standard[.accessToken] ?? "nil")
+        print("User ID: ", UserDefaults.standard[.userId] ?? "nil")
     }
     
     // MARK: - Helpers
@@ -162,7 +162,7 @@ final class TempMainTabBarController: UIViewController {
     
     @objc
     func tabbarButtonTapped(_ sender: UIButton) {
-        if (sender.tag == 3 || sender.tag == 2 || sender.tag == 4) && KeychainWrapper.standard.bool(forKey: .isGuestUser) ?? true {
+        if (sender.tag == 3 || sender.tag == 2 || sender.tag == 4) && !UserDefaults.standard[.isNotGuestUser] {
             let popup = NotLoginPopup()
             popup.modalPresentationStyle = .overFullScreen
             popup.delegate = self

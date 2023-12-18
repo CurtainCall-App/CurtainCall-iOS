@@ -349,7 +349,7 @@ extension LiveTalkChatViewController: ChatChannelControllerDelegate {
     func channelController(_ channelController: ChatChannelController, didUpdateMessages changes: [ListChange<ChatMessage>]) {
         let item = changes.map { $0.item }
     
-        let userId = KeychainWrapper.standard.integer(forKey: .userID) ?? 0
+        let userId = UserDefaults.standard[.userId]
         
         let message = item.map { TalkMessageData(
             chatType: $0.author.id == "\(userId)" ? .send : .receive,
@@ -395,7 +395,7 @@ extension LiveTalkChatViewController: EventsControllerDelegate {
     func eventsController(_ controller: EventsController, didReceiveEvent event: Event) {
         switch event {
         case let event as MessageNewEvent:
-            let userId = KeychainWrapper.standard.integer(forKey: .userID) ?? 0
+            let userId = UserDefaults.standard[.userId]
             if messageData.contains(where: { $0.messageId == event.message.id }) { return }
             messageData.append(
                 TalkMessageData(

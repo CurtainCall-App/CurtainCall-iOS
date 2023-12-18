@@ -39,8 +39,10 @@ extension ImageAPI: TargetType {
     
     var headers: [String : String]? {
         var header: [String: String] = [:]
-        let accessToken = KeychainWrapper.standard.string(forKey: .accessToken) ?? ""
-        header.updateValue("Bearer \(accessToken)", forKey: "Authorization")
+        if let accessToken = UserDefaults.standard[.accessToken] {
+            header.updateValue("Bearer \(accessToken)", forKey: "Authorization")
+        }
+            
         header.updateValue("multipart/form-data", forKey: "Content-type")
         return header
     }

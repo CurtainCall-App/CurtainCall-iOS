@@ -61,14 +61,19 @@ final class LoginViewModel: LoginViewModelIO {
                     return
                 }
             }, receiveValue: { [weak self] response in
+                print("###", String(data: response.data, encoding: .utf8))
+                print(idToken)
                 if response.statusCode == 404 {
-                    KeychainWrapper.standard[.idToken] = idToken
+                    UserDefaults.standard[.idToken] = idToken
                     self?.loginPublisher.send((.apple, nil))
                 } else if let data = try? response.map(AuthenticationResponse.self) {
-                    KeychainWrapper.standard[.accessToken] = data.accessToken
-                    KeychainWrapper.standard[.refreshToken] = data.refreshToken
+                    UserDefaults.standard[.accessToken] = data.accessToken
+                    UserDefaults.standard[.userId] = data.memberId
+                    print("@@", data.memberId)
+                    print("@@", UserDefaults.standard[.userId])
                     self?.loginPublisher.send((.apple, data.memberId))
                 }
+                UserDefaults.standard[.loginType] = LoginType.apple
             }).store(in: &self.cancellables)
     }
     
@@ -87,14 +92,17 @@ final class LoginViewModel: LoginViewModelIO {
                         return
                     }
                 }, receiveValue: { [weak self] response in
+                    print("###", String(data: response.data, encoding: .utf8))
                     if response.statusCode == 404 {
-                        KeychainWrapper.standard[.idToken] = idToken
+                        UserDefaults.standard[.idToken] = idToken
                         self?.loginPublisher.send((.kakao, nil))
                         
                     } else if let data = try? response.map(AuthenticationResponse.self) {
-                        KeychainWrapper.standard[.accessToken] = data.accessToken
+                        UserDefaults.standard[.accessToken] = data.accessToken
+                        UserDefaults.standard[.userId] = data.memberId
                         self?.loginPublisher.send((.kakao, data.memberId))
                     }
+                    UserDefaults.standard[.loginType] = LoginType.kakao
                 }).store(in: &self.cancellables)
         }
         

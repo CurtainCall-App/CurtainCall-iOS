@@ -537,7 +537,7 @@ final class ProductDetailMainViewController: UIViewController {
             lostItemButton.isSelected = false
             scrollView.bounces = true
         case reviewButton:
-            if KeychainWrapper.standard.bool(forKey: .isGuestUser) ?? true {
+            if !UserDefaults.standard[.isNotGuestUser] {
                 presentNotLoginPopup()
                 return
             }
@@ -546,7 +546,7 @@ final class ProductDetailMainViewController: UIViewController {
             lostItemButton.isSelected = false
             scrollView.bounces = false
         case lostItemButton:
-            if KeychainWrapper.standard.bool(forKey: .isGuestUser) ?? true {
+            if !UserDefaults.standard[.isNotGuestUser] {
                 presentNotLoginPopup()
                 return
             }
@@ -608,11 +608,10 @@ final class ProductDetailMainViewController: UIViewController {
 
     @objc
     func keepButtonTouchUpInside() {
-        if KeychainWrapper.standard.bool(forKey: .isGuestUser) ?? true {
+        if !UserDefaults.standard[.isNotGuestUser] {
             presentNotLoginPopup()
             return
         }
-            
         if !keepButton.isSelected {
             favoriteProvider.requestPublisher(.putShow(id: id))
                 .sink { completion in

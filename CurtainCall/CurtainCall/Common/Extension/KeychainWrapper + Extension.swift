@@ -9,10 +9,10 @@ import SwiftKeychainWrapper
 
 extension KeychainWrapper.Key {
     static let idToken: KeychainWrapper.Key = "idToken"
-    static let accessToken: KeychainWrapper.Key = "accessToken"
-    static let userID: KeychainWrapper.Key = "userID"
+//    static let accessToken: KeychainWrapper.Key = "accessToken"
+//    static let userID: KeychainWrapper.Key = "userID"
     static let refreshToken: KeychainWrapper.Key = "refreshToken"
     static let isFirstUser: KeychainWrapper.Key = "isFirstUser"
-    static let isGuestUser: KeychainWrapper.Key = "isGuestUser"
+//    static let isGuestUser: KeychainWrapper.Key = "isGuestUser"
     static let chatToken: KeychainWrapper.Key = "chatToken"
 }

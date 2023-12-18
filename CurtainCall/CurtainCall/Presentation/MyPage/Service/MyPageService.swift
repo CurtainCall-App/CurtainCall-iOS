@@ -90,7 +90,7 @@ extension MyPageAPI: TargetType {
     }
     
     var headers: [String : String]? {
-        if let accessToken = KeychainWrapper.standard.string(forKey: .accessToken) {
+        if let accessToken = UserDefaults.standard[.accessToken] {
             return ["Authorization": "Bearer \(accessToken)"]
         } else {
             return nil

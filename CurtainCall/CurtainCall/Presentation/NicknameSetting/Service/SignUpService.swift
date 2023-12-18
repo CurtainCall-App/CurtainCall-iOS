@@ -51,7 +51,7 @@ extension SignUpAPI: TargetType {
         case .duplicate:
             return nil
         case .signUp:
-            guard let idToken = KeychainWrapper.standard.string(forKey: .idToken) else {
+            guard let idToken = UserDefaults.standard[.idToken] else {
                 return nil
             }
             return ["Authorization": "Bearer \(idToken)"]

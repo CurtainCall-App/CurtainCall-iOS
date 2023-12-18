@@ -334,7 +334,7 @@ final class PartyMemberRecruitingOtherDetailViewController: UIViewController {
                 if let data = try? response.map(PartyDetailResponse.self) {
                     item = data
                     draw(partyInfo: data)
-                    let currentUserId = KeychainWrapper.standard.integer(forKey: .userID) ?? 0
+                    let currentUserId = UserDefaults.standard[.userId]
                     if data.creatorId != currentUserId {
                         configureReportButton()
                         isMyParty()

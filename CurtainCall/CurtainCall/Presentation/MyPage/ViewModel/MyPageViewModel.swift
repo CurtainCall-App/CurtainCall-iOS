@@ -18,10 +18,7 @@ final class MyPageViewModel {
     var userInfoSubject = PassthroughSubject<MyPageDetailResponse, Never>()
     
     func requestUserInfo() {
-        guard let userId = KeychainWrapper.standard.integer(forKey: .userID) else {
-            print("UserId not exist")
-            return
-        }
+        let userId = UserDefaults.standard[.userId]
         userInfoProvider.requestPublisher(.detailProfile(id: userId))
             .sink { completion in
                 if case let .failure(error) = completion {

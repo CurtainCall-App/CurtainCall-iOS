@@ -578,9 +578,7 @@ final class MyPageViewController: UIViewController {
     
     @objc
     private func myWriteButtonTouchUpInside() {
-        guard let userId = KeychainWrapper.standard.integer(forKey: .userID) else {
-            return
-        }
+        let userId = UserDefaults.standard[.userId]
         let myWriteView = UINavigationController(rootViewController: MyWriteViewController())
         myWriteView.modalPresentationStyle = .overFullScreen
         present(myWriteView, animated: true)
@@ -588,9 +586,7 @@ final class MyPageViewController: UIViewController {
     
     @objc
     private func myFavoriteButtonTouchUpInside() {
-        guard let userId = KeychainWrapper.standard.integer(forKey: .userID) else {
-            return
-        }
+        let userId = UserDefaults.standard[.userId]
         let viewModel = MyFavoriteViewModel(id: userId)
         let myFavoriteView = UINavigationController(rootViewController: MyFavoriteViewController(viewModel: viewModel))
         myFavoriteView.modalPresentationStyle = .overFullScreen
