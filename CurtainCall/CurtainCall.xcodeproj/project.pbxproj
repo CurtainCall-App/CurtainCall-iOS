@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0AE959D30E1325E953B34349 /* Pods_CurtainCall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F5B6EE00ADF81B01C90D173 /* Pods_CurtainCall.framework */; };
+		EE00B3ED2B3CF5CA00A08907 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00B3EC2B3CF5CA00A08907 /* SplashView.swift */; };
+		EE00B3EF2B3CF87500A08907 /* Color + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00B3EE2B3CF87500A08907 /* Color + Extension.swift */; };
 		EE0132172A5E542A00873107 /* PartyMemberRecruitingProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0132162A5E542A00873107 /* PartyMemberRecruitingProductViewController.swift */; };
 		EE01323D2A5EFBE600873107 /* ProductPosterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE01323C2A5EFBE600873107 /* ProductPosterCell.swift */; };
 		EE01323F2A5F012500873107 /* ProductSelectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE01323E2A5F012500873107 /* ProductSelectInfo.swift */; };
@@ -291,6 +293,8 @@
 		30BC81784667B23249725CBA /* Pods-CurtainCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurtainCall.release.xcconfig"; path = "Target Support Files/Pods-CurtainCall/Pods-CurtainCall.release.xcconfig"; sourceTree = "<group>"; };
 		4F5B6EE00ADF81B01C90D173 /* Pods_CurtainCall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CurtainCall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5977E0BD409073342204321E /* Pods-CurtainCall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurtainCall.debug.xcconfig"; path = "Target Support Files/Pods-CurtainCall/Pods-CurtainCall.debug.xcconfig"; sourceTree = "<group>"; };
+		EE00B3EC2B3CF5CA00A08907 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		EE00B3EE2B3CF87500A08907 /* Color + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color + Extension.swift"; sourceTree = "<group>"; };
 		EE0132162A5E542A00873107 /* PartyMemberRecruitingProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyMemberRecruitingProductViewController.swift; sourceTree = "<group>"; };
 		EE01323C2A5EFBE600873107 /* ProductPosterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPosterCell.swift; sourceTree = "<group>"; };
 		EE01323E2A5F012500873107 /* ProductSelectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSelectInfo.swift; sourceTree = "<group>"; };
@@ -1595,6 +1599,7 @@
 			isa = PBXGroup;
 			children = (
 				EEE8F0C42A52C1EF00E31597 /* SplashViewController.swift */,
+				EE00B3EC2B3CF5CA00A08907 /* SplashView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1620,6 +1625,7 @@
 				EE3A42872A9C61C600273F94 /* UINavigationController + Extension.swift */,
 				EE2BDF2B2AA829BC00E9AFFF /* UITextView + Extension.swift */,
 				EEFC74092B2D5EE9009B6C31 /* UserDefault + Extension.swift */,
+				EE00B3EE2B3CF87500A08907 /* Color + Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1977,6 +1983,7 @@
 				EE9A88572A83D73D0085F816 /* ScheduledToOpenProductData.swift in Sources */,
 				EEED760F2AA7641B002C544D /* LiveTalkCell.swift in Sources */,
 				EEE8F0D22A55323600E31597 /* OnboardingViewController.swift in Sources */,
+				EE00B3ED2B3CF5CA00A08907 /* SplashView.swift in Sources */,
 				EEC60A482A4AB26D001DDC2A /* LoginType.swift in Sources */,
 				EEF815402A7361F6009C1C57 /* BorderView.swift in Sources */,
 				EE0669DB2A7E0985000C8296 /* APIService.swift in Sources */,
@@ -1995,6 +2002,7 @@
 				EE3A428E2A9C70FA00273F94 /* ProductSearchViewModel.swift in Sources */,
 				EE5C9DB02A9E365600889C73 /* MyPageRecruitmentOtherCell.swift in Sources */,
 				EEF8154D2A73A7A4009C1C57 /* LostItemInfo.swift in Sources */,
+				EE00B3EF2B3CF87500A08907 /* Color + Extension.swift in Sources */,
 				EE9A88722A8765A80085F816 /* TicketingInfo.swift in Sources */,
 				EE0283192A9886B4008F8100 /* ProductSortBottomSheet.swift in Sources */,
 				EE5FDBF52A8CB31500376E26 /* SignUpService.swift in Sources */,

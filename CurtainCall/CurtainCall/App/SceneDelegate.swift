@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 import KakaoSDKAuth
 import FacebookCore
@@ -20,8 +21,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = UIHostingController(rootView: SplashView())
 //        KeychainWrapper
-        window?.rootViewController = SplashViewController()
+//        window?.rootViewController = SplashViewController()
 //        window?.rootViewController = MyPageEditViewController(viewModel: MyPageEditViewModel(), profileImage: nil, nickname: "mandos")
 //        let rootViewController = LoginViewController(
 //            viewModel: LoginViewModel(
