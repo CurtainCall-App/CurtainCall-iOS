@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = UIHostingController(rootView: SplashView())
+        window?.rootViewController = UIHostingController(rootView: OnboardingView())
 //        KeychainWrapper
 //        window?.rootViewController = SplashViewController()
 //        window?.rootViewController = MyPageEditViewController(viewModel: MyPageEditViewModel(), profileImage: nil, nickname: "mandos")
