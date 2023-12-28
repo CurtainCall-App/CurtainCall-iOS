@@ -11,6 +11,8 @@
 		EE00B3ED2B3CF5CA00A08907 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00B3EC2B3CF5CA00A08907 /* SplashView.swift */; };
 		EE00B3EF2B3CF87500A08907 /* Color + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00B3EE2B3CF87500A08907 /* Color + Extension.swift */; };
 		EE00B3F42B3CFC8100A08907 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = EE00B3F32B3CFC8100A08907 /* ComposableArchitecture */; };
+		EE00B3F62B3CFCEC00A08907 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00B3F52B3CFCEC00A08907 /* OnboardingView.swift */; };
+		EE00B3F82B3D0A8D00A08907 /* Font + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00B3F72B3D0A8D00A08907 /* Font + Extension.swift */; };
 		EE0132172A5E542A00873107 /* PartyMemberRecruitingProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0132162A5E542A00873107 /* PartyMemberRecruitingProductViewController.swift */; };
 		EE01323D2A5EFBE600873107 /* ProductPosterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE01323C2A5EFBE600873107 /* ProductPosterCell.swift */; };
 		EE01323F2A5F012500873107 /* ProductSelectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE01323E2A5F012500873107 /* ProductSelectInfo.swift */; };
@@ -296,6 +298,8 @@
 		5977E0BD409073342204321E /* Pods-CurtainCall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurtainCall.debug.xcconfig"; path = "Target Support Files/Pods-CurtainCall/Pods-CurtainCall.debug.xcconfig"; sourceTree = "<group>"; };
 		EE00B3EC2B3CF5CA00A08907 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EE00B3EE2B3CF87500A08907 /* Color + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color + Extension.swift"; sourceTree = "<group>"; };
+		EE00B3F52B3CFCEC00A08907 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		EE00B3F72B3D0A8D00A08907 /* Font + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font + Extension.swift"; sourceTree = "<group>"; };
 		EE0132162A5E542A00873107 /* PartyMemberRecruitingProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyMemberRecruitingProductViewController.swift; sourceTree = "<group>"; };
 		EE01323C2A5EFBE600873107 /* ProductPosterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPosterCell.swift; sourceTree = "<group>"; };
 		EE01323E2A5F012500873107 /* ProductSelectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSelectInfo.swift; sourceTree = "<group>"; };
@@ -1628,6 +1632,7 @@
 				EE2BDF2B2AA829BC00E9AFFF /* UITextView + Extension.swift */,
 				EEFC74092B2D5EE9009B6C31 /* UserDefault + Extension.swift */,
 				EE00B3EE2B3CF87500A08907 /* Color + Extension.swift */,
+				EE00B3F72B3D0A8D00A08907 /* Font + Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1647,6 +1652,7 @@
 			children = (
 				EEE8F0D12A55323600E31597 /* OnboardingViewController.swift */,
 				EEE8F0D32A55395F00E31597 /* OnboardingCell.swift */,
+				EE00B3F52B3CFCEC00A08907 /* OnboardingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1936,6 +1942,7 @@
 				EE1825C02A88A1880020BADA /* AuthenticationResponse.swift in Sources */,
 				EECF7C9F2AAB0FAE00D5E257 /* SameShowResponse.swift in Sources */,
 				EE0283382A991D2B008F8100 /* PrivacyPolicyViewController.swift in Sources */,
+				EE00B3F82B3D0A8D00A08907 /* Font + Extension.swift in Sources */,
 				EE747B9C2A96E9A3006A8AB3 /* RemoveAccountBody.swift in Sources */,
 				EE2BDF422AA9B50700E9AFFF /* LiveTalkShowResponse.swift in Sources */,
 				EEA132242A7F5A690016D01A /* TimePickerView.swift in Sources */,
@@ -2007,6 +2014,7 @@
 				EE5C9DB02A9E365600889C73 /* MyPageRecruitmentOtherCell.swift in Sources */,
 				EEF8154D2A73A7A4009C1C57 /* LostItemInfo.swift in Sources */,
 				EE00B3EF2B3CF87500A08907 /* Color + Extension.swift in Sources */,
+				EE00B3F62B3CFCEC00A08907 /* OnboardingView.swift in Sources */,
 				EE9A88722A8765A80085F816 /* TicketingInfo.swift in Sources */,
 				EE0283192A9886B4008F8100 /* ProductSortBottomSheet.swift in Sources */,
 				EE5FDBF52A8CB31500376E26 /* SignUpService.swift in Sources */,
