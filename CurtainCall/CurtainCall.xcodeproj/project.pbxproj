@@ -10,6 +10,7 @@
 		0AE959D30E1325E953B34349 /* Pods_CurtainCall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F5B6EE00ADF81B01C90D173 /* Pods_CurtainCall.framework */; };
 		EE00B3ED2B3CF5CA00A08907 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00B3EC2B3CF5CA00A08907 /* SplashView.swift */; };
 		EE00B3EF2B3CF87500A08907 /* Color + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00B3EE2B3CF87500A08907 /* Color + Extension.swift */; };
+		EE00B3F42B3CFC8100A08907 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = EE00B3F32B3CFC8100A08907 /* ComposableArchitecture */; };
 		EE0132172A5E542A00873107 /* PartyMemberRecruitingProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0132162A5E542A00873107 /* PartyMemberRecruitingProductViewController.swift */; };
 		EE01323D2A5EFBE600873107 /* ProductPosterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE01323C2A5EFBE600873107 /* ProductPosterCell.swift */; };
 		EE01323F2A5F012500873107 /* ProductSelectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE01323E2A5F012500873107 /* ProductSelectInfo.swift */; };
@@ -567,6 +568,7 @@
 			files = (
 				EE8CE0E62AEEA01B008C422E /* FirebaseAnalytics in Frameworks */,
 				EE39E4172B0215E800AE4064 /* Realm in Frameworks */,
+				EE00B3F42B3CFC8100A08907 /* ComposableArchitecture in Frameworks */,
 				EE0304B62A4E816C0038A09E /* FacebookLogin in Frameworks */,
 				EE0BEDFD2A495AAB008D9D05 /* SnapKit in Frameworks */,
 				EE5FDBF02A8CAF7B00376E26 /* SwiftKeychainWrapper in Frameworks */,
@@ -1791,6 +1793,7 @@
 				EE8CE0ED2AEEA01B008C422E /* FirebaseAppCheck */,
 				EE39E4162B0215E800AE4064 /* Realm */,
 				EE39E4182B0215E800AE4064 /* RealmSwift */,
+				EE00B3F32B3CFC8100A08907 /* ComposableArchitecture */,
 			);
 			productName = CurtainCall;
 			productReference = EE0BEDDA2A495539008D9D05 /* CurtainCall.app */;
@@ -1832,6 +1835,7 @@
 				EE2BDF2F2AA871C200E9AFFF /* XCRemoteSwiftPackageReference "stream-chat-swift" */,
 				EE8CE0E42AEEA01B008C422E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				EE39E4152B0215E800AE4064 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				EE00B3F22B3CFC8100A08907 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = EE0BEDDB2A495539008D9D05 /* Products */;
 			projectDirPath = "";
@@ -2399,6 +2403,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		EE00B3F22B3CFC8100A08907 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.6;
+			};
+		};
 		EE0304B22A4E816C0038A09E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
@@ -2482,6 +2494,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EE00B3F32B3CFC8100A08907 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EE00B3F22B3CFC8100A08907 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
 		EE0304B32A4E816C0038A09E /* FacebookCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EE0304B22A4E816C0038A09E /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
