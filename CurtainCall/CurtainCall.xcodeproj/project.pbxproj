@@ -614,6 +614,47 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		EE00B4082B3E6C2500A08907 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				EE00B40B2B3E6C5800A08907 /* Splash */,
+				EE00B4092B3E6C3600A08907 /* Onboarding */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		EE00B4092B3E6C3600A08907 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				EE00B40A2B3E6C4800A08907 /* View */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		EE00B40A2B3E6C4800A08907 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EE00B3F52B3CFCEC00A08907 /* OnboardingView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		EE00B40B2B3E6C5800A08907 /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				EE00B40C2B3E6C6500A08907 /* View */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		EE00B40C2B3E6C6500A08907 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EE00B3EC2B3CF5CA00A08907 /* SplashView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		EE0132152A5E53C800873107 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -742,6 +783,7 @@
 		EE0BEDDC2A495539008D9D05 /* CurtainCall */ = {
 			isa = PBXGroup;
 			children = (
+				EE00B4082B3E6C2500A08907 /* Scenes */,
 				EEECD2642B09C6EF005E9659 /* GoogleService-Info.plist */,
 				EE5251BC2A8E5BD0003DFEE3 /* Secret */,
 				EE4B341B2A66D14800E6EB01 /* Resources */,
@@ -1605,7 +1647,6 @@
 			isa = PBXGroup;
 			children = (
 				EEE8F0C42A52C1EF00E31597 /* SplashViewController.swift */,
-				EE00B3EC2B3CF5CA00A08907 /* SplashView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1652,7 +1693,6 @@
 			children = (
 				EEE8F0D12A55323600E31597 /* OnboardingViewController.swift */,
 				EEE8F0D32A55395F00E31597 /* OnboardingCell.swift */,
-				EE00B3F52B3CFCEC00A08907 /* OnboardingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
