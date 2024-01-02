@@ -19,9 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
+        UserDefaults.standard[.isNotFirstUser] = nil
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = UIHostingController(rootView: OnboardingView())
+        window?.rootViewController = UIHostingController(rootView: MainView())
 //        KeychainWrapper
 //        window?.rootViewController = SplashViewController()
 //        window?.rootViewController = MyPageEditViewController(viewModel: MyPageEditViewModel(), profileImage: nil, nickname: "mandos")
