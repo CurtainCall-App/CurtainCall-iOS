@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 @main
 struct CurtainCallApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -21,7 +23,10 @@ struct CurtainCallApp: App {
                 case .splash:
                     SplashView()
                 case .login:
-                    LoginView()
+                    LoginView(store: Store(initialState: LoginFeature.State()) {
+                        LoginFeature()
+                            ._printChanges()
+                    })
                 case .main:
                     MainView()
                 }

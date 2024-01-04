@@ -6,16 +6,28 @@
 //
 
 import SwiftUI
+import AuthenticationServices
+
+import ComposableArchitecture
 
 struct LoginView: View {
+    let store: StoreOf<LoginFeature>
     var body: some View {
-        VStack {
-            Spacer()
-            HStack {
-                Image(ImageNamespace.loginButtonKakao)
-                Image(ImageNamespace.loginButtonApple)
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            VStack {
+                Spacer()
+                HStack {
+                    Image(ImageNamespace.loginButtonApple)
+                        .onTapGesture {
+                            viewStore.send(.appleLoginTapped)
+                        }
+                    Image(ImageNamespace.loginButtonKakao)
+                    
+                }
+                Spacer()
             }
-            Spacer()
         }
     }
 }
+
+
