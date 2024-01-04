@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SplashView: View {
+    @EnvironmentObject var appRootManager: AppRootManager
     @State var isAnimation = false
     
     var body: some View {
@@ -23,6 +24,9 @@ struct SplashView: View {
         .onAppear {
             withAnimation(.easeIn(duration: 2.0)) {
                 isAnimation.toggle()
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                appRootManager.changeFirstRoot()
             }
         }
         .ignoresSafeArea()

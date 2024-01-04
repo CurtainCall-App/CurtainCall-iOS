@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct OnboardingView: View {
+    @EnvironmentObject var appRootManager: AppRootManager
     private let data = OnboardingData.list
     @State private var currentIndex: Int = 0
     
@@ -50,6 +51,16 @@ struct OnboardingView: View {
             .foregroundStyle(Color.pointColor1)
             .font(.system(size: 18, weight: .semibold))
             .clipShape(.rect(cornerRadius: 15))
+            .onTapGesture {
+                if currentIndex == 2 {
+                    appRootManager.currentRoot = .login
+                    UserDefaults.standard[.isNotFirstUser] = true
+                }
+                withAnimation {
+                    currentIndex = min(2, currentIndex + 1)
+                }
+            }
+            
         
     }
     
