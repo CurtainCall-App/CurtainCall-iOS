@@ -256,7 +256,7 @@
 		EEE6875A2A7276060063B94A /* ProductDetailMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE687592A7276060063B94A /* ProductDetailMainViewController.swift */; };
 		EEE7DEC22B462C1C00BB8DA4 /* CurtainCallApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE7DEC12B462C1C00BB8DA4 /* CurtainCallApp.swift */; };
 		EEE7DEC52B4639B600BB8DA4 /* LoginFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE7DEC42B4639B600BB8DA4 /* LoginFeature.swift */; };
-		EEE7DEC82B467BB500BB8DA4 /* AppleLoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE7DEC72B467BB500BB8DA4 /* AppleLoginClient.swift */; };
+		EEE7DEC82B467BB500BB8DA4 /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE7DEC72B467BB500BB8DA4 /* LoginClient.swift */; };
 		EEE8F0B92A5195F300E31597 /* LoginError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE8F0B82A5195F300E31597 /* LoginError.swift */; };
 		EEE8F0C52A52C1EF00E31597 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE8F0C42A52C1EF00E31597 /* SplashViewController.swift */; };
 		EEE8F0C72A52C37000E31597 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEE8F0C62A52C37000E31597 /* Assets.xcassets */; };
@@ -536,7 +536,7 @@
 		EEE687592A7276060063B94A /* ProductDetailMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailMainViewController.swift; sourceTree = "<group>"; };
 		EEE7DEC12B462C1C00BB8DA4 /* CurtainCallApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurtainCallApp.swift; sourceTree = "<group>"; };
 		EEE7DEC42B4639B600BB8DA4 /* LoginFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFeature.swift; sourceTree = "<group>"; };
-		EEE7DEC72B467BB500BB8DA4 /* AppleLoginClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginClient.swift; sourceTree = "<group>"; };
+		EEE7DEC72B467BB500BB8DA4 /* LoginClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginClient.swift; sourceTree = "<group>"; };
 		EEE8F0B82A5195F300E31597 /* LoginError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginError.swift; sourceTree = "<group>"; };
 		EEE8F0C42A52C1EF00E31597 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		EEE8F0C62A52C37000E31597 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1654,7 +1654,7 @@
 		EEE7DEC62B467BA400BB8DA4 /* Client */ = {
 			isa = PBXGroup;
 			children = (
-				EEE7DEC72B467BB500BB8DA4 /* AppleLoginClient.swift */,
+				EEE7DEC72B467BB500BB8DA4 /* LoginClient.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -2119,7 +2119,7 @@
 				EE0132172A5E542A00873107 /* PartyMemberRecruitingProductViewController.swift in Sources */,
 				EE6127062A974F5300961109 /* UpdateMyPageBody.swift in Sources */,
 				EE3A428E2A9C70FA00273F94 /* ProductSearchViewModel.swift in Sources */,
-				EEE7DEC82B467BB500BB8DA4 /* AppleLoginClient.swift in Sources */,
+				EEE7DEC82B467BB500BB8DA4 /* LoginClient.swift in Sources */,
 				EE5C9DB02A9E365600889C73 /* MyPageRecruitmentOtherCell.swift in Sources */,
 				EEF8154D2A73A7A4009C1C57 /* LostItemInfo.swift in Sources */,
 				EE00B3EF2B3CF87500A08907 /* Color + Extension.swift in Sources */,
