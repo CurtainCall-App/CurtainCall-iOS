@@ -18,4 +18,8 @@ public final class AppRootManager: ObservableObject {
         case login
         case main
     }
+    
+    public func changeFirstView() {
+        currentRoot = .onboarding
+    }
 }

@@ -15,7 +15,7 @@ struct CurtainCallApp: App {
         WindowGroup {
             switch appRootManager.currentRoot {
             case .splash:
-                Text("스플래시")
+                SplashView()
             case .onboarding:
                 Text("온보딩")
             case .login:

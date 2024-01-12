@@ -13,5 +13,6 @@ let project = Project.makeModule(
     product: .staticFramework,
     dependencies: [
         .external(name: "ComposableArchitecture")
-    ]
+    ],
+    resources: ["Resources/**"]
 )
