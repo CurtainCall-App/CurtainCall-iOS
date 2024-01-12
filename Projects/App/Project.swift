@@ -12,6 +12,12 @@ let project = Project.makeModule(
     name: "App",
     destinations: .iOS,
     product: .app,
+    dependencies: [
+        .project(
+            target: "Common",
+            path: .relativeToRoot("Projects/Common")
+        )
+    ],
     resources: ["Resources/**"],
     infoPlist: .file(path: "Support/Info.plist")
 )
