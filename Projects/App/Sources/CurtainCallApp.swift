@@ -6,14 +6,24 @@
 //
 
 import SwiftUI
+import Common
 
 @main
 struct CurtainCallApp: App {
+    @StateObject var appRootManager: AppRootManager = AppRootManager()
     var body: some Scene {
         WindowGroup {
-            Group {
-                Text("Hello CurtainCall")
+            switch appRootManager.currentRoot {
+            case .splash:
+                Text("스플래시")
+            case .onboarding:
+                Text("온보딩")
+            case .login:
+                Text("로그인")
+            case .main:
+                Text("메인")
             }
         }
+        .environmentObject(appRootManager)
     }
 }
