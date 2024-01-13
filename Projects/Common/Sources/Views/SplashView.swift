@@ -16,8 +16,12 @@ public struct SplashView: View {
     
     public var body: some View {
         ZStack {
-            Image(asset: CommonAsset.logoSplash64px)
-                .opacity(isAnimation ? 0 : 1)
+            VStack {
+                Image(asset: CommonAsset.logoSplash64px)
+                    .opacity(isAnimation ? 0 : 1)
+            }
+            ToastPopupView(type: .basic, text: "isSuccess")
+            
         }
         .onAppear {
             withAnimation(.easeIn(duration: 2.0)) {
