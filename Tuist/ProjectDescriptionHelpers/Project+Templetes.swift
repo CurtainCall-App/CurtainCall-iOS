@@ -10,13 +10,22 @@ public extension Project {
         dependencies: [TargetDependency] = [],
         sources: SourceFilesList = ["Sources/**"],
         resources: ResourceFileElements? = nil,
+        entitlements: Entitlements? = nil,
         infoPlist: InfoPlist = .default
     ) -> Project {
         let setting: Settings = .settings(
             base: [:],  // Build Setting에 반영
             configurations: [
-                .debug(name: .debug),
-                .release(name: .release)
+                .debug(
+                    name: .debug,
+                    settings: SettingsDictionary()
+                        .automaticCodeSigning(devTeam: "H2N9KXXP3M")
+                ),
+                .release(
+                    name: .release,
+                    settings: SettingsDictionary()
+                        .automaticCodeSigning(devTeam: "H2N9KXXP3M")
+                )
             ], defaultSettings: .recommended)
 
         let appTarget = Target(
@@ -28,6 +37,7 @@ public extension Project {
             infoPlist: infoPlist,
             sources: sources,
             resources: resources,
+            entitlements: entitlements,
             dependencies: dependencies
         )
 
