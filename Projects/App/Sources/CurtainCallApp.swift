@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Common
+import Login
 
 @main
 struct CurtainCallApp: App {
@@ -19,7 +20,7 @@ struct CurtainCallApp: App {
             case .onboarding:
                 Text("온보딩")
             case .login:
-                Text("로그인")
+                LoginView()
             case .main:
                 Text("메인")
             }
