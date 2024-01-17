@@ -22,7 +22,9 @@ let project = Project.makeModule(
             path: .relativeToRoot("Projects/Login")
         )
     ],
+    sources: ["Sources/**", "Secret/**"],
     resources: ["Resources/**"],
     entitlements: .file(path: .relativeToRoot("Projects/App/Resources/App.entitlements")),
-    infoPlist: .file(path: "Support/Info.plist")
+    infoPlist: .file(path: "Support/Info.plist"),
+    path: .relativeToRoot("Projects/App/Secret/Secret.xcconfig")
 )

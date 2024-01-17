@@ -42,10 +42,7 @@ struct CurtainCallApp: App {
                 )
                 .onOpenURL(perform: { url in
                     if AuthApi.isKakaoTalkLoginUrl(url) {
-                        print("가능 \(url)")
                         AuthController.handleOpenUrl(url: url)
-                    } else {
-                        print("불가")
                     }
                 })
             case .main:
