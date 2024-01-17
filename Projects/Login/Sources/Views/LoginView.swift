@@ -25,6 +25,10 @@ public struct LoginView: View {
                         .onTapGesture {
                             store.send(.appleLoginTapped)
                         }
+                    Text("카카오로그인")
+                        .onTapGesture {
+                            store.send(.kakaoLoginTapped)
+                        }
                 }
             }
         }

@@ -22,6 +22,7 @@ public struct LoginFeature {
     
     public enum Action {
         case appleLoginTapped
+        case kakaoLoginTapped
         case idTokenReseponse(String)
         case idTokenError(Error)
     }
@@ -39,6 +40,11 @@ public struct LoginFeature {
                     } catch {
                         await send(.idTokenError(error))
                     }
+                }
+            case .kakaoLoginTapped:
+                state.loginType = .kakao
+                return .run { _ in
+                    try await self.loginClient.signInKakao()
                 }
             case .idTokenReseponse(let token):
                 print("token: \(token)")

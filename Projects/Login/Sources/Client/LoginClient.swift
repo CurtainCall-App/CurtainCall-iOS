@@ -9,14 +9,21 @@ import Foundation
 import AuthenticationServices
 
 import ComposableArchitecture
+import KakaoSDKCommon
+import KakaoSDKUser
+import KakaoSDKAuth
 
 struct LoginClient {
     var signInApple: () async throws -> String
+    var signInKakao: () async throws -> Void
 }
 
 extension LoginClient: DependencyKey {
     static var liveValue = {
-        Self(signInApple: signInApple)
+        Self(
+            signInApple: signInApple,
+            signInKakao: signInKakao
+        )
     }()
     
     static func signInApple() async throws -> String {
@@ -28,6 +35,26 @@ extension LoginClient: DependencyKey {
         return try await appleLoginController.perfomRequest()
     }
     
+    static func signInKakao() async {
+        if UserApi.isKakaoTalkLoginAvailable() {
+            DispatchQueue.main.async {
+                UserApi.shared.loginWithKakaoTalk { oauthToken, error in
+                    if let error {
+                        print("#Error#", error)
+                    } else {
+                        print("#Ouath#", oauthToken?.accessToken)
+                    }
+                }
+            }
+        } else {
+            print("불가능")
+        }
+    }
+}
+
+// MARK: - AppleLogin 관련
+
+extension LoginClient {
     private class AppleLoginController: NSObject, ASAuthorizationControllerDelegate {
         private let authorizationController: ASAuthorizationController
         private var continuation: CheckedContinuation<String, Error>?
