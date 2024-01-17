@@ -70,4 +70,4 @@ Derived/
 Tuist/Dependencies
 
 ### Secret ###
-Project/App/Secret/*.xcconfig
+Projects/App/Secret/*.xcconfig
