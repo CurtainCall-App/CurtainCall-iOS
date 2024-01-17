@@ -26,18 +26,26 @@ public struct LoginFeature {
         case idTokenError(Error)
     }
     
+    @Dependency(\.loginClient) var loginClient
+    
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .appleLoginTapped:
                 state.loginType = .apple
-                return .none
+                return .run { send in
+                    do {
+                        try await send(.idTokenReseponse(self.loginClient.signInApple()))
+                    } catch {
+                        await send(.idTokenError(error))
+                    }
+                }
             case .idTokenReseponse(let token):
-                // TODO: - Token 처리
+                print("token: \(token)")
                 return .none
                 
             case .idTokenError(let error):
-                // TODO: - Error 처리
+                print(error.localizedDescription)
                 return .none
             }
             
