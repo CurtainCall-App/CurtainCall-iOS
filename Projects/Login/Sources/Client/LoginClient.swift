@@ -15,7 +15,7 @@ import KakaoSDKAuth
 
 struct LoginClient {
     var signInApple: () async throws -> String
-    var signInKakao: () async throws -> Void
+    var signInKakao: () async throws -> String
 }
 
 extension LoginClient: DependencyKey {
@@ -35,24 +35,17 @@ extension LoginClient: DependencyKey {
         return try await appleLoginController.perfomRequest()
     }
     
-    static func signInKakao() async {
+    static func signInKakao() async throws -> String {
+        let kakaoLogin = KakaoLogin()
         if UserApi.isKakaoTalkLoginAvailable() {
-            DispatchQueue.main.async {
-                UserApi.shared.loginWithKakaoTalk { oauthToken, error in
-                    if let error {
-                        print("#Error#", error)
-                    } else {
-                        print("#Ouath#", oauthToken?.accessToken)
-                    }
-                }
-            }
+            return try await kakaoLogin.loginWithKakaoTalk()
         } else {
-            
+            return try await kakaoLogin.loginWithKakaoAccount()
         }
     }
 }
 
-// MARK: - AppleLogin 관련
+// MARK: - AppleLogin
 
 extension LoginClient {
     private class AppleLoginController: NSObject, ASAuthorizationControllerDelegate {
@@ -91,6 +84,51 @@ extension LoginClient {
         ) {
             continuation?.resume(throwing: error)
         }
+    }
+}
+
+// MARK: - Kakao Login
+extension LoginClient {
+    private class KakaoLogin {
+        private var continuation: CheckedContinuation<String, Error>?
+        
+        func loginWithKakaoTalk() async throws -> String {
+            return try await withCheckedThrowingContinuation { [weak self] continuation in
+                guard let self else { return }
+                self.continuation = continuation
+                DispatchQueue.main.async {
+                    UserApi.shared.loginWithKakaoTalk { oauthToken, error in
+                        if let error {
+                            continuation.resume(throwing: error)
+                        } else if let oauthToken, let idToken = oauthToken.idToken {
+                            continuation.resume(returning: idToken)
+                        } else {
+                            continuation.resume(throwing: LoginError.kakaoTalkLoginError)
+                        }
+                    }
+                }
+            }
+        }
+        
+        func loginWithKakaoAccount() async throws -> String {
+            return try await withCheckedThrowingContinuation { [weak self] continuation in
+                guard let self else { return }
+                self.continuation = continuation
+                DispatchQueue.main.async {
+                    UserApi.shared.loginWithKakaoAccount { oauthToken, error in
+                        if let error {
+                            continuation.resume(throwing: error)
+                        } else if let oauthToken, let idToken = oauthToken.idToken {
+                            continuation.resume(returning: idToken)
+                        } else {
+                            continuation.resume(throwing: LoginError.kakaoTalkLoginError)
+                        }
+                    }
+                }
+            }
+        }
+        
+        
     }
 }
 

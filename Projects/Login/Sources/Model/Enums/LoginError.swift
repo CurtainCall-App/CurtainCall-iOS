@@ -9,4 +9,6 @@ import Foundation
 
 public enum LoginError: Error {
     case appleIdTokenError
+    case kakaoTalkLoginError
+    case kakaoAccountLoginError
 }

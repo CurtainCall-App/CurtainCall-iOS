@@ -43,8 +43,12 @@ public struct LoginFeature {
                 }
             case .kakaoLoginTapped:
                 state.loginType = .kakao
-                return .run { _ in
-                    try await self.loginClient.signInKakao()
+                return .run { send in
+                    do {
+                        try await send(.idTokenReseponse(self.loginClient.signInKakao()))
+                    } catch {
+                        await send(.idTokenError(error))
+                    }
                 }
             case .idTokenReseponse(let token):
                 print("token: \(token)")
