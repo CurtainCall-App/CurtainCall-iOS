@@ -13,6 +13,9 @@ let project = Project.makeModule(
     product: .staticFramework,
     dependencies: [
         .xcframework(path: .relativeToRoot("Frameworks/NaverThirdPartyLogin.xcframework")),
+        .external(name: "KakaoSDKCommon"),
+        .external(name: "KakaoSDKAuth"),
+        .external(name: "KakaoSDKUser"),
         .project(
             target: "Common",
             path: .relativeToRoot("Projects/Common")
