@@ -9,6 +9,8 @@ import SwiftUI
 import Common
 import Login
 
+import ComposableArchitecture
+
 @main
 struct CurtainCallApp: App {
     @StateObject var appRootManager: AppRootManager = AppRootManager()
@@ -20,7 +22,12 @@ struct CurtainCallApp: App {
             case .onboarding:
                 Text("온보딩")
             case .login:
-                LoginView()
+                LoginView(
+                    store: Store(initialState: LoginFeature.State()) {
+                        LoginFeature()
+                            ._printChanges()
+                    }
+                )
             case .main:
                 Text("메인")
             }
