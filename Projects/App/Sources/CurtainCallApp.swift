@@ -12,18 +12,15 @@ import Login
 import ComposableArchitecture
 import KakaoSDKCommon
 import KakaoSDKAuth
+import NaverThirdPartyLogin
 
 @main
 struct CurtainCallApp: App {
     @StateObject var appRootManager: AppRootManager = AppRootManager()
     
     init() {
-        if let kakaoAppKey = BundleKeyValue.KAKAO_NATIVE_APP_KEY.stringValue {
-            KakaoSDK.initSDK(appKey: kakaoAppKey)
-        } else {
-            print("⚠️ [ERROR]: 카카오 앱 키 가져올 수 없음")
-        }
-        
+        initKakaoLoginSDK()
+        initNaverLoginSDK()
     }
     
     var body: some Scene {
@@ -45,10 +42,33 @@ struct CurtainCallApp: App {
                         AuthController.handleOpenUrl(url: url)
                     }
                 })
+                .onOpenURL(perform: { url in
+                    print("#URL: ",url.absoluteString)
+                })
             case .main:
                 Text("메인")
             }
         }
         .environmentObject(appRootManager)
+    }
+    
+    func initKakaoLoginSDK() {
+        if let kakaoAppKey = BundleKeyValue.KAKAO_NATIVE_APP_KEY.stringValue {
+            KakaoSDK.initSDK(appKey: kakaoAppKey)
+        } else {
+            print("⚠️ [ERROR]: 카카오 앱 키 가져올 수 없음")
+        }
+    }
+    
+    func initNaverLoginSDK() {
+        NaverThirdPartyLoginConnection.getSharedInstance().isNaverAppOauthEnable = true
+        NaverThirdPartyLoginConnection.getSharedInstance().isInAppOauthEnable = true
+        
+        NaverThirdPartyLoginConnection.getSharedInstance().setOnlyPortraitSupportInIphone(true)
+        
+        NaverThirdPartyLoginConnection.getSharedInstance().serviceUrlScheme = kServiceAppUrlScheme
+        NaverThirdPartyLoginConnection.getSharedInstance().consumerKey = kConsumerKey
+        NaverThirdPartyLoginConnection.getSharedInstance().consumerSecret = kConsumerSecret
+        NaverThirdPartyLoginConnection.getSharedInstance().appName = kServiceAppName
     }
 }
