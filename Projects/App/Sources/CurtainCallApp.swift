@@ -16,10 +16,11 @@ import NaverThirdPartyLogin
 
 @main
 struct CurtainCallApp: App {
-    @UIApplicationDelegateAdaptor var appDelegate: AppDelegate
+    
     @StateObject var appRootManager: AppRootManager = AppRootManager()
     
     init() {
+        NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
         initKakaoLoginSDK()
         initNaverLoginSDK()
     }
@@ -61,15 +62,12 @@ struct CurtainCallApp: App {
     }
     
     func initNaverLoginSDK() {
-        // MARK: - 네이버 로그인 테스트 용도로 init시 토큰 삭제
-        NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
-        
         NaverThirdPartyLoginConnection.getSharedInstance().isNaverAppOauthEnable = true
         NaverThirdPartyLoginConnection.getSharedInstance().isInAppOauthEnable = true
         
         NaverThirdPartyLoginConnection.getSharedInstance().setOnlyPortraitSupportInIphone(true)
         
-        NaverThirdPartyLoginConnection.getSharedInstance().serviceUrlScheme = "com.mandos.curtain.call"
+        NaverThirdPartyLoginConnection.getSharedInstance().serviceUrlScheme = ""
         NaverThirdPartyLoginConnection.getSharedInstance().consumerKey = "DjNLGenMdpRgoAcodTfx"
         NaverThirdPartyLoginConnection.getSharedInstance().consumerSecret = "FHmWzw6H8F"
         NaverThirdPartyLoginConnection.getSharedInstance().appName = "커튼콜"

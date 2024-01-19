@@ -71,3 +71,4 @@ Tuist/Dependencies
 
 ### Secret ###
 Projects/App/Secret/*.xcconfig
+Projects/App/Secret/*
