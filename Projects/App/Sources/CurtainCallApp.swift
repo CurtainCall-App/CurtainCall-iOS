@@ -67,9 +67,9 @@ struct CurtainCallApp: App {
         
         NaverThirdPartyLoginConnection.getSharedInstance().setOnlyPortraitSupportInIphone(true)
         
-        NaverThirdPartyLoginConnection.getSharedInstance().serviceUrlScheme = ""
-        NaverThirdPartyLoginConnection.getSharedInstance().consumerKey = "DjNLGenMdpRgoAcodTfx"
-        NaverThirdPartyLoginConnection.getSharedInstance().consumerSecret = "FHmWzw6H8F"
+        NaverThirdPartyLoginConnection.getSharedInstance().serviceUrlScheme = Secret.NAVER_LOGIN_SCHEME
+        NaverThirdPartyLoginConnection.getSharedInstance().consumerKey = Secret.NAVER_APP_KEY
+        NaverThirdPartyLoginConnection.getSharedInstance().consumerSecret = Secret.NAVER_APP_SECRET
         NaverThirdPartyLoginConnection.getSharedInstance().appName = "커튼콜"
     }
 }
