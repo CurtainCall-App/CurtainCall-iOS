@@ -15,5 +15,5 @@ let project = Project.makeModule(
         .external(name: "ComposableArchitecture"),
         .external(name: "Moya")
     ],
-    resources: ["Resources/**"]
+    resources: ["Resources/**", "Secret/**"]
 )

@@ -54,11 +54,7 @@ struct CurtainCallApp: App {
     }
     
     func initKakaoLoginSDK() {
-        if let kakaoAppKey = BundleKeyValue.KAKAO_NATIVE_APP_KEY.stringValue {
-            KakaoSDK.initSDK(appKey: kakaoAppKey)
-        } else {
-            print("⚠️ [ERROR]: 카카오 앱 키 가져올 수 없음")
-        }
+        KakaoSDK.initSDK(appKey: Secret.KAKAO_NATIVE_APP_KEY)
     }
     
     func initNaverLoginSDK() {
