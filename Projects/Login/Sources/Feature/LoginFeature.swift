@@ -23,6 +23,7 @@ public struct LoginFeature {
     public enum Action {
         case appleLoginTapped
         case kakaoLoginTapped
+        case naverLoginTapped
         case idTokenReseponse(String)
         case idTokenError(Error)
     }
@@ -46,6 +47,15 @@ public struct LoginFeature {
                 return .run { send in
                     do {
                         try await send(.idTokenReseponse(self.loginClient.signInKakao()))
+                    } catch {
+                        await send(.idTokenError(error))
+                    }
+                }
+            case .naverLoginTapped:
+                state.loginType = .naver
+                return .run { send in
+                    do {
+                        try await send(.idTokenReseponse(self.loginClient.signInNaver()))
                     } catch {
                         await send(.idTokenError(error))
                     }

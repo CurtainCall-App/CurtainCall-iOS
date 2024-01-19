@@ -12,17 +12,20 @@ import ComposableArchitecture
 import KakaoSDKCommon
 import KakaoSDKUser
 import KakaoSDKAuth
+import NaverThirdPartyLogin
 
 struct LoginClient {
     var signInApple: () async throws -> String
     var signInKakao: () async throws -> String
+    var signInNaver: () async throws -> String
 }
 
 extension LoginClient: DependencyKey {
     static var liveValue = {
         Self(
             signInApple: signInApple,
-            signInKakao: signInKakao
+            signInKakao: signInKakao,
+            signInNaver: signInNaver
         )
     }()
     
@@ -42,6 +45,10 @@ extension LoginClient: DependencyKey {
         } else {
             return try await kakaoLogin.loginWithKakaoAccount()
         }
+    }
+    
+    static func signInNaver() async throws -> String {
+        return try await NaverLogin().performRequest()
     }
 }
 
@@ -88,6 +95,7 @@ extension LoginClient {
 }
 
 // MARK: - Kakao Login
+
 extension LoginClient {
     private class KakaoLogin {
         private var continuation: CheckedContinuation<String, Error>?
@@ -128,6 +136,55 @@ extension LoginClient {
             }
         }
         
+        
+    }
+}
+
+extension LoginClient {
+    class NaverLogin: NSObject, NaverThirdPartyLoginConnectionDelegate {
+        private var continuation: CheckedContinuation<String, Error>?
+        private let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
+        func performRequest() async throws -> String {
+            return try await withCheckedThrowingContinuation { [weak self] continuation in
+                guard let self else { return }
+                self.continuation = continuation
+                self.setDelegate()
+                self.requestNaverLogin()
+                
+            }
+        }
+        
+        func setDelegate() {
+            naverLoginInstance?.delegate = self
+        }
+        
+        func requestNaverLogin() {
+            DispatchQueue.main.async {
+                self.naverLoginInstance?.requestThirdPartyLogin()
+            }
+        }
+        
+        func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
+            if let accessToken = naverLoginInstance?.accessToken {
+                print("Get Naver Access Token", accessToken)
+                continuation?.resume(returning: accessToken)
+            } else {
+                continuation?.resume(throwing: LoginError.naverLoginError)
+                print("Invalid Naver Access Token")
+            }
+        }
+        
+        func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
+            print("Refresh Token")
+        }
+        
+        func oauth20ConnectionDidFinishDeleteToken() {
+            print("Delete Token")
+        }
+        
+        func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
+            continuation?.resume(throwing: error)
+        }
         
     }
 }
