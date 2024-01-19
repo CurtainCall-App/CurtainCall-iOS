@@ -9,6 +9,7 @@ import Foundation
 import AuthenticationServices
 
 import ComposableArchitecture
+import Moya
 import KakaoSDKCommon
 import KakaoSDKUser
 import KakaoSDKAuth
@@ -18,6 +19,7 @@ struct LoginClient {
     var signInApple: () async throws -> String
     var signInKakao: () async throws -> String
     var signInNaver: () async throws -> String
+    var requestLogin: (LoginType, String) async throws -> Int?
 }
 
 extension LoginClient: DependencyKey {
@@ -25,7 +27,8 @@ extension LoginClient: DependencyKey {
         Self(
             signInApple: signInApple,
             signInKakao: signInKakao,
-            signInNaver: signInNaver
+            signInNaver: signInNaver,
+            requestLogin: requestLogin(type:token:)
         )
     }()
     
@@ -49,6 +52,29 @@ extension LoginClient: DependencyKey {
     
     static func signInNaver() async throws -> String {
         return try await NaverLogin().performRequest()
+    }
+    
+    static func requestLogin(type: LoginType, token: String) async throws -> Int? {
+        let provider = MoyaProvider<LoginAPI>()
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            guard let loginType = LoginAPI(loginType: type, token: token) else {
+                return continuation.resume(throwing: LoginError.transLoginTypeError)
+            }
+            provider.request(loginType) { result in
+                switch result {
+                case .success(let response):
+                    do {
+                        let data = try JSONDecoder().decode(LoginResponseDTO.self, from: response.data)
+                        continuation.resume(returning: data.memberId)
+                    } catch {
+                        continuation.resume(throwing: LoginError.decodeError)
+                    }
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
     }
 }
 
@@ -175,7 +201,13 @@ extension LoginClient {
         }
         
         func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
-            print("Refresh Token")
+            if let accessToken = naverLoginInstance?.accessToken {
+                continuation?.resume(returning: accessToken)
+            } else {
+                continuation?.resume(throwing: LoginError.naverLoginError)
+                print("Invalid Naver Access Token")
+            }
+            
         }
         
         func oauth20ConnectionDidFinishDeleteToken() {

@@ -26,6 +26,7 @@ public struct LoginFeature {
         case naverLoginTapped
         case idTokenReseponse(String)
         case idTokenError(Error)
+        case requestLogin(Int?)
     }
     
     @Dependency(\.loginClient) var loginClient
@@ -62,12 +63,20 @@ public struct LoginFeature {
                 }
             case .idTokenReseponse(let token):
                 print("token: \(token)")
-                return .none
+                return .run { [loginType = state.loginType] send in
+                    guard let loginType else { return }
+                    try await send(.requestLogin(self.loginClient.requestLogin(loginType, token)))
+                }
                 
             case .idTokenError(let error):
                 print(error.localizedDescription)
                 return .none
+                
+            case .requestLogin(let memberId):
+                print("memberId Test: \(memberId)")
+                return .none
             }
+        
             
         }
     }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum LoginType {
+public enum LoginType: String {
     case apple
     case kakao
     case naver

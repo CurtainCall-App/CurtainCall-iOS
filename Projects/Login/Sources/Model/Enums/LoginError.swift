@@ -12,4 +12,6 @@ public enum LoginError: Error {
     case kakaoTalkLoginError
     case kakaoAccountLoginError
     case naverLoginError
+    case decodeError
+    case transLoginTypeError
 }
