@@ -32,6 +32,5 @@ public struct RectangleBottomButton: View {
             .frame(height: 55)
             .background(Color(asset: state == .enable ? CommonAsset.hexD4C6FD : CommonAsset.hexF1F1F5))
             .clipShape(RoundedRectangle(cornerRadius: 10))
-            .padding(.horizontal, 20)
     }
 }

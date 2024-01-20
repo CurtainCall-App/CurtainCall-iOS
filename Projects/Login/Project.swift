@@ -19,6 +19,10 @@ let project = Project.makeModule(
         .project(
             target: "Common",
             path: .relativeToRoot("Projects/Common")
+        ),
+        .project(
+            target: "Signup",
+            path: .relativeToRoot("Projects/Signup")
         )
     ]
 )

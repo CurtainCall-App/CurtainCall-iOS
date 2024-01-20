@@ -18,15 +18,19 @@ public struct LoginFeature {
         public init() { }
         
         var loginType: LoginType?
+        @BindingState var goToSignup: Bool = false
+        @BindingState var goToHome: Bool = false
     }
     
-    public enum Action {
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
         case appleLoginTapped
         case kakaoLoginTapped
         case naverLoginTapped
         case idTokenReseponse(String)
         case idTokenError(Error)
         case requestLogin(Int?)
+        case withoutLoginButtonTapped
     }
     
     @Dependency(\.loginClient) var loginClient
@@ -73,7 +77,19 @@ public struct LoginFeature {
                 return .none
                 
             case .requestLogin(let memberId):
-                print("memberId Test: \(memberId)")
+                if let memberId {
+                    
+                } else {
+                    state.goToSignup = true
+                }
+                return .none
+            case .withoutLoginButtonTapped:
+                state.goToHome = true
+                // MARK: 임시
+                state.goToSignup = true
+                return .none
+                
+            case .binding(_):
                 return .none
             }
         
