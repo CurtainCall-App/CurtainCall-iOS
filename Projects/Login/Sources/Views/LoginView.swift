@@ -12,7 +12,7 @@ import Signup
 import ComposableArchitecture
 
 public struct LoginView: View {
-    public let store: StoreOf<LoginFeature>
+    private let store: StoreOf<LoginFeature>
     
     public init(store: StoreOf<LoginFeature>) {
         self.store = store
@@ -51,10 +51,24 @@ public struct LoginView: View {
                     }
                 }
                 .navigationDestination(isPresented: viewStore.$goToSignup) {
-                    TermsOfServiceView()
+                    TermsOfServiceView(
+                        store: Store(
+                            initialState: TermsOfServiceFeature.State()
+                        ) {
+                            TermsOfServiceFeature()
+                                ._printChanges()
+                        }
+                    )
                 }
                 .navigationDestination(isPresented: $isNext) {
-                    TermsOfServiceView()
+                    TermsOfServiceView(
+                        store: Store(
+                            initialState: TermsOfServiceFeature.State()
+                        ) {
+                            TermsOfServiceFeature()
+                                ._printChanges()
+                        }
+                    )
                 }
             }
             
