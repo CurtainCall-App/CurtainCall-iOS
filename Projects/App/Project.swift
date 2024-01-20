@@ -16,8 +16,15 @@ let project = Project.makeModule(
         .project(
             target: "Common",
             path: .relativeToRoot("Projects/Common")
+        ),
+        .project(
+            target: "Login",
+            path: .relativeToRoot("Projects/Login")
         )
     ],
+    sources: ["Sources/**", "Secret/**"],
     resources: ["Resources/**"],
-    infoPlist: .file(path: "Support/Info.plist")
+    entitlements: .file(path: .relativeToRoot("Projects/App/Resources/App.entitlements")),
+    infoPlist: .file(path: "Support/Info.plist"),
+    path: .relativeToRoot("Projects/App/Secret/Secret.xcconfig")
 )

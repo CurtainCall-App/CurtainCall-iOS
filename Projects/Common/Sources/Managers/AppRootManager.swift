@@ -20,6 +20,6 @@ public final class AppRootManager: ObservableObject {
     }
     
     public func changeFirstView() {
-        currentRoot = .onboarding
+        currentRoot = .login
     }
 }

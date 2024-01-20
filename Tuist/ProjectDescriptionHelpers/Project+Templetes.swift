@@ -10,13 +10,25 @@ public extension Project {
         dependencies: [TargetDependency] = [],
         sources: SourceFilesList = ["Sources/**"],
         resources: ResourceFileElements? = nil,
-        infoPlist: InfoPlist = .default
+        entitlements: Entitlements? = nil,
+        infoPlist: InfoPlist = .default,
+        path: Path? = nil
     ) -> Project {
         let setting: Settings = .settings(
             base: [:],  // Build Setting에 반영
             configurations: [
-                .debug(name: .debug),
-                .release(name: .release)
+                .debug(
+                    name: .debug,
+                    settings: SettingsDictionary()
+                        .automaticCodeSigning(devTeam: "H2N9KXXP3M"),
+                    xcconfig: path
+                ),
+                .release(
+                    name: .release,
+                    settings: SettingsDictionary()
+                        .automaticCodeSigning(devTeam: "H2N9KXXP3M"),
+                    xcconfig: path
+                )
             ], defaultSettings: .recommended)
 
         let appTarget = Target(
@@ -28,7 +40,14 @@ public extension Project {
             infoPlist: infoPlist,
             sources: sources,
             resources: resources,
-            dependencies: dependencies
+            entitlements: entitlements,
+            dependencies: dependencies,
+            settings: .settings(
+                configurations: [
+                    .debug(name: .debug, xcconfig: path),
+                    .release(name: .release, xcconfig: path)
+                ]
+            )
         )
 
         let schemes: [Scheme] = [.makeScheme(target: .debug, name: name)]
