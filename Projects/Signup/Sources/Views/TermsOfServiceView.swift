@@ -49,6 +49,7 @@ public struct TermsOfServiceView: View {
         .padding(.horizontal, 20)
         .navigationTitle("약관 동의")
         .navigationBarBackButtonHidden()
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Image(asset: CommonAsset.navigationBackIcon)
