@@ -19,20 +19,30 @@ public struct LoginView: View {
     
     public var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
-            VStack {
-                HStack {
-                    Text("애플로그인")
-                        .onTapGesture {
-                            store.send(.appleLoginTapped)
-                        }
-                    Text("카카오로그인")
-                        .onTapGesture {
-                            store.send(.kakaoLoginTapped)
-                        }
-                    Text("네이버로그인")
-                        .onTapGesture {
-                            store.send(.naverLoginTapped)
-                        }
+            ZStack {
+                Color(asset: CommonAsset.hex0D1327)
+                    .ignoresSafeArea()
+                VStack {
+                    Spacer()
+                    Image(asset: CommonAsset.logoSplash64px)
+                    Spacer().frame(height: 74)
+                    Image(asset: CommonAsset.loginComment)
+                    Spacer().frame(height: 17)
+                    HStack(spacing: 16) {
+                        Image(asset: CommonAsset.loginKakaotalk)
+                            .onTapGesture { store.send(.kakaoLoginTapped) }
+                        Image(asset: CommonAsset.loginNaver)
+                            .onTapGesture { store.send(.naverLoginTapped) }
+                        Image(asset: CommonAsset.loginApple)
+                            .onTapGesture { store.send(.appleLoginTapped) }
+                    }
+                    Spacer()
+                    Text("로그인 없이 시작하기")
+                        .font(.body2_SB)
+                        .underline()
+                        .foregroundStyle(.white)
+                        
+                    Spacer().frame(height: 100)
                 }
             }
         }
