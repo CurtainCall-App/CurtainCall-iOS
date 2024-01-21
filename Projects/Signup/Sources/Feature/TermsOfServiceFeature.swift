@@ -44,14 +44,17 @@ public struct TermsOfServiceFeature {
             case .serviceCheckButtonTapped:
                 state.isServiceCheck.toggle()
                 state.isAllCheck = state.isServiceCheck && state.isInfoCheck && state.isAgeCheck
+                state.isPossibleNext = state.isAllCheck
                 return .none
             case .infoCheckButtonTapped:
                 state.isInfoCheck.toggle()
                 state.isAllCheck = state.isServiceCheck && state.isInfoCheck && state.isAgeCheck
+                state.isPossibleNext = state.isAllCheck
                 return .none
             case .ageCheckButtonTapped:
                 state.isAgeCheck.toggle()
                 state.isAllCheck = state.isServiceCheck && state.isInfoCheck && state.isAgeCheck
+                state.isPossibleNext = state.isAllCheck
                 return .none
             case .binding:
                 return .none
