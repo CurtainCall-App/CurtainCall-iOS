@@ -49,7 +49,7 @@ public struct TermsOfServiceView: View {
                         }
                     }
                     Spacer()
-                    RectangleBottomButton(text: "다음", state: .disable)
+                    RectangleBottomButton(isEnable: viewStore.$isPossibleNext, text: "다음")
                         .padding(.bottom, 10)
                 }
                 .padding(.horizontal, 20)

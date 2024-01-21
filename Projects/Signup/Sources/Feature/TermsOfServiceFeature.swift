@@ -20,9 +20,11 @@ public struct TermsOfServiceFeature {
         var isServiceCheck: Bool = false
         var isInfoCheck: Bool = false
         var isAgeCheck: Bool = false
+        @BindingState var isPossibleNext: Bool = false
     }
     
-    public enum Action {
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
         case allCheckButtonTapped
         case serviceCheckButtonTapped
         case infoCheckButtonTapped
@@ -37,6 +39,7 @@ public struct TermsOfServiceFeature {
                 state.isServiceCheck = state.isAllCheck
                 state.isInfoCheck = state.isAllCheck
                 state.isAgeCheck = state.isAllCheck
+                state.isPossibleNext = state.isAllCheck
                 return .none
             case .serviceCheckButtonTapped:
                 state.isServiceCheck.toggle()
@@ -49,6 +52,8 @@ public struct TermsOfServiceFeature {
             case .ageCheckButtonTapped:
                 state.isAgeCheck.toggle()
                 state.isAllCheck = state.isServiceCheck && state.isInfoCheck && state.isAgeCheck
+                return .none
+            case .binding:
                 return .none
             }
         }
