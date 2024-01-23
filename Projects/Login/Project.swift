@@ -21,8 +21,8 @@ let project = Project.makeModule(
             path: .relativeToRoot("Projects/Common")
         ),
         .project(
-            target: "Signup",
-            path: .relativeToRoot("Projects/Signup")
+            target: "TermsOfService",
+            path: .relativeToRoot("Projects/TermsOfService")
         )
     ]
 )

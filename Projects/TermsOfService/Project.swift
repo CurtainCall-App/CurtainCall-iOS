@@ -9,7 +9,7 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.makeModule(
-    name: "Signup",
+    name: "TermsOfService",
     product: .staticFramework,
     dependencies: [
         .project(
