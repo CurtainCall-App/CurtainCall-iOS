@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Common
-import Signup
+import TermsOfService
 
 import ComposableArchitecture
 
@@ -19,7 +19,7 @@ public struct LoginView: View {
     }
     @State var isNext: Bool = false
     public var body: some View {
-        NavigationStack {
+        NavigationStackStore(self.store.scope(state: \.path, action: \.path)) {
             WithViewStore(self.store, observe: { $0 }) { viewStore in
                 ZStack {
                     Color(asset: CommonAsset.hex0D1327)
@@ -39,40 +39,44 @@ public struct LoginView: View {
                                 .onTapGesture { viewStore.send(.appleLoginTapped) }
                         }
                         Spacer()
-                        Text("로그인 없이 시작하기")
-                            .font(.body2_SB)
-                            .underline()
-                            .foregroundStyle(.white)
-                            .onTapGesture {
-                                //                                viewStore.send(.withoutLoginButtonTapped)
-                                isNext.toggle()
+                        
+                        HStack {
+                            Spacer()
+                            NavigationLink(state: TermsOfServiceFeature.State()) {
+                                Text("로그인 없이 시작하기")
+                                    .font(.body2_SB)
+                                    .underline()
+                                    .foregroundStyle(.white)
                             }
+                            Spacer()
+                        }
+                        
                         Spacer().frame(height: 100)
                     }
                 }
-                .navigationDestination(isPresented: viewStore.$goToSignup) {
-                    TermsOfServiceView(
-                        store: Store(
-                            initialState: TermsOfServiceFeature.State()
-                        ) {
-                            TermsOfServiceFeature()
-                                ._printChanges()
-                        }
-                    )
-                }
-                .navigationDestination(isPresented: $isNext) {
-                    TermsOfServiceView(
-                        store: Store(
-                            initialState: TermsOfServiceFeature.State()
-                        ) {
-                            TermsOfServiceFeature()
-                                ._printChanges()
-                        }
-                    )
-                }
             }
-            
+        } destination: { store in
+           TermsOfServiceView(store: store)
         }
+        
+        
+        //        NavigationStackStore(self.store.scope(state: \.path, action: \.path)) {
+        //
+        //
+        //        } destination: { state in
+        //            switch state {
+        //            case .termsOfService:
+        //                CaseLet(
+        //                    /LoginFeature.Path.State.termsOfService,
+        //                     action: LoginFeature.Path.Action.termsOfService,
+        //                     then: TermsOfServiceView(
+        //                        store: .init(initialState: TermsOfServiceFeature.State(), reducer: {
+        //                            TermsOfServiceFeature()
+        //                        })
+        //                     )
+        //                )
+        //            }
+        //        }
         
     }
 }

@@ -8,11 +8,30 @@
 import Foundation
 
 import Common
+import TermsOfService
 import ComposableArchitecture
 
 @Reducer
 public struct LoginFeature {
     public init() { }
+    
+//    @Reducer
+//    public struct Path {
+//        public enum State: Equatable {
+//            case termsOfService(TermsOfServiceFeature.State)
+//        }
+//        
+//        public enum Action {
+//            case termsOfService(TermsOfServiceFeature.Action)
+//        }
+//        
+//        public var body: some ReducerOf<Self> {
+//            Scope(state: \.termsOfService, action: \.termsOfService) {
+//                TermsOfServiceFeature()
+//            }
+//        }
+//    }
+    
     
     public struct State: Equatable {
         public init() { }
@@ -20,6 +39,7 @@ public struct LoginFeature {
         var loginType: LoginType?
         @BindingState var goToSignup: Bool = false
         @BindingState var goToHome: Bool = false
+        var path = StackState<TermsOfServiceFeature.State>()
     }
     
     public enum Action: BindableAction {
@@ -31,6 +51,7 @@ public struct LoginFeature {
         case idTokenError(Error)
         case requestLogin(Int?)
         case withoutLoginButtonTapped
+        case path(StackAction<TermsOfServiceFeature.State, TermsOfServiceFeature.Action>)
     }
     
     @Dependency(\.loginClient) var loginClient
@@ -91,9 +112,12 @@ public struct LoginFeature {
                 
             case .binding(_):
                 return .none
+            case .path:
+                return .none
             }
-        
-            
+        }
+        .forEach(\.path, action: \.path) {
+            TermsOfServiceFeature()
         }
     }
 }
