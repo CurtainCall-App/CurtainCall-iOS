@@ -248,6 +248,7 @@
 		EECF7C9D2AAB05DB00D5E257 /* SameShowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECF7C9C2AAB05DB00D5E257 /* SameShowCell.swift */; };
 		EECF7C9F2AAB0FAE00D5E257 /* SameShowResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECF7C9E2AAB0FAE00D5E257 /* SameShowResponse.swift */; };
 		EECF7CA12AAB161C00D5E257 /* MyRecruitmentOtherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECF7CA02AAB161B00D5E257 /* MyRecruitmentOtherCell.swift */; };
+		EED0E9622B6B6CC60006424B /* RemoteConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED0E9612B6B6CC60006424B /* RemoteConfigManager.swift */; };
 		EED24A622A9B6B01000C3BA4 /* ReportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED24A612A9B6B01000C3BA4 /* ReportService.swift */; };
 		EED302132A8A63C000957566 /* GuideSale.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EED302122A8A63C000957566 /* GuideSale.storyboard */; };
 		EED52EEA2A9F3F9800DBF55F /* MyFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED52EE92A9F3F9800DBF55F /* MyFavoriteViewController.swift */; };
@@ -518,6 +519,7 @@
 		EECF7C9C2AAB05DB00D5E257 /* SameShowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameShowCell.swift; sourceTree = "<group>"; };
 		EECF7C9E2AAB0FAE00D5E257 /* SameShowResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameShowResponse.swift; sourceTree = "<group>"; };
 		EECF7CA02AAB161B00D5E257 /* MyRecruitmentOtherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecruitmentOtherCell.swift; sourceTree = "<group>"; };
+		EED0E9612B6B6CC60006424B /* RemoteConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigManager.swift; sourceTree = "<group>"; };
 		EED24A612A9B6B01000C3BA4 /* ReportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportService.swift; sourceTree = "<group>"; };
 		EED302122A8A63C000957566 /* GuideSale.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GuideSale.storyboard; sourceTree = "<group>"; };
 		EED52EE92A9F3F9800DBF55F /* MyFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFavoriteViewController.swift; sourceTree = "<group>"; };
@@ -545,7 +547,7 @@
 		EEE8F0F22A56E31F00E31597 /* NicknameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewController.swift; sourceTree = "<group>"; };
 		EEE8F0F52A56FFF600E31597 /* NicknameSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameSettingViewModel.swift; sourceTree = "<group>"; };
 		EEE8F0F72A57025000E31597 /* String + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extension.swift"; sourceTree = "<group>"; };
-		EEECD2642B09C6EF005E9659 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EEECD2642B09C6EF005E9659 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EEED76042AA20D8C002C544D /* FAQViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
 		EEED76092AA2491F002C544D /* LostItemCompleteToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LostItemCompleteToastView.swift; sourceTree = "<group>"; };
 		EEED760E2AA7641B002C544D /* LiveTalkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTalkCell.swift; sourceTree = "<group>"; };
@@ -810,6 +812,7 @@
 		EE0BEDF52A4958B3008D9D05 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EED0E9602B6B6CB40006424B /* RemoteConfigManager */,
 				EEE272BF2AA8AC3B0014B266 /* Chatting */,
 				EE2BDF342AA8727C00E9AFFF /* GetStream */,
 				EE0669D92A7E0943000C8296 /* Network */,
@@ -1573,6 +1576,14 @@
 			path = UseCases;
 			sourceTree = "<group>";
 		};
+		EED0E9602B6B6CB40006424B /* RemoteConfigManager */ = {
+			isa = PBXGroup;
+			children = (
+				EED0E9612B6B6CC60006424B /* RemoteConfigManager.swift */,
+			);
+			path = RemoteConfigManager;
+			sourceTree = "<group>";
+		};
 		EED24A602A9B6AD3000C3BA4 /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -1990,6 +2001,7 @@
 				EE3F2FF62A58128600BC539C /* LiveTalkViewController.swift in Sources */,
 				EE4A36E92A9DB7B9007D3C9F /* PartySearchViewModel.swift in Sources */,
 				EE9A885B2A83DCF00085F816 /* ScheduledToEndProductCell.swift in Sources */,
+				EED0E9622B6B6CC60006424B /* RemoteConfigManager.swift in Sources */,
 				EE8437BC2A81431B00ADD3D8 /* LiveTalkData.swift in Sources */,
 				EE1DF3872A94F7A8003AD078 /* NoticeDetailResponse.swift in Sources */,
 				EE3F2FF82A58129300BC539C /* ProductViewController.swift in Sources */,
