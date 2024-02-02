@@ -18,9 +18,9 @@ extension LoginAPI: TargetType {
     var path: String {
         switch self {
         case .kakao:
-            return "/login"
+            return "/login/oauth2/token/kakao"
         case .apple:
-            return "/login"
+            return "/login/oauth2/token/apple"
         }
     }
     
@@ -29,27 +29,25 @@ extension LoginAPI: TargetType {
     }
     
     var task: Moya.Task {
-        return .requestPlain
-//        var param: [String: Any] = [:]
-//        switch self {
-            
-//        case .kakao(let token):
-//            param.updateValue(token, forKey: "accessToken")
-//            return .requestParameters(parameters: param, encoding: JSONEncoding.default)
-//        case .apple(let token):
-//            param.updateValue(token, forKey: "accessToken")
-//            return .requestParameters(parameters: param, encoding: JSONEncoding.default)
-//        }
+        var param: [String: Any] = [:]
+        switch self {
+        case .kakao(let token):
+            param.updateValue(token, forKey: "token")
+            return .requestParameters(parameters: param, encoding: JSONEncoding.default)
+        case .apple(let token):
+            param.updateValue(token, forKey: "token")
+            return .requestParameters(parameters: param, encoding: JSONEncoding.default)
+        }
     }
     
     var headers: [String : String]? {
         var header: [String: String] = [:]
-        switch self {
-        case .kakao(let idToken):
-            header.updateValue("Bearer \(idToken)", forKey: "Authorization")
-        case .apple(let idToken):
-            header.updateValue("Bearer \(idToken)", forKey: "Authorization")
-        }
+//        switch self {
+//        case .kakao(let idToken):
+//            header.updateValue("Bearer \(idToken)", forKey: "Authorization")
+//        case .apple(let idToken):
+//            header.updateValue("Bearer \(idToken)", forKey: "Authorization")
+//        }
         return header
         
     }
