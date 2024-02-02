@@ -26,12 +26,13 @@ final class MyPageViewModel {
                     return
                 }
             } receiveValue: { [weak self] response in
+                print(response.statusCode)
                 if let data = try? response.map(MyPageDetailResponse.self) {
                     UserInfoManager.shared.userInfo = data
                     self?.userInfoSubject.send(data)
                     return
                 } else {
-                    print("User Info respone Error")
+                    print("User Info respone Error: \(String(data: response.data, encoding: .utf8))")
                     return
                 }
             }.store(in: &subscriptions)

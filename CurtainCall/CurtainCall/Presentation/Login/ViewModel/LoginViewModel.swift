@@ -68,8 +68,7 @@ final class LoginViewModel: LoginViewModelIO {
                         self?.loginPublisher.send((.apple, nil))
                     } else {
                         UserDefaults.standard[.userId] = data.memberId
-                        print("@@", data.memberId)
-                        print("@@", UserDefaults.standard[.userId])
+                        UserDefaults.standard[.accessToken] = data.accessToken
                         self?.loginPublisher.send((.apple, data.memberId))
                     }
                 }
@@ -98,8 +97,7 @@ final class LoginViewModel: LoginViewModelIO {
                             self?.loginPublisher.send((.apple, nil))
                         } else {
                             UserDefaults.standard[.userId] = data.memberId
-                            print("@@", data.memberId)
-                            print("@@", UserDefaults.standard[.userId])
+                            UserDefaults.standard[.accessToken] = data.accessToken
                             self?.loginPublisher.send((.apple, data.memberId))
                         }
                     }
