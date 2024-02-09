@@ -19,9 +19,6 @@ public struct NicknameSettingView: View {
         self.store = store
     }
     
-    @State private var flag: Bool = false
-    @State private var nickname: String = ""
-    
     public var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             VStack(alignment: .leading) {
@@ -33,14 +30,14 @@ public struct NicknameSettingView: View {
                 Spacer().frame(height: 14)
                 VStack(spacing: 6) {
                     HStack(spacing: 6) {
-                        Image(asset: CommonAsset.checkIconGray14px)
+                        Image(asset: viewStore.isValidCount ? CommonAsset.checkIconGreen14px : CommonAsset.checkIconGray14px)
                         Text("공백없이 1자~15자 사이로 작성")
                             .font(.body3)
                             .foregroundStyle(Color(asset: CommonAsset.hex71757C))
                         Spacer()
                     }
                     HStack(spacing: 6) {
-                        Image(asset: CommonAsset.checkIconGray14px)
+                        Image(asset: viewStore.isValidRegex ? CommonAsset.checkIconGreen14px : CommonAsset.checkIconGray14px)
                         Text("한글, 영문, 숫자 자유롭게 사용 가능")
                             .font(.body3)
                             .foregroundStyle(Color(asset: CommonAsset.hex71757C))
@@ -49,7 +46,7 @@ public struct NicknameSettingView: View {
                 }
                 Spacer().frame(height: 40)
                 HStack {
-                    TextField("닉네임을 입력해주세요.", text: $nickname)
+                    TextField("닉네임을 입력해주세요.", text: viewStore.$nicknameText)
                         .padding()
                         .frame(height: 45)
                         .background {
@@ -67,8 +64,8 @@ public struct NicknameSettingView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
                 Spacer()
-                RectangleBottomButton(isEnable: $flag, text: "회원가입 완료") {
-                    print("Tap")
+                RectangleBottomButton(isEnable: viewStore.$isPossibleNickname, text: "회원가입 완료") {
+                    viewStore.send(.duplicatedCheckButtonTapped)
                 }
                 .padding(.bottom, 10)
             }
