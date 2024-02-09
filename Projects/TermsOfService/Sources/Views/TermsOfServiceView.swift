@@ -15,7 +15,6 @@ public struct TermsOfServiceView: View {
     @Environment(\.dismiss) var dismiss
     
     private let store: StoreOf<TermsOfServiceFeature>
-    @State private var goToNext: Bool = false
     public init(store: StoreOf<TermsOfServiceFeature>) {
         self.store = store
     }
@@ -50,30 +49,23 @@ public struct TermsOfServiceView: View {
                 }
                 Spacer()
                 RectangleBottomButton(isEnable: viewStore.$isPossibleNext, text: "다음") {
-                    goToNext.toggle()
+                    viewStore.send(.nextButtonTapped)
                 }
                 .padding(.bottom, 10)
-                
-            }
-            .padding(.horizontal, 20)
-            .navigationTitle("약관 동의")
-            .navigationBarBackButtonHidden()
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Image(asset: CommonAsset.navigationBackIcon)
-                        .onTapGesture {
-                            dismiss()
-                        }
+                .navigationTitle("약관 동의")
+                .navigationBarBackButtonHidden()
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Image(asset: CommonAsset.navigationBackIcon)
+                            .onTapGesture {
+                                dismiss()
+                            }
+                    }
                 }
             }
-            .navigationDestination(isPresented: $goToNext) {
-                NicknameSettingView()
-            }
+            .padding(.horizontal, 20)
         }
-        
-        
-        
     }
     
     private func makeCheckView(

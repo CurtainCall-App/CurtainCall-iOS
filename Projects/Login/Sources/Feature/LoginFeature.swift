@@ -10,36 +10,16 @@ import Foundation
 import Common
 import TermsOfService
 import ComposableArchitecture
+import NicknameSetting
 
 @Reducer
 public struct LoginFeature {
     public init() { }
     
-//    @Reducer
-//    public struct Path {
-//        public enum State: Equatable {
-//            case termsOfService(TermsOfServiceFeature.State)
-//        }
-//        
-//        public enum Action {
-//            case termsOfService(TermsOfServiceFeature.Action)
-//        }
-//        
-//        public var body: some ReducerOf<Self> {
-//            Scope(state: \.termsOfService, action: \.termsOfService) {
-//                TermsOfServiceFeature()
-//            }
-//        }
-//    }
-    
-    
     public struct State: Equatable {
         public init() { }
-        
         var loginType: LoginType?
-        @BindingState var goToSignup: Bool = false
-        @BindingState var goToHome: Bool = false
-        var path = StackState<TermsOfServiceFeature.State>()
+        var path = StackState<Path.State>()
     }
     
     public enum Action: BindableAction {
@@ -51,7 +31,7 @@ public struct LoginFeature {
         case idTokenError(Error)
         case requestLogin(Int?)
         case withoutLoginButtonTapped
-        case path(StackAction<TermsOfServiceFeature.State, TermsOfServiceFeature.Action>)
+        case path(StackAction<Path.State, Path.Action>)
     }
     
     @Dependency(\.loginClient) var loginClient
@@ -100,24 +80,44 @@ public struct LoginFeature {
             case .requestLogin(let memberId):
                 if let memberId {
                     
-                } else {
-                    state.goToSignup = true
                 }
                 return .none
             case .withoutLoginButtonTapped:
-                state.goToHome = true
-                // MARK: 임시
-                state.goToSignup = true
                 return .none
                 
             case .binding(_):
+                return .none
+            case .path(.element(id: _, action: .termsOfService(.nextButtonTapped))):
+                state.path.append(.nicknameSetting())
                 return .none
             case .path:
                 return .none
             }
         }
         .forEach(\.path, action: \.path) {
-            TermsOfServiceFeature()
+            Path()
+        }
+    }
+    
+    @Reducer
+    public struct Path {
+        public enum State: Equatable {
+            case termsOfService(TermsOfServiceFeature.State = .init())
+            case nicknameSetting(NicknameSettingFeature.State = .init())
+        }
+        
+        public enum Action {
+            case termsOfService(TermsOfServiceFeature.Action)
+            case nicknameSetting(NicknameSettingFeature.Action)
+        }
+        
+        public var body: some Reducer<State, Action> {
+            Scope(state: \.termsOfService, action: \.termsOfService) {
+                TermsOfServiceFeature()
+            }
+            Scope(state: \.nicknameSetting, action: \.nicknameSetting) {
+                NicknameSettingFeature()
+            }
         }
     }
 }

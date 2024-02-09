@@ -8,6 +8,7 @@
 import SwiftUI
 import Common
 import TermsOfService
+import NicknameSetting
 
 import ComposableArchitecture
 
@@ -42,7 +43,8 @@ public struct LoginView: View {
                         
                         HStack {
                             Spacer()
-                            NavigationLink(state: TermsOfServiceFeature.State()) {
+                            NavigationLink(
+                                state: LoginFeature.Path.State.termsOfService()) {
                                 Text("로그인 없이 시작하기")
                                     .font(.body2_SB)
                                     .underline()
@@ -55,28 +57,22 @@ public struct LoginView: View {
                     }
                 }
             }
-        } destination: { store in
-           TermsOfServiceView(store: store)
+        } destination: {
+            switch $0 {
+            case .termsOfService:
+                CaseLet(
+                    \LoginFeature.Path.State.termsOfService,
+                     action: LoginFeature.Path.Action.termsOfService,
+                     then: TermsOfServiceView.init(store:)
+                    )
+            
+            case .nicknameSetting:
+                CaseLet(
+                    \LoginFeature.Path.State.nicknameSetting,
+                     action: LoginFeature.Path.Action.nicknameSetting,
+                     then: NicknameSettingView.init(store:)
+                    )
+            }
         }
-        
-        
-        //        NavigationStackStore(self.store.scope(state: \.path, action: \.path)) {
-        //
-        //
-        //        } destination: { state in
-        //            switch state {
-        //            case .termsOfService:
-        //                CaseLet(
-        //                    /LoginFeature.Path.State.termsOfService,
-        //                     action: LoginFeature.Path.Action.termsOfService,
-        //                     then: TermsOfServiceView(
-        //                        store: .init(initialState: TermsOfServiceFeature.State(), reducer: {
-        //                            TermsOfServiceFeature()
-        //                        })
-        //                     )
-        //                )
-        //            }
-        //        }
-        
     }
 }

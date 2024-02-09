@@ -8,6 +8,7 @@
 import Foundation
 
 import ComposableArchitecture
+import NicknameSetting
 
 @Reducer
 public struct TermsOfServiceFeature {
@@ -21,6 +22,7 @@ public struct TermsOfServiceFeature {
         var isInfoCheck: Bool = false
         var isAgeCheck: Bool = false
         @BindingState var isPossibleNext: Bool = false
+//        var path = StackState<NicknameSettingFeature.State>()
     }
     
     public enum Action: BindableAction {
@@ -29,6 +31,8 @@ public struct TermsOfServiceFeature {
         case serviceCheckButtonTapped
         case infoCheckButtonTapped
         case ageCheckButtonTapped
+        case nextButtonTapped
+//        case path(StackAction<NicknameSettingFeature.State, NicknameSettingFeature.Action>)
     }
     
     public var body: some ReducerOf<Self> {
@@ -58,7 +62,16 @@ public struct TermsOfServiceFeature {
                 return .none
             case .binding:
                 return .none
+            case .nextButtonTapped:
+                return .none
+//            case .path:
+//                return .none
             }
+            
         }
+//        .forEach(\.path, action: \.path) {
+//            NicknameSettingFeature()
+//        }
+        
     }
 }
