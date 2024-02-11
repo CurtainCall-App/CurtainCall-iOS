@@ -15,6 +15,8 @@ import ComposableArchitecture
 public struct LoginView: View {
     private let store: StoreOf<LoginFeature>
     
+    @EnvironmentObject var appRootManager: AppRootManager
+    
     public init(store: StoreOf<LoginFeature>) {
         self.store = store
     }
@@ -43,13 +45,13 @@ public struct LoginView: View {
                         
                         HStack {
                             Spacer()
-                            NavigationLink(
-                                state: LoginFeature.Path.State.termsOfService()) {
-                                Text("로그인 없이 시작하기")
-                                    .font(.body2_SB)
-                                    .underline()
-                                    .foregroundStyle(.white)
-                            }
+                            Text("로그인 없이 시작하기")
+                                .font(.body2_SB)
+                                .underline()
+                                .foregroundStyle(.white)
+                                .onTapGesture {
+                                    appRootManager.currentRoot = .main
+                                }
                             Spacer()
                         }
                         

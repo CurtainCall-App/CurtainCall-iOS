@@ -19,7 +19,7 @@ struct LoginClient {
     var signInApple: () async throws -> String
     var signInKakao: () async throws -> String
     var signInNaver: () async throws -> String
-    var requestLogin: (LoginType, String) async throws -> Int?
+    var requestLogin: (LoginType, String) async throws -> LoginResponseDTO
 }
 
 extension LoginClient: DependencyKey {
@@ -54,7 +54,7 @@ extension LoginClient: DependencyKey {
         return try await NaverLogin().performRequest()
     }
     
-    static func requestLogin(type: LoginType, token: String) async throws -> Int? {
+    static func requestLogin(type: LoginType, token: String) async throws -> LoginResponseDTO {
         let provider = MoyaProvider<LoginAPI>()
         
         return try await withCheckedThrowingContinuation { continuation in
@@ -66,7 +66,7 @@ extension LoginClient: DependencyKey {
                 case .success(let response):
                     do {
                         let data = try JSONDecoder().decode(LoginResponseDTO.self, from: response.data)
-                        continuation.resume(returning: data.memberId)
+                        continuation.resume(returning: data)
                     } catch {
                         continuation.resume(throwing: LoginError.decodeError)
                     }

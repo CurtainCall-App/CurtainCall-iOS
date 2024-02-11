@@ -29,7 +29,7 @@ public struct LoginFeature {
         case naverLoginTapped
         case idTokenReseponse(String)
         case idTokenError(Error)
-        case requestLogin(Int?)
+        case requestLogin(LoginResponseDTO)
         case withoutLoginButtonTapped
         case path(StackAction<Path.State, Path.Action>)
     }
@@ -77,10 +77,13 @@ public struct LoginFeature {
                 print(error.localizedDescription)
                 return .none
                 
-            case .requestLogin(let memberId):
-                if let memberId {
+            case .requestLogin(let response):
+                if let memberId = response.memberId {
                     
+                } else {
+                    state.path.append(.termsOfService())
                 }
+                UserDefaults.standard.setValue(response.accessToken, forKey: UserDefaultKeys.accessToken.rawValue)
                 return .none
             case .withoutLoginButtonTapped:
                 return .none
