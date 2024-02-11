@@ -58,7 +58,11 @@ public struct LoginView: View {
                         Spacer().frame(height: 100)
                     }
                 }
+                .onChange(of: viewStore.appRootView) { _ , newValue in
+                    appRootManager.currentRoot = newValue
+                }
             }
+            
         } destination: {
             switch $0 {
             case .termsOfService:

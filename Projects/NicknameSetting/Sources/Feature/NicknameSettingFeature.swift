@@ -21,6 +21,7 @@ public struct NicknameSettingFeature {
         var isValidCount: Bool = false
         var isValidRegex: Bool = false
         var isTappedDuplicatedButton: Bool = false
+        var appRoot: AppRootManager.AppRootType = .login
         
     }
     
@@ -28,6 +29,8 @@ public struct NicknameSettingFeature {
         case binding(BindingAction<State>)
         case duplicatedCheckButtonTapped
         case responseNicknameDuplicated(Bool)
+        case signupButtonTapped
+        case responseSignup(SignupResponseDTO)
     }
     
     @Dependency (\.nicknameSettingClient) var nicknameSettingClient
@@ -54,6 +57,17 @@ public struct NicknameSettingFeature {
             case .responseNicknameDuplicated(let result):
                 state.isPossibleNickname = !result
                 state.isTappedDuplicatedButton = true
+                return .none
+            case .signupButtonTapped:
+                return .run { [nickname = state.nicknameText] send in
+                    do {
+                        try await send(.responseSignup(nicknameSettingClient.signup(nickname)))
+                    } catch {
+                        // TODO: 에러처리
+                    }
+                }
+            case .responseSignup:
+                state.appRoot = .main
                 return .none
             }
         }

@@ -20,6 +20,7 @@ public struct LoginFeature {
         public init() { }
         var loginType: LoginType?
         var path = StackState<Path.State>()
+        var appRootView: AppRootManager.AppRootType = .login
     }
     
     public enum Action: BindableAction {
@@ -79,7 +80,7 @@ public struct LoginFeature {
                 
             case .requestLogin(let response):
                 if let memberId = response.memberId {
-                    
+                    state.appRootView = .main
                 } else {
                     state.path.append(.termsOfService())
                 }

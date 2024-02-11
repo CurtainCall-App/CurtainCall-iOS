@@ -12,7 +12,7 @@ public final class AppRootManager: ObservableObject {
     
     public init() { }
     
-    public enum AppRootType {
+    public enum AppRootType: String {
         case splash
         case onboarding
         case login

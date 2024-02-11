@@ -80,7 +80,7 @@ public struct NicknameSettingView: View {
                 }
                 Spacer()
                 RectangleBottomButton(isEnable: viewStore.$isPossibleNickname, text: "회원가입 완료") {
-                    appRootManager.currentRoot = .main
+                    viewStore.send(.signupButtonTapped)
                 }
                 .padding(.bottom, 10)
             }
@@ -95,6 +95,9 @@ public struct NicknameSettingView: View {
                             dismiss()
                         }
                 }
+            }
+            .onChange(of: viewStore.appRoot) { _, newValue in
+                appRootManager.currentRoot = newValue
             }
         }
     }
