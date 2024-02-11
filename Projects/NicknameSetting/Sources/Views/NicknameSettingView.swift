@@ -72,10 +72,12 @@ public struct NicknameSettingView: View {
                         }
                 }
                 Spacer().frame(height: 12)
-                Text("")
-                    .font(.body3)
-                    .foregroundStyle(Color(asset: viewStore.isPossibleNickname ? CommonAsset.hex00C271 : CommonAsset.hexFF334B))
-                    .padding(.leading, 34)
+                if viewStore.isTappedDuplicatedButton {
+                    Text(viewStore.isPossibleNickname ? "사용 가능한 닉네임이에요:)" : "이미 동일한 닉네임이 있어요:(\n다른 닉네임을 입력해주세요!")
+                        .font(.body3)
+                        .foregroundStyle(Color(asset: viewStore.isPossibleNickname ? CommonAsset.hex00C271 : CommonAsset.hexFF334B))
+                        .padding(.leading, 14)
+                }
                 Spacer()
                 RectangleBottomButton(isEnable: viewStore.$isPossibleNickname, text: "회원가입 완료") {
                     appRootManager.currentRoot = .main
