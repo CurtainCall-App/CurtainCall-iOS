@@ -8,7 +8,9 @@
 import Foundation
 
 import Common
+import TermsOfService
 import ComposableArchitecture
+import NicknameSetting
 
 @Reducer
 public struct LoginFeature {
@@ -16,17 +18,21 @@ public struct LoginFeature {
     
     public struct State: Equatable {
         public init() { }
-        
         var loginType: LoginType?
+        var path = StackState<Path.State>()
+        var appRootView: AppRootManager.AppRootType = .login
     }
     
-    public enum Action {
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
         case appleLoginTapped
         case kakaoLoginTapped
         case naverLoginTapped
         case idTokenReseponse(String)
         case idTokenError(Error)
-        case requestLogin(Int?)
+        case requestLogin(LoginResponseDTO)
+        case withoutLoginButtonTapped
+        case path(StackAction<Path.State, Path.Action>)
     }
     
     @Dependency(\.loginClient) var loginClient
@@ -72,12 +78,50 @@ public struct LoginFeature {
                 print(error.localizedDescription)
                 return .none
                 
-            case .requestLogin(let memberId):
-                print("memberId Test: \(memberId)")
+            case .requestLogin(let response):
+                if let memberId = response.memberId {
+                    state.appRootView = .main
+                } else {
+                    state.path.append(.termsOfService())
+                }
+                UserDefaults.standard.setValue(response.accessToken, forKey: UserDefaultKeys.accessToken.rawValue)
+                return .none
+            case .withoutLoginButtonTapped:
+                return .none
+                
+            case .binding(_):
+                return .none
+            case .path(.element(id: _, action: .termsOfService(.nextButtonTapped))):
+                state.path.append(.nicknameSetting())
+                return .none
+            case .path:
                 return .none
             }
+        }
+        .forEach(\.path, action: \.path) {
+            Path()
+        }
+    }
+    
+    @Reducer
+    public struct Path {
+        public enum State: Equatable {
+            case termsOfService(TermsOfServiceFeature.State = .init())
+            case nicknameSetting(NicknameSettingFeature.State = .init())
+        }
         
-            
+        public enum Action {
+            case termsOfService(TermsOfServiceFeature.Action)
+            case nicknameSetting(NicknameSettingFeature.Action)
+        }
+        
+        public var body: some Reducer<State, Action> {
+            Scope(state: \.termsOfService, action: \.termsOfService) {
+                TermsOfServiceFeature()
+            }
+            Scope(state: \.nicknameSetting, action: \.nicknameSetting) {
+                NicknameSettingFeature()
+            }
         }
     }
 }

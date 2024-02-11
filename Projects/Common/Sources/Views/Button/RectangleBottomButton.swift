@@ -9,29 +9,30 @@ import SwiftUI
 
 public struct RectangleBottomButton: View {
     
-    public enum ButtonStateType {
-        case enable
-        case disable
-    }
-    
-    
     private let text: String
-    private let state: ButtonStateType
+    private let completion: () -> Void
     
-    public init(text: String, state: ButtonStateType) {
+    @Binding private var isEnable: Bool
+    
+    public init(isEnable: Binding<Bool>, text: String, completion: @escaping () -> Void) {
+        self._isEnable = isEnable
         self.text = text
-        self.state = state
+        self.completion = completion
     }
     
     public var body: some View {
-        Text(text)
-            .multilineTextAlignment(.center)
-            .font(.subTitle4)
-            .foregroundStyle(Color(asset: state == .enable ? CommonAsset.hex0D1327 : CommonAsset.hexC6C8CD))
-            .frame(maxWidth: .infinity)
-            .frame(height: 55)
-            .background(Color(asset: state == .enable ? CommonAsset.hexD4C6FD : CommonAsset.hexF1F1F5))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .padding(.horizontal, 20)
+        Button(action: {
+            completion()
+        }, label: {
+            Text(text)
+                .multilineTextAlignment(.center)
+                .font(.subTitle4)
+                .foregroundStyle(Color(asset: isEnable ? CommonAsset.white : CommonAsset.hexC6C8CD))
+                .frame(maxWidth: .infinity)
+                .frame(height: 55)
+                .background(Color(asset: isEnable ? CommonAsset.hex0D1327 : CommonAsset.hexF1F1F5))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+        })
+        .disabled(!isEnable)
     }
 }
