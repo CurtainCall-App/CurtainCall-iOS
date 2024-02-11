@@ -20,13 +20,17 @@ public struct NicknameSettingFeature {
         @BindingState var isPossibleNickname: Bool = false
         var isValidCount: Bool = false
         var isValidRegex: Bool = false
+        var isTappedDuplicatedButton: Bool = false
         
     }
     
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
         case duplicatedCheckButtonTapped
+        case responseNicknameDuplicated(Bool)
     }
+    
+    @Dependency (\.nicknameSettingClient) var nicknameSettingClient
     
     public var body: some ReducerOf<Self> {
         BindingReducer()
@@ -36,11 +40,20 @@ public struct NicknameSettingFeature {
             case .binding(\.$nicknameText):
                 state.isValidCount = isValidCount(state.nicknameText)
                 state.isValidRegex = isValidRegex(state.nicknameText)
-                state.isPossibleNickname = state.isValidCount && state.isValidRegex
+                state.isPossibleNickname = false
+                state.isTappedDuplicatedButton = false
                 return .none
             case .binding:
                 return .none
             case .duplicatedCheckButtonTapped:
+                guard state.isValidCount && state.isValidRegex else { return .none }
+                return .run { [nickname = state.nicknameText] send in
+                    let result = try await nicknameSettingClient.checkDuplicatedNickname(nickname)
+                    await send(.responseNicknameDuplicated(result.result))
+                }
+            case .responseNicknameDuplicated(let result):
+                state.isPossibleNickname = !result
+                state.isTappedDuplicatedButton = true
                 return .none
             }
         }

@@ -12,6 +12,7 @@ import ComposableArchitecture
 
 public struct NicknameSettingView: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var appRootManager: AppRootManager
     
     private let store: StoreOf<NicknameSettingFeature>
     
@@ -56,16 +57,28 @@ public struct NicknameSettingView: View {
                     Spacer().frame(width: 12)
                     Text("중복 확인")
                         .font(.body2_M)
-                        .foregroundStyle(Color(asset: CommonAsset.hexC6C8CD))
+                        .foregroundStyle(Color(
+                            asset: viewStore.isValidCount && viewStore.isValidRegex ? CommonAsset.white : CommonAsset.hexC6C8CD
+                        ))
                         .frame(width: 96, height: 45)
                         .background {
-                            Color(asset: CommonAsset.hexF8F8F8)
+                            Color(
+                                asset: viewStore.isValidCount && viewStore.isValidRegex ? CommonAsset.hex0D1327 : CommonAsset.hexF1F1F5
+                            )
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .onTapGesture {
+                            viewStore.send(.duplicatedCheckButtonTapped)
+                        }
                 }
+                Spacer().frame(height: 12)
+                Text("")
+                    .font(.body3)
+                    .foregroundStyle(Color(asset: viewStore.isPossibleNickname ? CommonAsset.hex00C271 : CommonAsset.hexFF334B))
+                    .padding(.leading, 34)
                 Spacer()
                 RectangleBottomButton(isEnable: viewStore.$isPossibleNickname, text: "회원가입 완료") {
-                    viewStore.send(.duplicatedCheckButtonTapped)
+                    appRootManager.currentRoot = .main
                 }
                 .padding(.bottom, 10)
             }
