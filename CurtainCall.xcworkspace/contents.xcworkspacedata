@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:Projects"
+      name = "Projects">
+      <FileRef
+         location = "group:App/App.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Common/Common.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Login/Login.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:NicknameSetting/NicknameSetting.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Onboarding/Onboarding.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:TermsOfService/TermsOfService.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "Dependencies">
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/Alamofire/Alamofire.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/Moya/Moya.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/combine-schedulers/combine-schedulers.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/kakao-ios-sdk/KakaoOpenSDK.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/swift-case-paths/swift-case-paths.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/swift-clocks/swift-clocks.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/swift-collections/swift-collections.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/swift-composable-architecture/swift-composable-architecture.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/swift-concurrency-extras/swift-concurrency-extras.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/swift-custom-dump/swift-custom-dump.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/swift-dependencies/swift-dependencies.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/swift-identified-collections/swift-identified-collections.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/swift-syntax/swift-syntax.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/swiftui-navigation/swiftui-navigation.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/Dependencies/SwiftPackageManager/.build/checkouts/xctest-dynamic-overlay/xctest-dynamic-overlay.xcodeproj">
+      </FileRef>
+   </Group>
+</Workspace>
