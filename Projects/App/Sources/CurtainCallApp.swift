@@ -8,6 +8,7 @@
 import SwiftUI
 import Common
 import Login
+import Main
 
 import ComposableArchitecture
 import KakaoSDKCommon
@@ -47,7 +48,7 @@ struct CurtainCallApp: App {
                     }
                 })
             case .main:
-                Text("메인")
+                MainView()
             }
         }
         .environmentObject(appRootManager)
