@@ -1,0 +1,19 @@
+//
+//  MainView.swift
+//  Common
+//
+//  Created by 김민석 on 2/22/24.
+//
+
+import SwiftUI
+
+public struct MainView: View {
+    
+    public init() { }
+    
+    public var body: some View {
+        TabView {
+            HomeView()
+        }
+    }
+}
