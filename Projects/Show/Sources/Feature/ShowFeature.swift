@@ -13,17 +13,34 @@ import ComposableArchitecture
 public struct ShowFeature {
     public init() { }
     
+    public enum ShowType {
+        case theater
+        case musical
+        
+        var title: String {
+            switch self {
+            case .theater: return "연극"
+            case .musical: return "뮤지컬"
+            }
+        }
+    }
+    
     public struct State: Equatable {
         public init() { }
+        var selectedShowType: ShowType = .theater
     }
     
     public enum Action {
-        
+        case didTappedShowType(ShowType)
     }
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .didTappedShowType(let type):
+                state.selectedShowType = type
+                return .none
+            }
         }
     }
 }

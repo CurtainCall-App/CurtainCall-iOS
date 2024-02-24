@@ -44,6 +44,19 @@ public struct MainFeature {
     }
     
     public var body: some ReducerOf<Self> {
+        Scope(state: \.home, action: \.home) {
+            HomeFeature()
+        }
+        Scope(state: \.show, action: \.show) {
+            ShowFeature()
+        }
+        Scope(state: \.party, action: \.party) {
+            PartyFeature()
+        }
+        Scope(state: \.myPage, action: \.myPage) {
+            MyPageFeature()
+        }
+        
         Reduce { state, action in
             switch action {
             case .home: return .none
