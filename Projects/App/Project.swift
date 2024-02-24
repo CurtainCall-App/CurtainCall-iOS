@@ -20,6 +20,10 @@ let project = Project.makeModule(
         .project(
             target: "Login",
             path: .relativeToRoot("Projects/Login")
+        ),
+        .project(
+            target: "Main",
+            path: .relativeToRoot("Projects/Main")
         )
     ],
     sources: ["Sources/**", "Secret/**"],
