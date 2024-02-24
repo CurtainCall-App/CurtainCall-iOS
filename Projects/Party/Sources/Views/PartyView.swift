@@ -7,8 +7,14 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 public struct PartyView: View {
-    public init() { }
+    private let store: StoreOf<PartyFeature>
+    
+    public init(store: StoreOf<PartyFeature>) { 
+        self.store = store
+    }
     
     public var body: some View {
         VStack {

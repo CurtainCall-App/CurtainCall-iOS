@@ -7,8 +7,14 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 public struct HomeView: View {
-    public init() { }
+    private let store: StoreOf<HomeFeature>
+    
+    public init(store: StoreOf<HomeFeature>) {
+        self.store = store
+    }
     
     public var body: some View {
         VStack {

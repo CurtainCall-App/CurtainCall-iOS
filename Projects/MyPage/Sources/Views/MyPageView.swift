@@ -7,8 +7,14 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 public struct MyPageView: View {
-    public init() { }
+    private let store: StoreOf<MyPageFeature>
+    
+    public init(store: StoreOf<MyPageFeature>) {
+        self.store = store
+    }
     
     public var body: some View {
         VStack {

@@ -48,7 +48,10 @@ struct CurtainCallApp: App {
                     }
                 })
             case .main:
-                MainView()
+                MainView(store: Store(initialState: MainFeature.State()) {
+                    MainFeature()
+                        ._printChanges()
+                })
             }
         }
         .environmentObject(appRootManager)
