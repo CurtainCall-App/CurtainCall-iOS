@@ -39,7 +39,34 @@ public struct ShowView: View {
                         }
                 }
                 .padding(.horizontal, 20)
-                Spacer()
+                ScrollView {
+                    LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 2)) {
+                        ForEach(0...20, id: \.self) { _ in
+                            VStack(spacing: 10) {
+                                ZStack(alignment: .bottom) {
+                                    Color.red.frame(height: 230)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    HStack {
+                                        Spacer()
+                                        Circle()
+                                            .background(.black)
+                                            .frame(width: 28, height: 28)
+                                            .padding(.trailing, 10)
+                                            .padding(.bottom, 10)
+                                    }
+                                }
+                                Text("작품 제목")
+                                    .font(.body2_SB)
+                                Spacer().frame(height: 20)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 17)
+                }
+            }
+            .onAppear {
+                viewStore.send(.fetchShowList(page: 0))
             }
         }
         .sheet(store: self.store.scope(state: \.$bottomSheet, action: \.bottomSheet)) { store in
@@ -47,6 +74,7 @@ public struct ShowView: View {
                 .presentationDetents([.height(270)])
                 .presentationDragIndicator(.visible)
         }
+        
     }
     
     private var topbar: some View {

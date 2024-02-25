@@ -27,6 +27,15 @@ public struct ShowSortFeature {
             case .dictionary: return "가나다순"
             }
         }
+        
+        var APIName: String {
+            switch self {
+            case .popular: return "reviewGradeAvg"
+            case .star: return "reviewGradeAvg"
+            case .endTime: return "endDate"
+            case .dictionary: return "name"
+            }
+        }
     }
     
     public struct State: Equatable {

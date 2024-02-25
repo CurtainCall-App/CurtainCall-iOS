@@ -23,24 +23,44 @@ public struct ShowFeature {
             case .musical: return "뮤지컬"
             }
         }
+        var APIName: String {
+            switch self {
+            case .theater: return "PLAY"
+            case .musical: return "MUSICAL"
+            }
+        }
     }
     
     public struct State: Equatable {
         public init() { }
         var selectedShowType: ShowType = .theater
         var selectedCategory: ShowSortFeature.CategoryType = .popular
+        var showList: [ShowResponseContent] = []
+        var page: Int = 0
         @PresentationState var bottomSheet: ShowSortFeature.State?
     }
     
     public enum Action {
+        case fetchShowList(page: Int)
         case didTappedShowType(ShowType)
         case didTappedCategory
         case bottomSheet(PresentationAction<ShowSortFeature.Action>)
+        case showListResponse([ShowResponseContent])
     }
+    
+    @Dependency (\.showClient) var showClient
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .fetchShowList(let page):
+                return .run { [
+                    showType = state.selectedShowType,
+                    categoryType = state.selectedCategory
+                ] send in
+                    try await send(.showListResponse(self.showClient.fetchShowList(page, showType, categoryType).content))
+                }
+                
             case .didTappedShowType(let type):
                 state.selectedShowType = type
                 return .none
@@ -52,6 +72,9 @@ public struct ShowFeature {
                 state.bottomSheet = nil
                 return .none
             case .bottomSheet:
+                return .none
+            case .showListResponse(let response):
+                state.showList = response
                 return .none
             }
         }
