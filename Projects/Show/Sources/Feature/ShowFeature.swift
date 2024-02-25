@@ -28,10 +28,14 @@ public struct ShowFeature {
     public struct State: Equatable {
         public init() { }
         var selectedShowType: ShowType = .theater
+        var selectedCategory: ShowSortFeature.CategoryType = .popular
+        @PresentationState var bottomSheet: ShowSortFeature.State?
     }
     
     public enum Action {
         case didTappedShowType(ShowType)
+        case didTappedCategory
+        case bottomSheet(PresentationAction<ShowSortFeature.Action>)
     }
     
     public var body: some ReducerOf<Self> {
@@ -40,7 +44,19 @@ public struct ShowFeature {
             case .didTappedShowType(let type):
                 state.selectedShowType = type
                 return .none
+            case .didTappedCategory:
+                state.bottomSheet = ShowSortFeature.State(categoryType: state.selectedCategory)
+                return .none
+            case .bottomSheet(.presented(.didTappedCategory(let type))):
+                state.selectedCategory = type
+                state.bottomSheet = nil
+                return .none
+            case .bottomSheet:
+                return .none
             }
+        }
+        .ifLet(\.$bottomSheet, action: \.bottomSheet) {
+            ShowSortFeature()
         }
     }
 }

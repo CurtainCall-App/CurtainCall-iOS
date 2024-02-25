@@ -24,19 +24,28 @@ public struct ShowView: View {
                 topbar
                 Spacer().frame(height: 20)
                 HStack(spacing: 8) {
-                    makeCategoryButton(type: .theater)
+                    makeShowTypeButton(type: .theater)
                         .onTapGesture {
                             viewStore.send(.didTappedShowType(.theater))
                         }
-                    makeCategoryButton(type: .musical)
+                    makeShowTypeButton(type: .musical)
                         .onTapGesture {
                             viewStore.send(.didTappedShowType(.musical))
                         }
                     Spacer()
+                    categoryButton
+                        .onTapGesture {
+                            viewStore.send(.didTappedCategory)
+                        }
                 }
                 .padding(.horizontal, 20)
                 Spacer()
             }
+        }
+        .sheet(store: self.store.scope(state: \.$bottomSheet, action: \.bottomSheet)) { store in
+            ShowSortBottomSheet(store: store)
+                .presentationDetents([.height(270)])
+                .presentationDragIndicator(.visible)
         }
     }
     
@@ -54,7 +63,7 @@ public struct ShowView: View {
         .frame(height: 44)
     }
     
-    private func makeCategoryButton(type: ShowFeature.ShowType) -> some View {
+    private func makeShowTypeButton(type: ShowFeature.ShowType) -> some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             Text(type.title)
                 .font(.body2_SB)
@@ -64,6 +73,15 @@ public struct ShowView: View {
                 .background(viewStore.selectedShowType == type ? Color.primary1 : Color.gray9)
                 .clipShape(RoundedRectangle(cornerRadius: 30))
         }
-        
+    }
+    
+    private var categoryButton: some View {
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            HStack(spacing: 2) {
+                Text(viewStore.selectedCategory.title)
+                    .font(.body3)
+                Image(asset: CommonAsset.arrowTriangleDownFill)
+            }
+        }
     }
 }
