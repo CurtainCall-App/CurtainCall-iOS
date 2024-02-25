@@ -34,7 +34,7 @@ public struct ShowSortBottomSheet: View {
                         }
                     }
                     .frame(height: 50)
-                    .onTapGesture {
+                    .onTapGestureRectangle {
                         viewStore.send(.didTappedCategory(type))
                     }
                 }
