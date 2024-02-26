@@ -13,7 +13,8 @@ let project = Project.makeModule(
     product: .staticFramework,
     dependencies: [
         .external(name: "ComposableArchitecture"),
-        .external(name: "Moya")
+        .external(name: "Moya"),
+        .external(name: "NukeUI")
     ],
     sources: ["Sources/**", "Secret/**"],
     resources: ["Resources/**"]
