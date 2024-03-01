@@ -10,6 +10,7 @@ import SwiftUI
 import Common
 
 import ComposableArchitecture
+import NukeUI
 
 public struct ShowView: View {
     private let store: StoreOf<ShowFeature>
@@ -40,23 +41,35 @@ public struct ShowView: View {
                 }
                 .padding(.horizontal, 20)
                 ScrollView {
-                    LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 2)) {
-                        ForEach(0...20, id: \.self) { _ in
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+                        ForEach(viewStore.showList, id: \.self) { show in
                             VStack(spacing: 10) {
                                 ZStack(alignment: .bottom) {
-                                    Color.red.frame(height: 230)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    LazyImage(url: URL(string: show.poster)) { state in
+                                        if let image = state.image {
+                                            image.resizable().aspectRatio(contentMode: .fill)
+                                        } else if state.error != nil {
+                                            // TODO: 에러처리
+                                            EmptyView().onAppear {
+                                                print("##Error##")
+                                            }
+                                        } else {
+                                            ProgressView()
+                                        }
+                                    }
+                                    .frame(width: 160, height: 250)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    
                                     HStack {
                                         Spacer()
-                                        Circle()
-                                            .background(.black)
+                                        Image(asset: CommonAsset.showFavoriteUnfill)
                                             .frame(width: 28, height: 28)
-                                            .padding(.trailing, 10)
-                                            .padding(.bottom, 10)
                                     }
+                                    .padding([.bottom, .trailing], 10)
                                 }
-                                Text("작품 제목")
+                                Text(show.name)
                                     .font(.body2_SB)
+                                    .lineLimit(1)
                                 Spacer().frame(height: 20)
                             }
                         }

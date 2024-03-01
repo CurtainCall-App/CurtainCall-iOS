@@ -11,7 +11,7 @@ public struct FetchShowResponseDTO: Decodable {
     let content: [ShowResponseContent]
 }
 
-public struct ShowResponseContent: Equatable, Decodable {
+public struct ShowResponseContent: Hashable, Equatable, Decodable {
     public static func == (lhs: ShowResponseContent, rhs: ShowResponseContent) -> Bool {
         lhs.id == rhs.id
     }
@@ -30,12 +30,12 @@ public struct ShowResponseContent: Equatable, Decodable {
     let reviewGradeAvg: Int
 }
 
-enum Genre: String, Decodable {
+enum Genre: String, Decodable ,Hashable {
     case play = "PLAY"
     case musical = "MUSICAL"
 }
 
-struct ShowTime: Decodable {
+struct ShowTime: Decodable, Hashable {
     let dayOfWeek: DayOfWeek
     let time: String
 }
