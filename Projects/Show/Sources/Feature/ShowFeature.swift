@@ -105,6 +105,9 @@ public struct ShowFeature {
             case .didTappedSearch:
                 state.path.append(.showSearch())
                 return .none
+            case .path(.element(id: _, action: .showSeacrch(.didTappedCancelButton))):
+                state.path.removeAll()
+                return .none
             case .path: return .none
             }
         }

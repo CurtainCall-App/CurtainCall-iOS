@@ -15,15 +15,27 @@ public struct ShowSearchFeature {
     
     public struct State: Equatable {
         public init() { }
+        @BindingState var showTitleText: String = ""
     }
     
-    public enum Action {
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
+        case didTappedCancelButton
         
     }
     
     public var body: some ReducerOf<Self> {
+        BindingReducer()
+        
         Reduce { state, action in
-            return .none
+            switch action {
+            case .binding(\.$showTitleText):
+                return .none
+            case .binding:
+                return .none
+            case .didTappedCancelButton:
+                return .none
+            }
         }
     }
 }
