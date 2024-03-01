@@ -13,11 +13,17 @@ import Moya
 
 enum ShowAPI {
     case fetchShowList(page: Int, genre: ShowFeature.ShowType, sort: ShowSortFeature.CategoryType)
+    case fetchShowSearchList(keyword: String)
 }
 
 extension ShowAPI: TargetType {
     var baseURL: URL { URL(string: "\(Secret.BASE_URL)")! }
-    var path: String { "/shows" }
+    var path: String {
+        switch self {
+        case .fetchShowList: return "/shows"
+        case .fetchShowSearchList: return "/search/shows"
+        }
+    }
     var method: Moya.Method { .get }
     
     var task: Moya.Task {
@@ -27,6 +33,9 @@ extension ShowAPI: TargetType {
             param.updateValue(page, forKey: "page")
             param.updateValue(genre.APIName, forKey: "genre")
             param.updateValue(sort.APIName, forKey: "sort")
+            return .requestParameters(parameters: param, encoding: URLEncoding.default)
+        case .fetchShowSearchList(let keyword):
+            param.updateValue(keyword, forKey: "keyword")
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
         }
     }

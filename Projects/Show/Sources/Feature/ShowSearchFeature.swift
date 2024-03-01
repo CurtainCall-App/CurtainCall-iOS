@@ -21,6 +21,7 @@ public struct ShowSearchFeature {
         }
         @BindingState var showTitleText: String = ""
         var recentSearches: [String]
+        var showList: [ShowResponseContent] = []
     }
     
     public enum Action: BindableAction {
@@ -28,8 +29,13 @@ public struct ShowSearchFeature {
         case didTappedCancelButton
         case didTappedRemoveRecentSearches(index: Int)
         case didTappedAllRemoveRecentSearches
-        
+        case showListResponse([ShowResponseContent])
+        case fetchShowList(keyword: String)
     }
+    
+    @Dependency (\.showClient) var showClient
+    @Dependency (\.continuousClock) var clock
+    
     
     public var body: some ReducerOf<Self> {
         BindingReducer()
@@ -37,7 +43,10 @@ public struct ShowSearchFeature {
         Reduce { state, action in
             switch action {
             case .binding(\.$showTitleText):
-                return .none
+                if state.showTitleText.isEmpty { return .none }
+                return .run { [showTitle = state.showTitleText] send in
+                    await send(.fetchShowList(keyword: showTitle))
+                }
             case .binding:
                 return .none
             case .didTappedCancelButton:
@@ -49,6 +58,14 @@ public struct ShowSearchFeature {
             case .didTappedAllRemoveRecentSearches:
                 state.recentSearches = []
                 UserDefaults.standard.setValue([], forKey: UserDefaultKeys.showRecentSearches.rawValue)
+                return .none
+            case .fetchShowList(let keyword):
+                return .run { send in
+                    try await send(.showListResponse(self.showClient.fetchShowSearchList(keyword).content))
+                }
+                
+            case .showListResponse(let response):
+                state.showList = response
                 return .none
             }
         }

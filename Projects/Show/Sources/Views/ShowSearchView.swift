@@ -69,24 +69,20 @@ public struct ShowSearchView: View {
                 } else {
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
-                            ForEach(1...5, id: \.self) { _ in
-//                            ForEach(viewStore.showList, id: \.self) { show in
+                            ForEach(viewStore.showList, id: \.self) { show in
                                 VStack(spacing: 10) {
                                     ZStack(alignment: .bottom) {
-//                                        LazyImage(url: URL(string: show.poster)) { state in
-//                                            if let image = state.image {
-//                                                image.resizable().aspectRatio(contentMode: .fill)
-//                                            } else if state.error != nil {
-//                                                // TODO: 에러처리
-//                                            } else {
-//                                                ProgressView()
-//                                            }
-//                                        }
-                                        Color.red
+                                        LazyImage(url: URL(string: show.poster)) { state in
+                                            if let image = state.image {
+                                                image.resizable().aspectRatio(contentMode: .fill)
+                                            } else if state.error != nil {
+                                                // TODO: 에러처리
+                                            } else {
+                                                ProgressView()
+                                            }
+                                        }
                                         .frame(width: 160, height: 250)
                                         .clipShape(RoundedRectangle(cornerRadius: 12))
-                                        .onAppear {
-                                        }
                                         
                                         HStack {
                                             Spacer()
@@ -95,7 +91,7 @@ public struct ShowSearchView: View {
                                         }
                                         .padding([.bottom, .trailing], 10)
                                     }
-                                    Text("작품명")
+                                    Text(show.name)
                                         .font(.body2_SB)
                                         .lineLimit(1)
                                     Spacer().frame(height: 20)
