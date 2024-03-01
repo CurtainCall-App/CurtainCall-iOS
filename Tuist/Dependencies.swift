@@ -21,7 +21,12 @@ let dependencies = Dependencies(
             ),
             .remote(
                 url: "https://github.com/kakao/kakao-ios-sdk",
-                requirement: .upToNextMajor(from: "2.20.0"))
+                requirement: .upToNextMajor(from: "2.20.0")
+            ),
+            .remote(
+                url: "https://github.com/kean/Nuke",
+                requirement: .upToNextMajor(from: "12.0.0")
+            )
             
         ]),
     platforms: [.iOS]

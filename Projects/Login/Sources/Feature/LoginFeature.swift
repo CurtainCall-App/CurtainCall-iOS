@@ -23,8 +23,7 @@ public struct LoginFeature {
         var appRootView: AppRootManager.AppRootType = .login
     }
     
-    public enum Action: BindableAction {
-        case binding(BindingAction<State>)
+    public enum Action {
         case appleLoginTapped
         case kakaoLoginTapped
         case naverLoginTapped
@@ -87,9 +86,6 @@ public struct LoginFeature {
                 UserDefaults.standard.setValue(response.accessToken, forKey: UserDefaultKeys.accessToken.rawValue)
                 return .none
             case .withoutLoginButtonTapped:
-                return .none
-                
-            case .binding(_):
                 return .none
             case .path(.element(id: _, action: .termsOfService(.nextButtonTapped))):
                 state.path.append(.nicknameSetting())

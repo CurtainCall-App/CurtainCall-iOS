@@ -20,8 +20,9 @@ public final class AppRootManager: ObservableObject {
     }
     
     public func changeFirstView() {
-        if let _ = UserDefaults.standard.string(forKey: UserDefaultKeys.accessToken.rawValue) {
+        if let accessToken = UserDefaults.standard.string(forKey: UserDefaultKeys.accessToken.rawValue) {
             currentRoot = .main
+            print("AccessToken: \(accessToken)")
         } else {
             currentRoot = .login
         }

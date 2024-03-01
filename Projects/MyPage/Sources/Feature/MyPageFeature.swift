@@ -11,11 +11,7 @@ import ComposableArchitecture
 
 @Reducer
 public struct MyPageFeature {
-    private let store: StoreOf<MyPageFeature>
-    
-    public init(store: StoreOf<MyPageFeature>) {
-        self.store = store
-    }
+    public init() { }
     
     public struct State: Equatable {
         public init() { }
