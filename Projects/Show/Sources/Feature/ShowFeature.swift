@@ -73,9 +73,12 @@ public struct ShowFeature {
                 state.bottomSheet = ShowSortFeature.State(categoryType: state.selectedCategory)
                 return .none
             case .bottomSheet(.presented(.didTappedCategory(let type))):
+                defer { state.bottomSheet = nil }
+                if state.selectedCategory == type { return .none }
                 state.selectedCategory = type
-                state.bottomSheet = nil
-                return .none
+                return .run { send in
+                    await send(.fetchShowList(page: 0))
+                }
             case .bottomSheet:
                 return .none
             case .showListResponse(let response):
