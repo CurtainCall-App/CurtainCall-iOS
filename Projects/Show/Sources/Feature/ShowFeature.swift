@@ -62,8 +62,13 @@ public struct ShowFeature {
                 }
                 
             case .didTappedShowType(let type):
+                if type == state.selectedShowType {
+                    return .none
+                }
                 state.selectedShowType = type
-                return .none
+                return .run { send in
+                    await send(.fetchShowList(page: 0))
+                }
             case .didTappedCategory:
                 state.bottomSheet = ShowSortFeature.State(categoryType: state.selectedCategory)
                 return .none

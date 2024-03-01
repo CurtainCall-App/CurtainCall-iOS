@@ -50,9 +50,6 @@ public struct ShowView: View {
                                             image.resizable().aspectRatio(contentMode: .fill)
                                         } else if state.error != nil {
                                             // TODO: 에러처리
-                                            EmptyView().onAppear {
-                                                print("##Error##")
-                                            }
                                         } else {
                                             ProgressView()
                                         }
