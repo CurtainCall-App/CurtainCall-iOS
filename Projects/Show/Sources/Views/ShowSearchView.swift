@@ -51,9 +51,9 @@ public struct ShowSearchView: View {
                     }
                     Spacer().frame(height: 20)
                     VStack(spacing: 24) {
-                        makeRecentSearchesItem(title: "작품명")
-                        makeRecentSearchesItem(title: "작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명")
-                        makeRecentSearchesItem(title: "작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명작품명")
+                        ForEach(0..<viewStore.recentSearches.count, id: \.self) { index in
+                            makeRecentSearchesItem(title: viewStore.recentSearches[index], index: index)
+                        }
                         Spacer()
                     }
                     Spacer()
@@ -103,7 +103,7 @@ public struct ShowSearchView: View {
         .navigationBarBackButtonHidden()
     }
     
-    private func makeRecentSearchesItem(title: String) -> some View {
+    private func makeRecentSearchesItem(title: String, index: Int) -> some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             HStack {
                 HStack {
@@ -115,6 +115,9 @@ public struct ShowSearchView: View {
                     Spacer().frame(width: 8)
                     Image(asset: CommonAsset.iconSearchClose)
                         .padding(.trailing, 12)
+                        .onTapGesture {
+                            viewStore.send(.didTappedRemoveRecentSearches(index: index))
+                        }
                 }
                 .background(
                     Capsule(style: .circular)

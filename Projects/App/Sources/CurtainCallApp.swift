@@ -25,6 +25,8 @@ struct CurtainCallApp: App {
         initKakaoLoginSDK()
         initNaverLoginSDK()
         UITextField.appearance().clearButtonMode = .whileEditing
+        // TODO: 테스트 용도
+        UserDefaults.standard.set(["작품명1", "작품명2", "작품명3"], forKey: UserDefaultKeys.showRecentSearches.rawValue)
     }
     
     var body: some Scene {

@@ -122,7 +122,9 @@ public struct ShowFeature {
     @Reducer
     public struct Path {
         public enum State: Equatable {
-            case showSearch(ShowSearchFeature.State = .init())
+            case showSearch(ShowSearchFeature.State = .init(
+                recentSearches: UserDefaults.standard.array(forKey: UserDefaultKeys.showRecentSearches.rawValue) as? [String] ?? []
+            ))
         }
         
         public enum Action {
