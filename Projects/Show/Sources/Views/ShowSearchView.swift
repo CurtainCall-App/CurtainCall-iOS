@@ -45,9 +45,14 @@ public struct ShowSearchView: View {
                             .font(.body2_SB)
                             .foregroundStyle(.black)
                         Spacer()
-                        Text("전체 삭제")
-                            .font(.body2_SB)
-                            .foregroundStyle(Color.gray6)
+                        if !viewStore.recentSearches.isEmpty {
+                            Text("전체 삭제")
+                                .font(.body2_SB)
+                                .foregroundStyle(Color.gray6)
+                                .onTapGesture {
+                                    viewStore.send(.didTappedAllRemoveRecentSearches)
+                                }
+                        }
                     }
                     Spacer().frame(height: 20)
                     VStack(spacing: 24) {

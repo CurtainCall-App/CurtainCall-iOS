@@ -123,7 +123,7 @@ public struct ShowFeature {
     public struct Path {
         public enum State: Equatable {
             case showSearch(ShowSearchFeature.State = .init(
-                recentSearches: UserDefaults.standard.array(forKey: UserDefaultKeys.showRecentSearches.rawValue) as? [String] ?? []
+                recentSearches: (UserDefaults.standard.array(forKey: UserDefaultKeys.showRecentSearches.rawValue) as? [String] ?? []).suffix(10)
             ))
         }
         

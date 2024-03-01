@@ -27,6 +27,7 @@ public struct ShowSearchFeature {
         case binding(BindingAction<State>)
         case didTappedCancelButton
         case didTappedRemoveRecentSearches(index: Int)
+        case didTappedAllRemoveRecentSearches
         
     }
     
@@ -44,6 +45,10 @@ public struct ShowSearchFeature {
             case .didTappedRemoveRecentSearches(let index):
                 state.recentSearches.remove(at: index)
                 UserDefaults.standard.setValue(state.recentSearches, forKey: UserDefaultKeys.showRecentSearches.rawValue)
+                return .none
+            case .didTappedAllRemoveRecentSearches:
+                state.recentSearches = []
+                UserDefaults.standard.setValue([], forKey: UserDefaultKeys.showRecentSearches.rawValue)
                 return .none
             }
         }
