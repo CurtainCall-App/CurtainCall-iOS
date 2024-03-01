@@ -29,8 +29,10 @@ public struct ShowSearchFeature {
         case didTappedCancelButton
         case didTappedRemoveRecentSearches(index: Int)
         case didTappedAllRemoveRecentSearches
+        case didTappedShow(title: String)
         case showListResponse([ShowResponseContent])
         case fetchShowList(keyword: String)
+        
     }
     
     @Dependency (\.showClient) var showClient
@@ -66,6 +68,10 @@ public struct ShowSearchFeature {
                 
             case .showListResponse(let response):
                 state.showList = response
+                return .none
+            case .didTappedShow(let title):
+                state.recentSearches.append(title)
+                UserDefaults.standard.setValue(state.recentSearches, forKey: UserDefaultKeys.showRecentSearches.rawValue)
                 return .none
             }
         }
