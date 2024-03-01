@@ -55,11 +55,15 @@ public struct ShowSearchView: View {
                         }
                     }
                     Spacer().frame(height: 20)
-                    VStack(spacing: 24) {
-                        ForEach(0..<viewStore.recentSearches.count, id: \.self) { index in
-                            makeRecentSearchesItem(title: viewStore.recentSearches[index], index: index)
+                    if !viewStore.recentSearches.isEmpty {
+                        VStack(spacing: 24) {
+                            ForEach(0..<viewStore.recentSearches.count, id: \.self) { index in
+                                makeRecentSearchesItem(title: viewStore.recentSearches[index], index: index)
+                            }
+                            Spacer()
                         }
-                        Spacer()
+                    } else {
+                        emptyView
                     }
                     Spacer()
                 } else {
@@ -106,6 +110,17 @@ public struct ShowSearchView: View {
             .padding(.horizontal, 16)
         }
         .navigationBarBackButtonHidden()
+    }
+    
+    private var emptyView: some View {
+        VStack(spacing: 16) {
+            Spacer()
+            Image(asset: CommonAsset.showSearchEmptyListIcon60px)
+            Text("검색 내역이 없어요")
+                .font(.body2_SB)
+                .foregroundStyle(Color.primary1)
+            Spacer()
+        }
     }
     
     private func makeRecentSearchesItem(title: String, index: Int) -> some View {
