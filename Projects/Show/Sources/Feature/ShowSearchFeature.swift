@@ -30,6 +30,7 @@ public struct ShowSearchFeature {
         case didTappedRemoveRecentSearches(index: Int)
         case didTappedAllRemoveRecentSearches
         case didTappedShow(title: String)
+        case didTappedRecentSearches(title: String)
         case showListResponse([ShowResponseContent])
         case fetchShowList(keyword: String)
         
@@ -73,6 +74,11 @@ public struct ShowSearchFeature {
                 state.recentSearches.append(title)
                 UserDefaults.standard.setValue(state.recentSearches, forKey: UserDefaultKeys.showRecentSearches.rawValue)
                 return .none
+            case .didTappedRecentSearches(let title):
+                state.showTitleText = title
+                return .run { [showTitle = state.showTitleText] send in
+                    await send(.fetchShowList(keyword: showTitle))
+                }
             }
         }
     }

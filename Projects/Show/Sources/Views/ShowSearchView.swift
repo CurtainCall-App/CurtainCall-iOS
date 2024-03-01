@@ -59,6 +59,9 @@ public struct ShowSearchView: View {
                         VStack(spacing: 24) {
                             ForEach(0..<viewStore.recentSearches.count, id: \.self) { index in
                                 makeRecentSearchesItem(title: viewStore.recentSearches[index], index: index)
+                                    .onTapGesture {
+                                        viewStore.send(.didTappedRecentSearches(title: viewStore.recentSearches[index]))
+                                    }
                             }
                             Spacer()
                         }
