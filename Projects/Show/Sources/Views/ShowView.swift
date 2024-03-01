@@ -40,6 +40,12 @@ public struct ShowView: View {
                         }
                 }
                 .padding(.horizontal, 20)
+                ZStack {
+                    if viewStore.isShowTooltip {
+                        tooltipView
+                    }
+                }
+                .padding(.trailing, 28)
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
                         ForEach(viewStore.showList, id: \.self) { show in
@@ -124,6 +130,30 @@ public struct ShowView: View {
                 Text(viewStore.selectedCategory.title)
                     .font(.body3)
                 Image(asset: CommonAsset.arrowTriangleDownFill)
+            }
+        }
+    }
+    
+    private var tooltipView: some View {
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            HStack {
+                Spacer()
+                HStack(spacing: 9) {
+                    Text("인기순은 현재 상영 중인 작품 50개만 볼 수 있어요!")
+                        .font(.body4)
+                        .foregroundStyle(.white)
+                        .offset(y: 2.5)
+                    Image(asset: CommonAsset.xmarksWhite16px)
+                        .foregroundStyle(.white)
+                        .frame(width: 16, height: 16)
+                        .offset(y: 2.5)
+                        .onTapGesture {
+                            viewStore.send(.dismissTooltip)
+                        }
+                }
+                .background(
+                    Image(asset: CommonAsset.showTooltipView)
+                )
             }
         }
     }

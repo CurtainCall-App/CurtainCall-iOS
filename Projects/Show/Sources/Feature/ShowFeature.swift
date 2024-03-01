@@ -7,6 +7,7 @@
 
 import Foundation
 
+import Common
 import ComposableArchitecture
 
 @Reducer
@@ -38,6 +39,7 @@ public struct ShowFeature {
         var showList: [ShowResponseContent] = []
         var page: Int = 0
         @PresentationState var bottomSheet: ShowSortFeature.State?
+        var isShowTooltip = !UserDefaults.standard.bool(forKey: UserDefaultKeys.isShowPopluarTooltip.rawValue)
     }
     
     public enum Action {
@@ -47,6 +49,7 @@ public struct ShowFeature {
         case bottomSheet(PresentationAction<ShowSortFeature.Action>)
         case showListResponse([ShowResponseContent])
         case didScrollToLastItem
+        case dismissTooltip
     }
     
     @Dependency (\.showClient) var showClient
@@ -92,7 +95,10 @@ public struct ShowFeature {
                 return .run { [page = state.page] send in
                     await send(.fetchShowList(page: page + 1))
                 }
-                
+            case .dismissTooltip:
+                UserDefaults.standard.set(true, forKey: UserDefaultKeys.isShowPopluarTooltip.rawValue)
+                state.isShowTooltip = false
+                return .none
             }
         }
         .ifLet(\.$bottomSheet, action: \.bottomSheet) {
