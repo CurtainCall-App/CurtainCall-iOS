@@ -56,6 +56,11 @@ public struct ShowView: View {
                                     }
                                     .frame(width: 160, height: 250)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .onAppear {
+                                        if show == viewStore.showList.last {
+                                            viewStore.send(.didScrollToLastItem)
+                                        }
+                                    }
                                     
                                     HStack {
                                         Spacer()

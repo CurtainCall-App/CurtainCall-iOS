@@ -46,6 +46,7 @@ public struct ShowFeature {
         case didTappedCategory
         case bottomSheet(PresentationAction<ShowSortFeature.Action>)
         case showListResponse([ShowResponseContent])
+        case didScrollToLastItem
     }
     
     @Dependency (\.showClient) var showClient
@@ -54,6 +55,7 @@ public struct ShowFeature {
         Reduce { state, action in
             switch action {
             case .fetchShowList(let page):
+                state.page = page
                 return .run { [
                     showType = state.selectedShowType,
                     categoryType = state.selectedCategory
@@ -66,6 +68,7 @@ public struct ShowFeature {
                     return .none
                 }
                 state.selectedShowType = type
+                state.showList = []
                 return .run { send in
                     await send(.fetchShowList(page: 0))
                 }
@@ -76,14 +79,20 @@ public struct ShowFeature {
                 defer { state.bottomSheet = nil }
                 if state.selectedCategory == type { return .none }
                 state.selectedCategory = type
+                state.showList = []
                 return .run { send in
                     await send(.fetchShowList(page: 0))
                 }
             case .bottomSheet:
                 return .none
             case .showListResponse(let response):
-                state.showList = response
+                state.showList.append(contentsOf: response)
                 return .none
+            case .didScrollToLastItem:
+                return .run { [page = state.page] send in
+                    await send(.fetchShowList(page: page + 1))
+                }
+                
             }
         }
         .ifLet(\.$bottomSheet, action: \.bottomSheet) {
