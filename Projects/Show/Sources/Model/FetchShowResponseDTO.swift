@@ -27,7 +27,7 @@ public struct ShowResponseContent: Hashable, Equatable, Decodable {
     let runtime: String
     let reviewCount: Int
     let reviewGradeSum: Int
-    let reviewGradeAvg: Int
+    let reviewGradeAvg: Double
 }
 
 enum Genre: String, Decodable ,Hashable {

@@ -20,7 +20,7 @@ public struct LoginView: View {
     public init(store: StoreOf<LoginFeature>) {
         self.store = store
     }
-    @State var isNext: Bool = false
+    
     public var body: some View {
         NavigationStackStore(self.store.scope(state: \.path, action: \.path)) {
             WithViewStore(self.store, observe: { $0 }) { viewStore in

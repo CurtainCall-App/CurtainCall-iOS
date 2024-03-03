@@ -40,6 +40,7 @@ public struct ShowFeature {
         var page: Int = 0
         @PresentationState var bottomSheet: ShowSortFeature.State?
         var isShowTooltip = !UserDefaults.standard.bool(forKey: UserDefaultKeys.isShowPopluarTooltip.rawValue)
+        var path = StackState<Path.State>()
     }
     
     public enum Action {
@@ -50,6 +51,8 @@ public struct ShowFeature {
         case showListResponse([ShowResponseContent])
         case didScrollToLastItem
         case dismissTooltip
+        case path(StackAction<Path.State, Path.Action>)
+        case didTappedSearch
     }
     
     @Dependency (\.showClient) var showClient
@@ -99,10 +102,39 @@ public struct ShowFeature {
                 UserDefaults.standard.set(true, forKey: UserDefaultKeys.isShowPopluarTooltip.rawValue)
                 state.isShowTooltip = false
                 return .none
+            case .didTappedSearch:
+                state.path.append(.showSearch())
+                return .none
+            case .path(.element(id: _, action: .showSeacrch(.didTappedCancelButton))):
+                state.path.removeAll()
+                return .none
+            case .path: return .none
             }
         }
         .ifLet(\.$bottomSheet, action: \.bottomSheet) {
             ShowSortFeature()
+        }
+        .forEach(\.path, action: \.path) {
+            Path()
+        }
+    }
+    
+    @Reducer
+    public struct Path {
+        public enum State: Equatable {
+            case showSearch(ShowSearchFeature.State = .init(
+                recentSearches: (UserDefaults.standard.array(forKey: UserDefaultKeys.showRecentSearches.rawValue) as? [String] ?? []).suffix(10)
+            ))
+        }
+        
+        public enum Action {
+            case showSeacrch(ShowSearchFeature.Action)
+        }
+        
+        public var body: some Reducer<State, Action> {
+            Scope(state: \.showSearch, action: \.showSeacrch) {
+                ShowSearchFeature()
+            }
         }
     }
 }

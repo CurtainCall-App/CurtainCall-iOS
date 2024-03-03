@@ -24,6 +24,7 @@ struct CurtainCallApp: App {
         NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
         initKakaoLoginSDK()
         initNaverLoginSDK()
+        UITextField.appearance().clearButtonMode = .whileEditing
     }
     
     var body: some Scene {
