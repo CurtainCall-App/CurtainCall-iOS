@@ -53,6 +53,7 @@ public struct ShowFeature {
         case dismissTooltip
         case path(StackAction<Path.State, Path.Action>)
         case didTappedSearch
+        case didTappedShow
     }
     
     @Dependency (\.showClient) var showClient
@@ -108,6 +109,12 @@ public struct ShowFeature {
             case .path(.element(id: _, action: .showSeacrch(.didTappedCancelButton))):
                 state.path.removeAll()
                 return .none
+            case .path(.element(id: _, action: .showSeacrch(.didTappedShow))):
+                state.path.append(.showDetail())
+                return .none
+            case .didTappedShow:
+                state.path.append(.showDetail())
+                return .none
             case .path: return .none
             }
         }
@@ -125,15 +132,21 @@ public struct ShowFeature {
             case showSearch(ShowSearchFeature.State = .init(
                 recentSearches: (UserDefaults.standard.array(forKey: UserDefaultKeys.showRecentSearches.rawValue) as? [String] ?? []).suffix(10)
             ))
+            case showDetail(ShowDetailFeature.State = .init())
         }
         
         public enum Action {
             case showSeacrch(ShowSearchFeature.Action)
+            case showDetail(ShowDetailFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
             Scope(state: \.showSearch, action: \.showSeacrch) {
                 ShowSearchFeature()
+            }
+            
+            Scope(state: \.showDetail, action: \.showDetail) {
+                ShowDetailFeature()
             }
         }
     }
