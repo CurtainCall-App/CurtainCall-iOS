@@ -19,6 +19,7 @@ extension Color {
 
 public extension Color {
     static let primary1 = Color(hex: 0x0D1327)
+    static let primary2 = Color(hex: 0xD4C6FD)
     static let gray1 = Color(hex: 0x1C1E21)
     static let gray2 = Color(hex: 0x32363D)
     static let gray3 = Color(hex: 0x464B51)
