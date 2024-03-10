@@ -13,17 +13,25 @@ import ComposableArchitecture
 public struct ShowDetailFeature {
     public init() { }
     
+    public enum ShowDetailCategoryType: String, CaseIterable {
+        case detail = "상세 정보"
+        case review = "공연 리뷰"
+        case lostItem = "분실물"
+    }
+    
     public struct State: Equatable {
         public init(showId: String) {
             self.showId = showId
         }
         var showId: String
         var showInfo: ShowDetailResponseContent?
+        var currentSelectedCategory: ShowDetailCategoryType = .detail
     }
     
     public enum Action {
         case fetchDetailResponse
         case showDetailResponse(ShowDetailResponseContent)
+        case didTappedCategory(ShowDetailCategoryType)
     }
     
     @Dependency (\.showClient) var showClient
@@ -41,6 +49,9 @@ public struct ShowDetailFeature {
                 }
             case .showDetailResponse(let response):
                 state.showInfo = response
+                return .none
+            case .didTappedCategory(let type):
+                state.currentSelectedCategory = type
                 return .none
             }
         }

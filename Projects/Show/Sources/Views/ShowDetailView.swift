@@ -31,50 +31,56 @@ public struct ShowDetailView: View {
                     Spacer()
                 }
                 VStack(spacing: 0) {
-                    HStack {
-                        Spacer()
-                        Image(asset: CommonAsset.showDetailFavoriteHeartUnfill)
-                    }
-                    .padding([.top, .trailing], 18)
-                    
-                    LazyImage(url: URL(string: viewStore.showInfo?.poster ?? "")) { state in
-                        if let image = state.image {
-                            image.resizable().aspectRatio(contentMode: .fill)
-                        } else if state.error != nil {
-                        } else {
-                            ProgressView()
+                    VStack(spacing: 0) {
+                        HStack {
+                            Spacer()
+                            Image(asset: CommonAsset.showDetailFavoriteHeartUnfill)
                         }
+                        .padding([.top, .trailing], 18)
+                        
+                        LazyImage(url: URL(string: viewStore.showInfo?.poster ?? "")) { state in
+                            if let image = state.image {
+                                image.resizable().aspectRatio(contentMode: .fill)
+                            } else if state.error != nil {
+                            } else {
+                                ProgressView()
+                            }
+                        }
+                        .frame(width: 200, height: 286)
+                        .clipShape(RoundedRectangle(cornerRadius: 18))
+                        .padding(.top, 18)
+                        .shadow(radius: 10, y: 4)
+                        Text(viewStore.showInfo?.genre.nameKR ?? "")
+                            .foregroundStyle(Color.white)
+                            .font(.body4)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 8)
+                            .background(Color.primary1)
+                            .clipShape(Capsule())
+                            .padding(.top, 18)
+                        
+                        Text(viewStore.showInfo?.name ?? "")
+                            .foregroundStyle(.black)
+                            .font(.subTitle1)
+                            .padding(.top, 8)
+                        rankView
+                            .padding(.top, 20)
+                        liveTalkButton
+                            .padding(.top, 18)
+                            .padding(.horizontal, 20)
                     }
-                    .frame(width: 200, height: 286)
-                    .clipShape(RoundedRectangle(cornerRadius: 18))
-                    .padding(.top, 18)
-                    .shadow(radius: 10, y: 4)
-                    Text(viewStore.showInfo?.genre.nameKR ?? "")
-                        .foregroundStyle(Color.white)
-                        .font(.body4)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 8)
-                        .background(Color.primary1)
-                        .clipShape(Capsule())
-                        .padding(.top, 18)
-                    
-                    Text(viewStore.showInfo?.name ?? "")
-                        .foregroundStyle(.black)
-                        .font(.subTitle1)
-                        .padding(.top, 8)
-                    rankView
-                        .padding(.top, 20)
-                    liveTalkButton
-                        .padding(.top, 18)
-                        .padding(.horizontal, 20)
-                    Spacer()
-                }
-                .frame(height: 558)
-                .background(Color.white)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .shadow(radius: 10, y: 2)
+                    .frame(height: 558)
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .shadow(radius: 10, y: 2)
                     .padding(.top, 12)
                     .padding(.horizontal, 20)
+                    
+                    VStack {
+                        categoryView
+                            .padding(.top, 30)
+                    }
+                }
                 
             }
             .onAppear {
@@ -131,6 +137,34 @@ public struct ShowDetailView: View {
             .frame(maxWidth: .infinity)
             .background(Color.primary2)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+    
+    private var categoryView: some View {
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            HStack(spacing: 0) {
+                ForEach(ShowDetailFeature.ShowDetailCategoryType.allCases, id: \.self) { type in
+                    VStack {
+                        Spacer()
+                        Text(type.rawValue)
+                            .font(.subTitle4)
+                            .foregroundStyle(viewStore.currentSelectedCategory == type ? Color.primary1 : Color.gray8)
+                        Spacer()
+                        if viewStore.currentSelectedCategory == type {
+                            Color.primary1
+                                .frame(height: 3)
+                        } else {
+                            Color.gray6
+                                .frame(height: 3)
+                        }
+                    }
+                    .onTapGestureRectangle {
+                        viewStore.send(.didTappedCategory(type))
+                    }
+                }
+            }
+            .frame(height: 45)
+        }
+        
     }
 }
 
