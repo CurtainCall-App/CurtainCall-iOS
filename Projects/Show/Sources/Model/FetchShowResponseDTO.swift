@@ -33,6 +33,13 @@ public struct ShowResponseContent: Hashable, Equatable, Decodable {
 enum Genre: String, Decodable ,Hashable {
     case play = "PLAY"
     case musical = "MUSICAL"
+    
+    var nameKR: String {
+        switch self {
+        case .play: "연극"
+        case .musical: "뮤지컬"
+        }
+    }
 }
 
 struct ShowTime: Decodable, Hashable {
