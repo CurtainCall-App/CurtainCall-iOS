@@ -17,7 +17,14 @@ public struct ShowDetailView: View {
     }
     
     public var body: some View {
-        Text("디테일 화면")
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            Text("디테일 화면")
+                .onAppear {
+                    viewStore.send(.fetchDetailResponse)
+                }
+        }
+        
+            
     }
 }
 

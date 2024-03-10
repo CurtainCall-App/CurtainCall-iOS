@@ -18,15 +18,31 @@ public struct ShowDetailFeature {
             self.showId = showId
         }
         var showId: String
+        var showInfo: ShowDetailResponseContent?
     }
     
     public enum Action {
-        case onAppear(showId: String)
+        case fetchDetailResponse
+        case showDetailResponse(ShowDetailResponseContent)
     }
+    
+    @Dependency (\.showClient) var showClient
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .fetchDetailResponse:
+                return .run { [id = state.showId] send in
+                    do {
+                        try await send(.showDetailResponse(showClient.fetchShowDetail(id)))
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            case .showDetailResponse(let response):
+                state.showInfo = response
+                return .none
+            }
         }
     }
 }
