@@ -53,7 +53,7 @@ public struct ShowFeature {
         case dismissTooltip
         case path(StackAction<Path.State, Path.Action>)
         case didTappedSearch
-        case didTappedShow
+        case didTappedShow(showId: String)
     }
     
     @Dependency (\.showClient) var showClient
@@ -109,11 +109,11 @@ public struct ShowFeature {
             case .path(.element(id: _, action: .showSeacrch(.didTappedCancelButton))):
                 state.path.removeAll()
                 return .none
-            case .path(.element(id: _, action: .showSeacrch(.didTappedShow))):
-                state.path.append(.showDetail())
+            case .path(.element(id: _, action: .showSeacrch(.didTappedShow(let show)))):
+                state.path.append(.showDetail(.init(showId: show.id)))
                 return .none
-            case .didTappedShow:
-                state.path.append(.showDetail())
+            case .didTappedShow(let showId):
+                state.path.append(.showDetail(.init(showId: showId)))
                 return .none
             case .path: return .none
             }
@@ -132,7 +132,7 @@ public struct ShowFeature {
             case showSearch(ShowSearchFeature.State = .init(
                 recentSearches: (UserDefaults.standard.array(forKey: UserDefaultKeys.showRecentSearches.rawValue) as? [String] ?? []).suffix(10)
             ))
-            case showDetail(ShowDetailFeature.State = .init())
+            case showDetail(ShowDetailFeature.State = .init(showId: ""))
         }
         
         public enum Action {

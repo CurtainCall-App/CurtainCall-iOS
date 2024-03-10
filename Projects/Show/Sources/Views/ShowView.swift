@@ -69,7 +69,7 @@ public struct ShowView: View {
                                             }
                                         }
                                         .onTapGesture {
-                                            viewStore.send(.didTappedShow)
+                                            viewStore.send(.didTappedShow(showId: show.id))
                                         }
                                         
                                         HStack {

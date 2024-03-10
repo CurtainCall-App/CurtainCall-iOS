@@ -14,11 +14,14 @@ public struct ShowDetailFeature {
     public init() { }
     
     public struct State: Equatable {
-        public init() { }
+        public init(showId: String) {
+            self.showId = showId
+        }
+        var showId: String
     }
     
     public enum Action {
-        
+        case onAppear(showId: String)
     }
     
     public var body: some ReducerOf<Self> {
