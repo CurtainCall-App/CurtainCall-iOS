@@ -80,6 +80,14 @@ public struct ShowDetailView: View {
                         categoryView
                             .padding(.top, 30)
                     }
+                    VStack {
+                        switch viewStore.currentSelectedCategory {
+                        case .detail: Color.red
+                        case .review: Color.green
+                        case .lostItem: Color.yellow
+                        }
+                    }
+                    .frame(height: 500)
                 }
                 
             }
