@@ -26,15 +26,19 @@ public struct ShowDetailFeature {
         var showId: String
         var showInfo: ShowDetailResponseContent?
         var currentSelectedCategory: ShowDetailCategoryType = .detail
+        var facilityInfo: FetchFacilityResponseDTO?
     }
     
     public enum Action {
         case fetchDetailResponse
         case showDetailResponse(ShowDetailResponseContent)
         case didTappedCategory(ShowDetailCategoryType)
+        case fetchFacilityDetail(id: String)
+        case facilityDetailResponse(FetchFacilityResponseDTO)
     }
     
     @Dependency (\.showClient) var showClient
+//    @Dependency (\.facilityClient) var fetchClient
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -49,9 +53,24 @@ public struct ShowDetailFeature {
                 }
             case .showDetailResponse(let response):
                 state.showInfo = response
+                print("## 성공")
                 return .none
+                
             case .didTappedCategory(let type):
                 state.currentSelectedCategory = type
+                return .none
+                
+            case .fetchFacilityDetail(let id):
+                return .none
+//                return .run { send in
+//                    do {
+//                        try await send(.facilityDetailResponse(fetchClient.fetchFacilityDetail(id)))
+//                    } catch {
+//                        print(error.localizedDescription)
+//                    }
+//                }
+            case .facilityDetailResponse(let response):
+                state.facilityInfo = response
                 return .none
             }
         }

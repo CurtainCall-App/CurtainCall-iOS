@@ -22,72 +22,77 @@ public struct ShowDetailView: View {
     
     public var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
-            ZStack(alignment: .top) {
-                VStack {
-                    Color.primary1
-                        .frame(height: 300)
-                        .roundedCorner(30, corners: [.bottomLeft, .bottomRight])
-                        .ignoresSafeArea()
-                    Spacer()
-                }
-                VStack(spacing: 0) {
+            ScrollView {
+                ZStack(alignment: .top) {
+                    VStack {
+                        Color.primary1
+                            .frame(height: 300)
+                            .roundedCorner(30, corners: [.bottomLeft, .bottomRight])
+                            .ignoresSafeArea()
+                        Spacer()
+                    }
                     VStack(spacing: 0) {
-                        HStack {
-                            Spacer()
-                            Image(asset: CommonAsset.showDetailFavoriteHeartUnfill)
+                        VStack(spacing: 0) {
+                            HStack {
+                                Spacer()
+                                Image(asset: CommonAsset.showDetailFavoriteHeartUnfill)
+                            }
+                            .padding([.top, .trailing], 18)
+                            
+                            LazyImage(url: URL(string: viewStore.showInfo?.poster ?? "")) { state in
+                                if let image = state.image {
+                                    image.resizable().aspectRatio(contentMode: .fill)
+                                } else if state.error != nil {
+                                } else {
+                                    ProgressView()
+                                }
+                            }
+                            .frame(width: 200, height: 286)
+                            .clipShape(RoundedRectangle(cornerRadius: 18))
+                            .padding(.top, 18)
+                            .shadow(radius: 10, y: 4)
+                            Text(viewStore.showInfo?.genre.nameKR ?? "")
+                                .foregroundStyle(Color.white)
+                                .font(.body4)
+                                .padding(.vertical, 4)
+                                .padding(.horizontal, 8)
+                                .background(Color.primary1)
+                                .clipShape(Capsule())
+                                .padding(.top, 18)
+                            
+                            Text(viewStore.showInfo?.name ?? "")
+                                .foregroundStyle(.black)
+                                .font(.subTitle1)
+                                .padding(.top, 8)
+                            rankView
+                                .padding(.top, 20)
+                            liveTalkButton
+                                .padding(.top, 18)
+                                .padding(.horizontal, 20)
                         }
-                        .padding([.top, .trailing], 18)
+                        .frame(height: 558)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .shadow(radius: 10, y: 2)
+                        .padding(.top, 12)
+                        .padding(.horizontal, 20)
                         
-                        LazyImage(url: URL(string: viewStore.showInfo?.poster ?? "")) { state in
-                            if let image = state.image {
-                                image.resizable().aspectRatio(contentMode: .fill)
-                            } else if state.error != nil {
-                            } else {
-                                ProgressView()
+                        VStack {
+                            categoryView
+                                .padding(.top, 30)
+                        }
+                        VStack {
+                            switch viewStore.currentSelectedCategory {
+                            case .detail: 
+                                detailTapView
+//                                    .onAppear {
+//                                        viewStore.send(.fetchFacilityDetail(id: viewStore.showInfo?.facilityId ?? ""))
+//                                    }
+                            case .review: Color.green
+                            case .lostItem: Color.yellow
                             }
                         }
-                        .frame(width: 200, height: 286)
-                        .clipShape(RoundedRectangle(cornerRadius: 18))
-                        .padding(.top, 18)
-                        .shadow(radius: 10, y: 4)
-                        Text(viewStore.showInfo?.genre.nameKR ?? "")
-                            .foregroundStyle(Color.white)
-                            .font(.body4)
-                            .padding(.vertical, 4)
-                            .padding(.horizontal, 8)
-                            .background(Color.primary1)
-                            .clipShape(Capsule())
-                            .padding(.top, 18)
-                        
-                        Text(viewStore.showInfo?.name ?? "")
-                            .foregroundStyle(.black)
-                            .font(.subTitle1)
-                            .padding(.top, 8)
-                        rankView
-                            .padding(.top, 20)
-                        liveTalkButton
-                            .padding(.top, 18)
-                            .padding(.horizontal, 20)
                     }
-                    .frame(height: 558)
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .shadow(radius: 10, y: 2)
-                    .padding(.top, 12)
-                    .padding(.horizontal, 20)
-                    
-                    VStack {
-                        categoryView
-                            .padding(.top, 30)
-                    }
-                    VStack {
-                        switch viewStore.currentSelectedCategory {
-                        case .detail: Color.red
-                        case .review: Color.green
-                        case .lostItem: Color.yellow
-                        }
-                    }
-                    .frame(height: 500)
                 }
                 
             }
@@ -155,7 +160,7 @@ public struct ShowDetailView: View {
                         Spacer()
                         Text(type.rawValue)
                             .font(.subTitle4)
-                            .foregroundStyle(viewStore.currentSelectedCategory == type ? Color.primary1 : Color.gray8)
+                            .foregroundStyle(viewStore.currentSelectedCategory == type ? Color.primary1 : Color.gray6)
                         Spacer()
                         if viewStore.currentSelectedCategory == type {
                             Color.primary1
@@ -174,6 +179,164 @@ public struct ShowDetailView: View {
         }
         
     }
+    
+    private var detailTapView: some View {
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    Text("공연 정보")
+                        .font(.subTitle3)
+                        .foregroundStyle(.black)
+                        .padding(.top, 40)
+                        .padding(.leading, 20)
+                    Spacer()
+                }
+                HStack {
+                    makeDetailTapTitleView(title: "공연기간")
+                        .padding([.leading, .vertical], 6)
+                    Group {
+                        Text((viewStore.showInfo?.startDate)?.replacingOccurrences(of: "-", with: ".") ?? "") 
+                        + Text(" - ")
+                        + Text((viewStore.showInfo?.endDate)?.replacingOccurrences(of: "-", with: ".") ?? "")
+                    }
+                    .padding(.horizontal, 12)
+                    .font(.body3)
+                    .foregroundStyle(Color.gray2)
+                    Spacer()
+                }
+                .background(Color.gray9)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .padding(.horizontal, 20)
+                
+                HStack {
+                    makeDetailTapTitleView(title: "공연시간")
+                        .padding([.leading, .vertical], 6)
+                    Text("날짜 변환 테스트")
+                    .padding(.horizontal, 12)
+                    .font(.body3)
+                    .foregroundStyle(Color.gray2)
+                    Spacer()
+                }
+                .background(Color.gray9)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .padding(.horizontal, 20)
+                
+                HStack {
+                    makeDetailTapTitleView(title: "러닝타임")
+                        .padding([.leading, .vertical], 6)
+                    Text(viewStore.showInfo?.runtime ?? "")
+                    .padding(.horizontal, 12)
+                    .font(.body3)
+                    .foregroundStyle(Color.gray2)
+                    Spacer()
+                }
+                .background(Color.gray9)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .padding(.horizontal, 20)
+                
+                HStack {
+                    makeDetailTapTitleView(title: "관람연령")
+                        .padding([.leading, .vertical], 6)
+                    Text(viewStore.showInfo?.age ?? "")
+                    .padding(.horizontal, 12)
+                    .font(.body3)
+                    .foregroundStyle(Color.gray2)
+                    Spacer()
+                }
+                .background(Color.gray9)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .padding(.horizontal, 20)
+                
+                HStack {
+                    makeDetailTapTitleView(title: "티켓가격")
+                        .padding([.leading, .vertical], 6)
+                    Text(viewStore.showInfo?.ticketPrice ?? "")
+                    .padding(.horizontal, 12)
+                    .font(.body3)
+                    .foregroundStyle(Color.gray2)
+                    Spacer()
+                }
+                .background(Color.gray9)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .padding(.horizontal, 20)
+                
+                HStack {
+                    makeDetailTapTitleView(title: "공연장소")
+                        .padding([.leading, .vertical], 6)
+                    Text(viewStore.showInfo?.ticketPrice ?? "")
+                    .padding(.horizontal, 12)
+                    .font(.body3)
+                    .foregroundStyle(Color.gray2)
+                    Spacer()
+                }
+                .background(Color.gray9)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .padding(.horizontal, 20)
+                
+                Spacer().frame(height: 30)
+                Color.gray9.frame(height: 6)
+                Spacer().frame(height: 30)
+                
+                HStack {
+                    Text("장소 세부 정보")
+                        .font(.subTitle3)
+                        .foregroundStyle(.black)
+                        .padding(.leading, 20)
+                    Spacer()
+                }
+                
+                HStack {
+                    makeDetailTapTitleView(title: "주소")
+                        .padding([.leading, .vertical], 6)
+                    Text(viewStore.showInfo?.facilityName ?? "")
+                    .padding(.horizontal, 12)
+                    .font(.body3)
+                    .foregroundStyle(Color.gray2)
+                    Spacer()
+                }
+                .background(Color.gray9)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .padding(.horizontal, 20)
+                
+                HStack {
+                    makeDetailTapTitleView(title: "전화번호")
+                        .padding([.leading, .vertical], 6)
+                    Text(viewStore.facilityInfo?.phone ?? "")
+                    .padding(.horizontal, 12)
+                    .font(.body3)
+                    .foregroundStyle(Color.gray2)
+                    Spacer()
+                }
+                .background(Color.gray9)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .padding(.horizontal, 20)
+                
+                HStack {
+                    makeDetailTapTitleView(title: "웹사이트")
+                        .padding([.leading, .vertical], 6)
+                    Text("http:")
+                    .padding(.horizontal, 12)
+                    .font(.body3)
+                    .foregroundStyle(Color.gray2)
+                    Spacer()
+                }
+                .background(Color.gray9)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .padding(.horizontal, 20)
+            }
+        }
+    }
+    
+    private func makeDetailTapTitleView(title: String) -> some View {
+        Text(title)
+            .font(.body4)
+            .frame(width: 61, height: 26)
+            .foregroundStyle(.white)
+            .background(Color.primary1)
+            .clipShape(RoundedRectangle(cornerRadius: 4))
+    }
+    
+    
 }
 
 
