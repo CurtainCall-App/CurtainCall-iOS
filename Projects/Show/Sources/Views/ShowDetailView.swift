@@ -23,15 +23,9 @@ public struct ShowDetailView: View {
     
     public var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
-            ScrollView {
-                ZStack(alignment: .top) {
-                    VStack {
-                        Color.primary1
-                            .frame(height: 300)
-                            .roundedCorner(30, corners: [.bottomLeft, .bottomRight])
-                            .ignoresSafeArea()
-                        Spacer()
-                    }
+            VStack(spacing: 0) {
+                navigationBar
+                ScrollView {
                     VStack(spacing: 0) {
                         VStack(spacing: 0) {
                             HStack {
@@ -84,35 +78,59 @@ public struct ShowDetailView: View {
                         }
                         VStack {
                             switch viewStore.currentSelectedCategory {
-                            case .detail: 
+                            case .detail:
                                 detailTapView
-//                                    .onAppear {
-//                                        viewStore.send(.fetchFacilityDetail(id: viewStore.showInfo?.facilityId ?? ""))
-//                                    }
+                                //                                    .onAppear {
+                                //                                        viewStore.send(.fetchFacilityDetail(id: viewStore.showInfo?.facilityId ?? ""))
+                                //                                    }
                             case .review: Color.green
                             case .lostItem: Color.yellow
                             }
                         }
                     }
+                    .background {
+                        VStack(spacing: 0) {
+                            Color.primary1
+                                .frame(height: 300)
+                                .roundedCorner(30, corners: [.bottomLeft, .bottomRight])
+                                .ignoresSafeArea()
+                            Spacer()
+                        }
+                    }
                 }
-                
+                .onAppear {
+                    UIScrollView.appearance().bounces = false
+                    viewStore.send(.fetchDetailResponse)
+                }
+                .onDisappear {
+                    UIScrollView.appearance().bounces = true
+                }
+                .navigationBarBackButtonHidden()
             }
-            .onAppear {
-                viewStore.send(.fetchDetailResponse)
-            }
-            .navigationBarBackButtonHidden()
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+        }
+    }
+    
+    private var navigationBar: some View {
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            ZStack {
+                HStack {
                     Image(asset: CommonAsset.navigationBackWhiteIcon)
                         .onTapGesture {
                             dismiss()
                         }
+                    Spacer()
+                }
+                .padding(.horizontal, 16)
+                HStack {
+                    Spacer()
+                    Text(viewStore.showInfo?.name ?? "")
+                        .foregroundStyle(.white)
+                        .font(.subTitle3)
+                    Spacer()
                 }
             }
-            .navigationTitle(viewStore.showInfo?.name ?? "")
-            .navigationBarTitleTextColor(.white)
-            
+            .frame(height: 44)
+            .background(Color.primary1)
         }
     }
     
@@ -181,6 +199,7 @@ public struct ShowDetailView: View {
         
     }
     
+    @MainActor
     private var detailTapView: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             VStack(alignment: .leading, spacing: 10) {
@@ -196,7 +215,7 @@ public struct ShowDetailView: View {
                     makeDetailTapTitleView(title: "공연기간")
                         .padding([.leading, .vertical], 6)
                     Group {
-                        Text((viewStore.showInfo?.startDate)?.replacingOccurrences(of: "-", with: ".") ?? "") 
+                        Text((viewStore.showInfo?.startDate)?.replacingOccurrences(of: "-", with: ".") ?? "")
                         + Text(" - ")
                         + Text((viewStore.showInfo?.endDate)?.replacingOccurrences(of: "-", with: ".") ?? "")
                     }
@@ -213,9 +232,9 @@ public struct ShowDetailView: View {
                     makeDetailTapTitleView(title: "공연시간")
                         .padding([.leading, .vertical], 6)
                     Text("날짜 변환 테스트")
-                    .padding(.horizontal, 12)
-                    .font(.body3)
-                    .foregroundStyle(Color.gray2)
+                        .padding(.horizontal, 12)
+                        .font(.body3)
+                        .foregroundStyle(Color.gray2)
                     Spacer()
                 }
                 .background(Color.gray9)
@@ -226,9 +245,9 @@ public struct ShowDetailView: View {
                     makeDetailTapTitleView(title: "러닝타임")
                         .padding([.leading, .vertical], 6)
                     Text(viewStore.showInfo?.runtime ?? "")
-                    .padding(.horizontal, 12)
-                    .font(.body3)
-                    .foregroundStyle(Color.gray2)
+                        .padding(.horizontal, 12)
+                        .font(.body3)
+                        .foregroundStyle(Color.gray2)
                     Spacer()
                 }
                 .background(Color.gray9)
@@ -239,9 +258,9 @@ public struct ShowDetailView: View {
                     makeDetailTapTitleView(title: "관람연령")
                         .padding([.leading, .vertical], 6)
                     Text(viewStore.showInfo?.age ?? "")
-                    .padding(.horizontal, 12)
-                    .font(.body3)
-                    .foregroundStyle(Color.gray2)
+                        .padding(.horizontal, 12)
+                        .font(.body3)
+                        .foregroundStyle(Color.gray2)
                     Spacer()
                 }
                 .background(Color.gray9)
@@ -252,9 +271,9 @@ public struct ShowDetailView: View {
                     makeDetailTapTitleView(title: "티켓가격")
                         .padding([.leading, .vertical], 6)
                     Text(viewStore.showInfo?.ticketPrice ?? "")
-                    .padding(.horizontal, 12)
-                    .font(.body3)
-                    .foregroundStyle(Color.gray2)
+                        .padding(.horizontal, 12)
+                        .font(.body3)
+                        .foregroundStyle(Color.gray2)
                     Spacer()
                 }
                 .background(Color.gray9)
@@ -265,9 +284,9 @@ public struct ShowDetailView: View {
                     makeDetailTapTitleView(title: "공연장소")
                         .padding([.leading, .vertical], 6)
                     Text(viewStore.showInfo?.ticketPrice ?? "")
-                    .padding(.horizontal, 12)
-                    .font(.body3)
-                    .foregroundStyle(Color.gray2)
+                        .padding(.horizontal, 12)
+                        .font(.body3)
+                        .foregroundStyle(Color.gray2)
                     Spacer()
                 }
                 .background(Color.gray9)
@@ -290,9 +309,9 @@ public struct ShowDetailView: View {
                     makeDetailTapTitleView(title: "주소")
                         .padding([.leading, .vertical], 6)
                     Text(viewStore.showInfo?.facilityName ?? "")
-                    .padding(.horizontal, 12)
-                    .font(.body3)
-                    .foregroundStyle(Color.gray2)
+                        .padding(.horizontal, 12)
+                        .font(.body3)
+                        .foregroundStyle(Color.gray2)
                     Spacer()
                 }
                 .background(Color.gray9)
@@ -303,9 +322,9 @@ public struct ShowDetailView: View {
                     makeDetailTapTitleView(title: "전화번호")
                         .padding([.leading, .vertical], 6)
                     Text(viewStore.facilityInfo?.phone ?? "")
-                    .padding(.horizontal, 12)
-                    .font(.body3)
-                    .foregroundStyle(Color.gray2)
+                        .padding(.horizontal, 12)
+                        .font(.body3)
+                        .foregroundStyle(Color.gray2)
                     Spacer()
                 }
                 .background(Color.gray9)
@@ -316,9 +335,9 @@ public struct ShowDetailView: View {
                     makeDetailTapTitleView(title: "웹사이트")
                         .padding([.leading, .vertical], 6)
                     Text("http:")
-                    .padding(.horizontal, 12)
-                    .font(.body3)
-                    .foregroundStyle(Color.gray2)
+                        .padding(.horizontal, 12)
+                        .font(.body3)
+                        .foregroundStyle(Color.gray2)
                     Spacer()
                 }
                 .background(Color.gray9)
@@ -326,7 +345,15 @@ public struct ShowDetailView: View {
                 .padding(.horizontal, 20)
                 
                 NaverMapView()
-                    .frame(width: 300, height: 300)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 180)
+                    .padding(.horizontal, 20)
+                
+                Spacer().frame(height: 30)
+                Color.gray9.frame(height: 6)
+                Spacer().frame(height: 30)
+                
+                makeDetailImages(images: viewStore.showInfo?.introductionImages ?? [])
             }
         }
     }
@@ -340,6 +367,29 @@ public struct ShowDetailView: View {
             .clipShape(RoundedRectangle(cornerRadius: 4))
     }
     
+    @MainActor
+    private func makeDetailImages(images: [String]) -> some View {
+        let images = images.map { $0.removeTags() }
+        return WithViewStore(self.store, observe: { $0 }) { viewStore in
+            HStack {
+                ForEach(images, id: \.self) { image in
+                    LazyImage(url: URL(string: image)) { state in
+                        if let image = state.image {
+                            image.resizable().aspectRatio(contentMode: .fill)
+                        } else if state.error != nil { }
+                        else {
+                            HStack {
+                                Spacer()
+                                ProgressView()
+                                Spacer()
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
     
 }
 

@@ -27,6 +27,7 @@ public struct ShowDetailFeature {
         var showInfo: ShowDetailResponseContent?
         var currentSelectedCategory: ShowDetailCategoryType = .detail
         var facilityInfo: FetchFacilityResponseDTO?
+        var detailImageHeight: CGFloat = 300
     }
     
     public enum Action {
@@ -35,6 +36,7 @@ public struct ShowDetailFeature {
         case didTappedCategory(ShowDetailCategoryType)
         case fetchFacilityDetail(id: String)
         case facilityDetailResponse(FetchFacilityResponseDTO)
+        case didTappedMoreDetailImage
     }
     
     @Dependency (\.showClient) var showClient
@@ -71,6 +73,9 @@ public struct ShowDetailFeature {
 //                }
             case .facilityDetailResponse(let response):
                 state.facilityInfo = response
+                return .none
+            case .didTappedMoreDetailImage:
+                state.detailImageHeight = state.detailImageHeight == 300 ? .infinity: 300
                 return .none
             }
         }
