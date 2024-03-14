@@ -308,7 +308,7 @@ public struct ShowDetailView: View {
                 HStack {
                     makeDetailTapTitleView(title: "주소")
                         .padding([.leading, .vertical], 6)
-                    Text(viewStore.showInfo?.facilityName ?? "")
+                    Text(viewStore.facilityInfo?.address ?? "")
                         .padding(.horizontal, 12)
                         .font(.body3)
                         .foregroundStyle(Color.gray2)
@@ -334,7 +334,7 @@ public struct ShowDetailView: View {
                 HStack {
                     makeDetailTapTitleView(title: "웹사이트")
                         .padding([.leading, .vertical], 6)
-                    Text("http:")
+                    Text(viewStore.facilityInfo?.homepage ?? "")
                         .padding(.horizontal, 12)
                         .font(.body3)
                         .foregroundStyle(Color.gray2)

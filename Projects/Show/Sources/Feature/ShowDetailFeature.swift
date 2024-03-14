@@ -40,7 +40,7 @@ public struct ShowDetailFeature {
     }
     
     @Dependency (\.showClient) var showClient
-//    @Dependency (\.facilityClient) var fetchClient
+    @Dependency (\.facilityClient) var fetchClient
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -55,22 +55,22 @@ public struct ShowDetailFeature {
                 }
             case .showDetailResponse(let response):
                 state.showInfo = response
-                print("## 성공")
-                return .none
+                return .run { send in
+                    await send(.fetchFacilityDetail(id: response.facilityId))
+                }
                 
             case .didTappedCategory(let type):
                 state.currentSelectedCategory = type
                 return .none
                 
             case .fetchFacilityDetail(let id):
-                return .none
-//                return .run { send in
-//                    do {
-//                        try await send(.facilityDetailResponse(fetchClient.fetchFacilityDetail(id)))
-//                    } catch {
-//                        print(error.localizedDescription)
-//                    }
-//                }
+                return .run { send in
+                    do {
+                        try await send(.facilityDetailResponse(fetchClient.fetchFacilityDetail(id)))
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
             case .facilityDetailResponse(let response):
                 state.facilityInfo = response
                 return .none
