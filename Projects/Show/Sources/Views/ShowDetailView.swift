@@ -10,6 +10,7 @@ import SwiftUI
 import Common
 import ComposableArchitecture
 import NukeUI
+import NMapsMap
 
 public struct ShowDetailView: View {
     private let store: StoreOf<ShowDetailFeature>
@@ -323,6 +324,9 @@ public struct ShowDetailView: View {
                 .background(Color.gray9)
                 .clipShape(RoundedRectangle(cornerRadius: 6))
                 .padding(.horizontal, 20)
+                
+                NaverMapView()
+                    .frame(width: 300, height: 300)
             }
         }
     }
