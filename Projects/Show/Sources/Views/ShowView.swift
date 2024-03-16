@@ -68,6 +68,9 @@ public struct ShowView: View {
                                                 viewStore.send(.didScrollToLastItem)
                                             }
                                         }
+                                        .onTapGesture {
+                                            viewStore.send(.didTappedShow(showId: show.id))
+                                        }
                                         
                                         HStack {
                                             Spacer()
@@ -103,6 +106,12 @@ public struct ShowView: View {
                     \ShowFeature.Path.State.showSearch,
                      action: ShowFeature.Path.Action.showSeacrch,
                      then: ShowSearchView.init(store:)
+                )
+            case .showDetail:
+                CaseLet(
+                    \ShowFeature.Path.State.showDetail,
+                     action: ShowFeature.Path.Action.showDetail,
+                     then: ShowDetailView.init(store:)
                 )
             }
             

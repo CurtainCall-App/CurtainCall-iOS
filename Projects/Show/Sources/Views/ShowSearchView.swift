@@ -87,7 +87,7 @@ public struct ShowSearchView: View {
                                         .frame(width: 160, height: 250)
                                         .clipShape(RoundedRectangle(cornerRadius: 12))
                                         .onTapGesture {
-                                            viewStore.send(.didTappedShow(title: show.name))
+                                            viewStore.send(.didTappedShow(show: show))
                                         }
                                         
                                         HStack {

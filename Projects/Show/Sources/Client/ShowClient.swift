@@ -13,13 +13,15 @@ import Moya
 struct ShowClient {
     var fetchShowList: (Int, ShowFeature.ShowType, ShowSortFeature.CategoryType) async throws -> FetchShowResponseDTO
     var fetchShowSearchList: (String) async throws -> FetchShowResponseDTO
+    var fetchShowDetail: (String) async throws -> ShowDetailResponseContent
 }
 
 extension ShowClient: DependencyKey {
     static var liveValue = {
         Self(
             fetchShowList: fetchShowList,
-            fetchShowSearchList: fetchShowSearchList(keyword:)
+            fetchShowSearchList: fetchShowSearchList(keyword:),
+            fetchShowDetail: fetchShowDetail(id:)
         )
     }()
     
@@ -29,6 +31,9 @@ extension ShowClient: DependencyKey {
     
     static func fetchShowSearchList(keyword: String) async throws -> FetchShowResponseDTO {
         return try await MoyaProvider<ShowAPI>().request(.fetchShowSearchList(keyword: keyword))
+    }
+    static func fetchShowDetail(id: String) async throws -> ShowDetailResponseContent {
+        return try await MoyaProvider<ShowAPI>().request(.fetchShowDetail(id: id))
     }
 }
 

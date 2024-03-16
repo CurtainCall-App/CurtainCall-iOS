@@ -29,7 +29,7 @@ public struct ShowSearchFeature {
         case didTappedCancelButton
         case didTappedRemoveRecentSearches(index: Int)
         case didTappedAllRemoveRecentSearches
-        case didTappedShow(title: String)
+        case didTappedShow(show: ShowResponseContent)
         case didTappedRecentSearches(title: String)
         case showListResponse([ShowResponseContent])
         case fetchShowList(keyword: String)
@@ -70,8 +70,8 @@ public struct ShowSearchFeature {
             case .showListResponse(let response):
                 state.showList = response
                 return .none
-            case .didTappedShow(let title):
-                state.recentSearches.append(title)
+            case .didTappedShow(let show):
+                state.recentSearches.append(show.name)
                 UserDefaults.standard.setValue(state.recentSearches, forKey: UserDefaultKeys.showRecentSearches.rawValue)
                 return .none
             case .didTappedRecentSearches(let title):

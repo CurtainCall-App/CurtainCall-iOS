@@ -14,6 +14,7 @@ import Moya
 enum ShowAPI {
     case fetchShowList(page: Int, genre: ShowFeature.ShowType, sort: ShowSortFeature.CategoryType)
     case fetchShowSearchList(keyword: String)
+    case fetchShowDetail(id: String)
 }
 
 extension ShowAPI: TargetType {
@@ -22,6 +23,7 @@ extension ShowAPI: TargetType {
         switch self {
         case .fetchShowList: return "/shows"
         case .fetchShowSearchList: return "/search/shows"
+        case .fetchShowDetail(let id): return "/shows/\(id)"
         }
     }
     var method: Moya.Method { .get }
@@ -37,6 +39,8 @@ extension ShowAPI: TargetType {
         case .fetchShowSearchList(let keyword):
             param.updateValue(keyword, forKey: "keyword")
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
+        case .fetchShowDetail:
+            return .requestPlain
         }
     }
     
