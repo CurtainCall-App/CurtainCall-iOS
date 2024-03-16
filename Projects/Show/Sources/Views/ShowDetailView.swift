@@ -283,7 +283,7 @@ public struct ShowDetailView: View {
                 HStack {
                     makeDetailTapTitleView(title: "공연장소")
                         .padding([.leading, .vertical], 6)
-                    Text(viewStore.showInfo?.ticketPrice ?? "")
+                    Text(viewStore.showInfo?.facilityName ?? "")
                         .padding(.horizontal, 12)
                         .font(.body3)
                         .foregroundStyle(Color.gray2)
