@@ -2,24 +2,19 @@
 //  Project.swift
 //  ProjectDescriptionHelpers
 //
-//  Created by 김민석 on 2/22/24.
+//  Created by 김민석 on 3/16/24.
 //
 
 import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.makeModule(
-    name: "Show",
+    name: "Review",
     product: .staticFramework,
     dependencies: [
-        .xcframework(path: .relativeToRoot("Frameworks/NMapsMap.xcframework")),
         .project(
             target: "Common",
             path: .relativeToRoot("Projects/Common")
         ),
-        .project(
-            target: "Review",
-            path: .relativeToRoot("Projects/Review")
-        )
     ]
 )
