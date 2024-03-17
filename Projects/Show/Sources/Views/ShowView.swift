@@ -8,6 +8,7 @@
 import SwiftUI
 
 import Common
+import Review
 
 import ComposableArchitecture
 import NukeUI
@@ -112,6 +113,12 @@ public struct ShowView: View {
                     \ShowFeature.Path.State.showDetail,
                      action: ShowFeature.Path.Action.showDetail,
                      then: ShowDetailView.init(store:)
+                )
+            case .reviewWrite:
+                CaseLet(
+                    \ShowFeature.Path.State.reviewWrite,
+                     action: ShowFeature.Path.Action.reviewWrite,
+                     then: ReviewWriteView.init(store:)
                 )
             }
             

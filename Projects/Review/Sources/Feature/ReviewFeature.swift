@@ -32,16 +32,17 @@ public struct ReviewFeature {
     }
     
     public struct State: Equatable {
-        public init(showId: String) {
-            self.showId = showId
+        public init(showInfo: ReviewWriteViewComponents) {
+            self.showInfo = showInfo
         }
-        let showId: String
+        let showInfo: ReviewWriteViewComponents
         var reviewList: [FetchReviewListResult] = []
     }
     
     public enum Action {
         case fetchReviewList(sort: SortType)
         case responseReviewList([FetchReviewListResult])
+        case didTappedReviewWriteButton(ReviewWriteViewComponents)
     }
     
     @Dependency(\.reviewClient) var reviewClient
@@ -50,13 +51,16 @@ public struct ReviewFeature {
         Reduce { state, action in
             switch action {
             case .fetchReviewList(let sort):
-                return .run { [id = state.showId] send in
+                return .run { [id = state.showInfo.showId] send in
                     try await send(.responseReviewList(reviewClient.fetchReviewList(id, sort).content))
                 }
             case .responseReviewList(let response):
                 state.reviewList = response
                 return .none
+            case .didTappedReviewWriteButton:
+                return .none
             }
         }
     }
+    
 }

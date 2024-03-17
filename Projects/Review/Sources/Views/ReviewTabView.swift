@@ -55,23 +55,28 @@ public struct ReviewTabView: View {
     }
     
     public var emptyView: some View {
-        VStack {
-            Image(asset: CommonAsset.emptyReviewIcon)
-                .padding(.top, 60)
-            Text("아직 리뷰가 없어요")
-                .font(.body2_SB)
-                .foregroundStyle(Color.primary1)
-                .padding(.top, 16)
-            Text("리뷰 작성하기")
-                .font(.subTitle4)
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 55)
-                .background(Color.primary1)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding(.top, 60)
-                .padding(.bottom, 10)
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            VStack {
+                Image(asset: CommonAsset.emptyReviewIcon)
+                    .padding(.top, 60)
+                Text("아직 리뷰가 없어요")
+                    .font(.body2_SB)
+                    .foregroundStyle(Color.primary1)
+                    .padding(.top, 16)
+                Text("리뷰 작성하기")
+                    .font(.subTitle4)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 55)
+                    .background(Color.primary1)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(.top, 60)
+                    .padding(.bottom, 10)
+                    .onTapGestureRectangle {
+                        viewStore.send(.didTappedReviewWriteButton(viewStore.showInfo))
+                    }
+            }
+            .padding(.horizontal, 20)
         }
-        .padding(.horizontal, 20)
     }
 }

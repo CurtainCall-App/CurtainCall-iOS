@@ -20,16 +20,16 @@ public struct ReviewGradeView: View {
     public var body: some View {
         ZStack {
             HStack(spacing: 4) {
-                ForEach(0..<Int(grade), id: \.self) { _ in
+                ForEach(0..<Int(grade), id: \.self) { index in
                     starFill
                 }
-                ForEach(0..<5-Int(grade), id: \.self) { _ in
+                ForEach(0..<5-Int(grade), id: \.self) { index in
                     startUnfill
                 }
             }
             .frame(maxWidth: .infinity)
             .frame(height: 82)
-            .background(Color.gray6)
+            .background(Color.white)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             
             UISliderView(value: $grade)

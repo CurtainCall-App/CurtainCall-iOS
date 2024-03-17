@@ -66,7 +66,13 @@ public struct ShowDetailFeature {
             case .didTappedCategory(let type):
                 state.currentSelectedCategory = type
                 if type == .review {
-                    state.review = .init(showId: state.showInfo?.id ?? "")
+                    let info = ReviewWriteViewComponents(
+                        showId: state.showInfo?.id ?? "",
+                        showImage: state.showInfo?.poster ?? "",
+                        showName: state.showInfo?.name ?? "",
+                        genre: state.showInfo?.genre ?? .play)
+                    
+                    state.review = .init(showInfo: info)
                 }
                 return .none
                 

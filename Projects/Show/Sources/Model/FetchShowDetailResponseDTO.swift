@@ -7,6 +7,8 @@
 
 import Foundation
 
+import Common
+
 public struct ShowDetailResponseContent: Hashable, Equatable, Decodable {
     public static func == (lhs: ShowDetailResponseContent, rhs: ShowDetailResponseContent) -> Bool {
         lhs.id == rhs.id
