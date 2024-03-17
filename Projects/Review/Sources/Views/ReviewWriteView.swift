@@ -97,6 +97,9 @@ public struct ReviewWriteView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .padding(.top, 28)
                             .padding(.bottom, 10)
+                            .onTapGestureRectangle {
+                                viewStore.send(.didTappedCreateReview)
+                            }
                     }
                     .navigationBarBackButtonHidden()
                     .navigationTitle("공연 리뷰")

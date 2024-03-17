@@ -25,8 +25,13 @@ public struct ReviewWriteFeature {
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
         case didTappedStar(index: Int)
+        case didTappedCreateReview
+        case isSuccessCreateReview(id: Int)
+        case isFailedCreateReview(Error)
         
     }
+    
+    @Dependency(\.reviewClient) var reviewClient
     
     public var body: some ReducerOf<Self> {
         BindingReducer()
@@ -38,6 +43,30 @@ public struct ReviewWriteFeature {
             case .binding: return .none
             case .didTappedStar(let index):
                 state.grade = Double(index)
+                return .none
+            case .didTappedCreateReview:
+                return .run { [
+                    showId = state.showInfo.showId,
+                    grade = Int(state.grade),
+                    content = state.reviewText
+                ] send in
+                    let body = CreateReviewBody(
+                        showId: showId,
+                        grade: grade,
+                        content: content
+                    )
+                    do {
+                        try await send(.isSuccessCreateReview(id: reviewClient.createReview(body).id))
+                    } catch {
+                        await send(.isFailedCreateReview(error))
+                    }
+                }
+            case .isSuccessCreateReview(let id):
+                print(id)
+                return .none
+            case .isFailedCreateReview(let error):
+                print(error
+                )
                 return .none
             }
         }
