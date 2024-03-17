@@ -84,6 +84,8 @@ public struct ShowDetailFeature {
             case .didTappedMoreDetailImage:
                 state.detailImageHeight = state.detailImageHeight == 300 ? .infinity: 300
                 return .none
+            case .review:
+                return .none
             }
         }
         .ifLet(\.review, action: \.review) {

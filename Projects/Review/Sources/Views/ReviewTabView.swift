@@ -20,8 +20,23 @@ public struct ReviewTabView: View {
     
     public var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
+            VStack {
+                if viewStore.reviewList.isEmpty {
+                    emptyView
+                } else {
+                    reviewView
+                }
+            }
+            .onAppear {
+                viewStore.send(.fetchReviewList(sort: .createdAt))
+            }
+        }
+    }
+    
+    public var reviewView: some View {
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
             VStack(alignment: .leading, spacing: 12) {
-                Text("1021개의 리뷰가 있어요")
+                Text("\(viewStore.reviewList.count)개의 리뷰가 있어요")
                     .font(.subTitle3)
                     .foregroundStyle(.black)
                     .padding(.top, 28)
@@ -33,9 +48,30 @@ public struct ReviewTabView: View {
                     .background(Color.primary1)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding(.top, 28)
+                    .padding(.bottom, 10)
             }
             .padding(.horizontal, 20)
         }
+    }
     
+    public var emptyView: some View {
+        VStack {
+            Image(asset: CommonAsset.emptyReviewIcon)
+                .padding(.top, 60)
+            Text("아직 리뷰가 없어요")
+                .font(.body2_SB)
+                .foregroundStyle(Color.primary1)
+                .padding(.top, 16)
+            Text("리뷰 작성하기")
+                .font(.subTitle4)
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 55)
+                .background(Color.primary1)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding(.top, 60)
+                .padding(.bottom, 10)
+        }
+        .padding(.horizontal, 20)
     }
 }
