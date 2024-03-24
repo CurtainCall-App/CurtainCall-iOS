@@ -116,6 +116,9 @@ public struct ShowFeature {
             case .path(.element(id: _, action: .showDetail(.review(.didTappedReviewWriteButton(let info))))):
                 state.path.append(.reviewWrite(.init(showInfo: info)))
                 return .none
+            case .path(.element(id: _, action: .reviewWrite(.isSuccessCreateReview))):
+                state.path.removeLast()
+                return .none
             case .didTappedShow(let showId):
                 state.path.append(.showDetail(.init(showId: showId)))
                 return .none

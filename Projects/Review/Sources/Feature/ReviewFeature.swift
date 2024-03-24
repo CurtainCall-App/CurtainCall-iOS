@@ -52,7 +52,11 @@ public struct ReviewFeature {
             switch action {
             case .fetchReviewList(let sort):
                 return .run { [id = state.showInfo.showId] send in
-                    try await send(.responseReviewList(reviewClient.fetchReviewList(id, sort).content))
+                    do {
+                        try await send(.responseReviewList(reviewClient.fetchReviewList(id, sort).content))
+                    } catch let error {
+                        print(error.localizedDescription)
+                    }
                 }
             case .responseReviewList(let response):
                 state.reviewList = response

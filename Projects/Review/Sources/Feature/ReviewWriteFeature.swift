@@ -65,8 +65,7 @@ public struct ReviewWriteFeature {
                 print(id)
                 return .none
             case .isFailedCreateReview(let error):
-                print(error
-                )
+                print(error)
                 return .none
             }
         }
