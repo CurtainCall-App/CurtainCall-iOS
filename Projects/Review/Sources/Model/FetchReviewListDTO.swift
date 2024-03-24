@@ -11,15 +11,14 @@ public struct FetchReviewListDTO: Decodable {
     let content: [FetchReviewListResult]
 }
 
-// MARK: - Content
-public struct FetchReviewListResult: Equatable, Decodable {
+public struct FetchReviewListResult: Hashable, Equatable, Decodable {
     let id: Int
     let showId: String
     let grade: Int
     let content: String
     let creatorId: Int
     let creatorNickname: String
-    let creatorImageUrl: String
+    let creatorImageUrl: String?
     let createdAt: String?
     let likeCount: Int?
 }

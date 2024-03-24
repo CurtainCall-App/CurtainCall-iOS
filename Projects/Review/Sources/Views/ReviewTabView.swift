@@ -40,6 +40,39 @@ public struct ReviewTabView: View {
                     .font(.subTitle3)
                     .foregroundStyle(.black)
                     .padding(.top, 28)
+                VStack(spacing: 12) {
+                    ForEach(viewStore.reviewList.prefix(3), id: \.self) { review in
+                        VStack(alignment: .leading, spacing: 0) {
+                            HStack {
+                                makeGradeView(grade: review.grade)
+                                    .padding(.top, 12)
+                                Spacer()
+                            }
+                            HStack {
+                                Text(review.content)
+                                    .font(.body3)
+                                    .padding(.top, 10)
+                                    .foregroundStyle(.black)
+                                    .lineLimit(1)
+                                Spacer()
+                            }
+                            HStack {
+                                Text("\(review.creatorNickname) | \(review.createdAt ?? "")")
+                                    .font(.body3_SB)
+                                    .padding(.vertical, 10)
+                                    .foregroundStyle(Color.gray6)
+                                Spacer()
+                            }
+                        }
+                        .padding(.horizontal, 12)
+                    }
+                    
+                    .background(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .shadow(color: .black.opacity(0.08) ,radius: 10, y: 2)
+                }
+                
+                
                 Text("리뷰 모두 보기")
                     .font(.subTitle4)
                     .foregroundStyle(.white)
@@ -77,6 +110,19 @@ public struct ReviewTabView: View {
                     }
             }
             .padding(.horizontal, 20)
+        }
+    }
+    
+    private func makeGradeView(grade: Int) -> some View {
+        HStack(spacing: 1) {
+            ForEach(0..<grade, id: \.self) {
+                _ in
+                Image(asset: CommonAsset.reviewWriteGradeStartFill16px)
+            }
+            ForEach(0..<5 - grade, id: \.self) {
+                _ in
+                Image(asset: CommonAsset.reviewWriteGradeStartUnfill16px)
+            }
         }
     }
 }
