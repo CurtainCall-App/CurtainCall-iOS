@@ -43,6 +43,7 @@ public struct ReviewFeature {
         case fetchReviewList(sort: SortType)
         case responseReviewList([FetchReviewListResult])
         case didTappedReviewWriteButton(ReviewWriteViewComponents)
+        case didTappedReviewList
     }
     
     @Dependency(\.reviewClient) var reviewClient
@@ -62,6 +63,8 @@ public struct ReviewFeature {
                 state.reviewList = response
                 return .none
             case .didTappedReviewWriteButton:
+                return .none
+            case .didTappedReviewList:
                 return .none
             }
         }

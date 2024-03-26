@@ -14,7 +14,7 @@ public struct ReviewListFeature {
     public init() { }
     
     public struct State: Equatable {
-        
+        public init() { }
     }
     
     public enum Action {

@@ -120,6 +120,12 @@ public struct ShowView: View {
                      action: ShowFeature.Path.Action.reviewWrite,
                      then: ReviewWriteView.init(store:)
                 )
+            case .reviewList:
+                CaseLet(
+                    \ShowFeature.Path.State.reviewList,
+                     action: ShowFeature.Path.Action.reviewList,
+                     then: ReviewListView.init(store: )
+                )
             }
             
         }

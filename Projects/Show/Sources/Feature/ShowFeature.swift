@@ -119,6 +119,9 @@ public struct ShowFeature {
             case .path(.element(id: _, action: .reviewWrite(.isSuccessCreateReview))):
                 state.path.removeLast()
                 return .none
+            case .path(.element(id: _, action: .showDetail(.review(.didTappedReviewList)))):
+                state.path.append(.reviewList(.init()))
+                return .none
             case .didTappedShow(let showId):
                 state.path.append(.showDetail(.init(showId: showId)))
                 return .none
@@ -141,12 +144,14 @@ public struct ShowFeature {
             ))
             case showDetail(ShowDetailFeature.State = .init(showId: ""))
             case reviewWrite(ReviewWriteFeature.State = .init(showInfo: ReviewWriteViewComponents(showId: "", showImage: "", showName: "", genre: .musical)))
+            case reviewList(ReviewListFeature.State = .init())
         }
         
         public enum Action {
             case showSeacrch(ShowSearchFeature.Action)
             case showDetail(ShowDetailFeature.Action)
             case reviewWrite(ReviewWriteFeature.Action)
+            case reviewList(ReviewListFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
@@ -159,6 +164,9 @@ public struct ShowFeature {
             }
             Scope(state: \.reviewWrite, action: \.reviewWrite) {
                 ReviewWriteFeature()
+            }
+            Scope(state: \.reviewList, action: \.reviewList) {
+                ReviewListFeature()
             }
         }
     }
