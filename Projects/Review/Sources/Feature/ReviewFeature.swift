@@ -21,7 +21,7 @@ public struct ReviewFeature {
         var title: String {
             switch self {
             case .createdAt: return "최신순"
-            case .likeCount: return "좋아요"
+            case .likeCount: return "좋아요순"
             case .grade: return "별점순"
             }
         }
@@ -43,7 +43,7 @@ public struct ReviewFeature {
         case fetchReviewList(sort: SortType)
         case responseReviewList([FetchReviewListResult])
         case didTappedReviewWriteButton(ReviewWriteViewComponents)
-        case didTappedReviewList(id: String)
+        case didTappedReviewList(showInfo: ReviewWriteViewComponents)
     }
     
     @Dependency(\.reviewClient) var reviewClient

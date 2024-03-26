@@ -75,7 +75,7 @@ public struct ReviewListView: View {
                     }
                     VStack {
                         Spacer()
-                            
+                        
                         createButton
                             .padding(.horizontal, 20)
                             .padding(.bottom, 10)
@@ -97,7 +97,7 @@ public struct ReviewListView: View {
                 }
             }
         }
-
+        
     }
     
     private var categoryButton: some View {
@@ -115,23 +115,23 @@ public struct ReviewListView: View {
         name: String,
         date: String
     ) -> some View {
-            HStack(spacing: 12) {
-                Color.gray7
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-                VStack(alignment: .leading) {
-                    Text(name)
-                        .font(.body3_SB)
-                        .foregroundStyle(.black)
-                    Text(date)
-                        .font(.body3_SB)
-                        .foregroundStyle(Color.gray5)
-                }
-                Spacer()
-                Image(asset: CommonAsset.iconMore24px)
+        HStack(spacing: 12) {
+            Color.gray7
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+            VStack(alignment: .leading) {
+                Text(name)
+                    .font(.body3_SB)
+                    .foregroundStyle(.black)
+                Text(date)
+                    .font(.body3_SB)
+                    .foregroundStyle(Color.gray5)
             }
-            .padding(.top, 20)
-            .padding(.horizontal, 20)
+            Spacer()
+            Image(asset: CommonAsset.iconMore24px)
+        }
+        .padding(.top, 20)
+        .padding(.horizontal, 20)
     }
     
     private func makeGradeView(grade: Int) -> some View {
@@ -148,13 +148,19 @@ public struct ReviewListView: View {
     }
     
     private var createButton: some View {
-        Text("리뷰 작성하기")
-            .font(.subTitle4)
-            .foregroundStyle(Color.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 55)
-            .background(Color.primary1)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            Text("리뷰 작성하기")
+                .font(.subTitle4)
+                .foregroundStyle(Color.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 55)
+                .background(Color.primary1)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .onTapGestureRectangle {
+                    viewStore.send(.didTappedCreateReview(showInfo: viewStore.showInfo))
+                }
+        }
+        
     }
 }
 

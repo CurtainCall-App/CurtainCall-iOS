@@ -14,17 +14,18 @@ public struct ReviewListFeature {
     public init() { }
     
     public struct State: Equatable {
-        public init(showId: String) {
-            self.showId = showId
+        public init(showInfo: ReviewWriteViewComponents) {
+            self.showInfo = showInfo
         }
-        let showId: String
+        let showInfo: ReviewWriteViewComponents
         var reviewList: [FetchReviewListResult] = []
-        var selectedCategory: ReviewFeature.SortType = .likeCount
+        var selectedCategory: ReviewFeature.SortType = .createdAt
     }
     
     public enum Action {
-        case fetchReviewList(sort: ReviewFeature.SortType)
+        case fetchReviewList
         case responseReviewList([FetchReviewListResult])
+        case didTappedCreateReview(showInfo: ReviewWriteViewComponents)
     }
     
     @Dependency(\.reviewClient) var reviewClient
@@ -34,7 +35,7 @@ public struct ReviewListFeature {
             switch action {
             case .fetchReviewList:
                 return .run { [
-                    id = state.showId,
+                    id = state.showInfo.showId,
                     sort = state.selectedCategory
                 ] send in
                     do {
@@ -45,6 +46,8 @@ public struct ReviewListFeature {
                 }
             case .responseReviewList(let response):
                 state.reviewList = response
+                return .none
+            case .didTappedCreateReview:
                 return .none
             }
         }

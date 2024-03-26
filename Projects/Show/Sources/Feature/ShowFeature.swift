@@ -119,8 +119,11 @@ public struct ShowFeature {
             case .path(.element(id: _, action: .reviewWrite(.isSuccessCreateReview))):
                 state.path.removeLast()
                 return .none
-            case .path(.element(id: _, action: .showDetail(.review(.didTappedReviewList(let id))))):
-                state.path.append(.reviewList(.init(showId: id)))
+            case .path(.element(id: _, action: .showDetail(.review(.didTappedReviewList(let info))))):
+                state.path.append(.reviewList(.init(showInfo: info)))
+                return .none
+            case .path(.element(id: _, action: .reviewList(.didTappedCreateReview(let info)))):
+                state.path.append(.reviewWrite(.init(showInfo: info)))
                 return .none
             case .didTappedShow(let showId):
                 state.path.append(.showDetail(.init(showId: showId)))
@@ -144,7 +147,7 @@ public struct ShowFeature {
             ))
             case showDetail(ShowDetailFeature.State = .init(showId: ""))
             case reviewWrite(ReviewWriteFeature.State = .init(showInfo: ReviewWriteViewComponents(showId: "", showImage: "", showName: "", genre: .musical)))
-            case reviewList(ReviewListFeature.State = .init(showId: ""))
+            case reviewList(ReviewListFeature.State = .init(showInfo: ReviewWriteViewComponents(showId: "", showImage: "", showName: "", genre: .musical)))
         }
         
         public enum Action {

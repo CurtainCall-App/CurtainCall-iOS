@@ -83,7 +83,7 @@ public struct ReviewTabView: View {
                     .padding(.top, 28)
                     .padding(.bottom, 10)
                     .onTapGestureRectangle {
-                        viewStore.send(.didTappedReviewList(id: viewStore.showInfo.showId))
+                        viewStore.send(.didTappedReviewList(showInfo: viewStore.showInfo))
                     }
             }
             .padding(.horizontal, 20)
