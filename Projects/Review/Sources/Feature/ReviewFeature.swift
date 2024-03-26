@@ -43,7 +43,7 @@ public struct ReviewFeature {
         case fetchReviewList(sort: SortType)
         case responseReviewList([FetchReviewListResult])
         case didTappedReviewWriteButton(ReviewWriteViewComponents)
-        case didTappedReviewList
+        case didTappedReviewList(id: String)
     }
     
     @Dependency(\.reviewClient) var reviewClient

@@ -21,13 +21,13 @@ public struct ReviewListView: View {
     
     public var body: some View {
         ZStack {
-            Color.gray9.ignoresSafeArea()
+            Color.gray8.ignoresSafeArea()
             WithViewStore(self.store, observe: { $0 }) { viewStore in
                 ZStack {
                     ScrollView {
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 0) {
                             HStack {
-                                Text("1021개의 리뷰가 있어요")
+                                Text("\(viewStore.reviewList.count)개의 리뷰가 있어요")
                                     .font(.subTitle4)
                                     .foregroundStyle(Color.primary1)
                                 Spacer()
@@ -36,34 +36,41 @@ public struct ReviewListView: View {
                             .padding(.top, 24)
                             .padding(.horizontal, 20)
                             .padding(.bottom, 16)
-                            profileView
-                            
-                            makeGradeView(grade: 5)
-                                .padding(.top, 20)
-                                .padding(.horizontal, 20)
-                            
-                            Text("고전연극은처음인데엄청재미있게봤어요고전연극은처음인데엄청재미있게봤어요고전연극은처음인데엄청재미있게봤어요고전연극은처음인데엄청재미있게봤어요고전...")
-                                .font(.body2_M)
-                                .foregroundStyle(Color.gray3)
-                                .padding(.top, 10)
-                                .padding(.horizontal, 20)
-                            HStack(spacing: 6) {
-                                Image(asset: CommonAsset.iconThumbUpDeselected16px)
-                                    .padding(.leading, 8)
-                                    .padding(.vertical, 4)
-                                Text("16")
-                                    .font(.body4)
-                                    .foregroundStyle(Color.gray6)
-                                    .padding(.trailing, 8)
-                                    .padding(.vertical, 3)
+                            ForEach(viewStore.reviewList, id: \.id) { review in
+                                VStack(alignment: .leading) {
+                                    makeProfileView(
+                                        profileImageURL: "",
+                                        name: review.creatorNickname,
+                                        date: review.createdAt ?? ""
+                                    )
+                                    makeGradeView(grade: review.grade)
+                                        .padding(.top, 10)
+                                        .padding(.horizontal, 20)
+                                    
+                                    Text(review.content)
+                                        .font(.body2_M)
+                                        .foregroundStyle(Color.gray3)
+                                        .padding(.top, 10)
+                                        .padding(.horizontal, 20)
+                                    HStack(spacing: 6) {
+                                        Image(asset: CommonAsset.iconThumbUpDeselected16px)
+                                            .padding(.leading, 8)
+                                            .padding(.vertical, 4)
+                                        Text("\(review.likeCount ?? 0)")
+                                            .font(.body4)
+                                            .foregroundStyle(Color.gray6)
+                                            .padding(.trailing, 8)
+                                            .padding(.vertical, 3)
+                                    }
+                                    .background(Color.gray8)
+                                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                                    .padding(.top, 10)
+                                    .padding(.horizontal, 20)
+                                }
+                                
+                                Color.gray8.frame(height: 10)
+                                    .padding(.top, 20)
                             }
-                            .background(Color.gray8)
-                            .clipShape(RoundedRectangle(cornerRadius: 6))
-                            .padding(.top, 10)
-                            .padding(.horizontal, 20)
-                            
-                            Color.gray9.frame(height: 10)
-                                .padding(.top, 20)
                         }
                     }
                     VStack {
@@ -85,6 +92,9 @@ public struct ReviewListView: View {
                             }
                     }
                 }
+                .onAppear {
+                    viewStore.send(.fetchReviewList)
+                }
             }
         }
 
@@ -93,25 +103,27 @@ public struct ReviewListView: View {
     private var categoryButton: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             HStack(spacing: 2) {
-//                Text(viewStore.selectedCategory.title)
-                Text("인기순")
+                Text(viewStore.selectedCategory.title)
                     .font(.body3)
                 Image(asset: CommonAsset.arrowTriangleDownFill)
             }
         }
     }
     
-    private var profileView: some View {
-        VStack(alignment: .leading) {
+    private func makeProfileView(
+        profileImageURL: String,
+        name: String,
+        date: String
+    ) -> some View {
             HStack(spacing: 12) {
                 Color.gray7
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
                 VStack(alignment: .leading) {
-                    Text("만도스스스스슥")
+                    Text(name)
                         .font(.body3_SB)
                         .foregroundStyle(.black)
-                    Text("2023.06.28")
+                    Text(date)
                         .font(.body3_SB)
                         .foregroundStyle(Color.gray5)
                 }
@@ -120,7 +132,6 @@ public struct ReviewListView: View {
             }
             .padding(.top, 20)
             .padding(.horizontal, 20)
-        }
     }
     
     private func makeGradeView(grade: Int) -> some View {
