@@ -8,6 +8,7 @@
 import Foundation
 
 import Common
+import Review
 import ComposableArchitecture
 
 @Reducer
@@ -112,6 +113,18 @@ public struct ShowFeature {
             case .path(.element(id: _, action: .showSeacrch(.didTappedShow(let show)))):
                 state.path.append(.showDetail(.init(showId: show.id)))
                 return .none
+            case .path(.element(id: _, action: .showDetail(.review(.didTappedReviewWriteButton(let info))))):
+                state.path.append(.reviewWrite(.init(showInfo: info)))
+                return .none
+            case .path(.element(id: _, action: .reviewWrite(.isSuccessCreateReview))):
+                state.path.removeLast()
+                return .none
+            case .path(.element(id: _, action: .showDetail(.review(.didTappedReviewList(let info))))):
+                state.path.append(.reviewList(.init(showInfo: info)))
+                return .none
+            case .path(.element(id: _, action: .reviewList(.didTappedCreateReview(let info)))):
+                state.path.append(.reviewWrite(.init(showInfo: info)))
+                return .none
             case .didTappedShow(let showId):
                 state.path.append(.showDetail(.init(showId: showId)))
                 return .none
@@ -133,11 +146,15 @@ public struct ShowFeature {
                 recentSearches: (UserDefaults.standard.array(forKey: UserDefaultKeys.showRecentSearches.rawValue) as? [String] ?? []).suffix(10)
             ))
             case showDetail(ShowDetailFeature.State = .init(showId: ""))
+            case reviewWrite(ReviewWriteFeature.State = .init(showInfo: ReviewWriteViewComponents(showId: "", showImage: "", showName: "", genre: .musical)))
+            case reviewList(ReviewListFeature.State = .init(showInfo: ReviewWriteViewComponents(showId: "", showImage: "", showName: "", genre: .musical)))
         }
         
         public enum Action {
             case showSeacrch(ShowSearchFeature.Action)
             case showDetail(ShowDetailFeature.Action)
+            case reviewWrite(ReviewWriteFeature.Action)
+            case reviewList(ReviewListFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
@@ -147,6 +164,12 @@ public struct ShowFeature {
             
             Scope(state: \.showDetail, action: \.showDetail) {
                 ShowDetailFeature()
+            }
+            Scope(state: \.reviewWrite, action: \.reviewWrite) {
+                ReviewWriteFeature()
+            }
+            Scope(state: \.reviewList, action: \.reviewList) {
+                ReviewListFeature()
             }
         }
     }

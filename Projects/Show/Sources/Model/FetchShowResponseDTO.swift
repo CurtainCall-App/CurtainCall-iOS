@@ -7,6 +7,8 @@
 
 import Foundation
 
+import Common
+
 public struct FetchShowResponseDTO: Decodable {
     let content: [ShowResponseContent]
 }
@@ -28,18 +30,6 @@ public struct ShowResponseContent: Hashable, Equatable, Decodable {
     let reviewCount: Int
     let reviewGradeSum: Int
     let reviewGradeAvg: Double
-}
-
-enum Genre: String, Decodable ,Hashable {
-    case play = "PLAY"
-    case musical = "MUSICAL"
-    
-    var nameKR: String {
-        switch self {
-        case .play: "연극"
-        case .musical: "뮤지컬"
-        }
-    }
 }
 
 struct ShowTime: Decodable, Hashable {

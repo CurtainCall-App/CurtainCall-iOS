@@ -7,6 +7,8 @@
 
 import Foundation
 
+import Review
+
 import ComposableArchitecture
 
 @Reducer
@@ -28,6 +30,7 @@ public struct ShowDetailFeature {
         var currentSelectedCategory: ShowDetailCategoryType = .detail
         var facilityInfo: FetchFacilityResponseDTO?
         var detailImageHeight: CGFloat = 300
+        var review: ReviewFeature.State?
     }
     
     public enum Action {
@@ -37,6 +40,7 @@ public struct ShowDetailFeature {
         case fetchFacilityDetail(id: String)
         case facilityDetailResponse(FetchFacilityResponseDTO)
         case didTappedMoreDetailImage
+        case review(ReviewFeature.Action)
     }
     
     @Dependency (\.showClient) var showClient
@@ -61,6 +65,15 @@ public struct ShowDetailFeature {
                 
             case .didTappedCategory(let type):
                 state.currentSelectedCategory = type
+                if type == .review {
+                    let info = ReviewWriteViewComponents(
+                        showId: state.showInfo?.id ?? "",
+                        showImage: state.showInfo?.poster ?? "",
+                        showName: state.showInfo?.name ?? "",
+                        genre: state.showInfo?.genre ?? .play)
+                    
+                    state.review = .init(showInfo: info)
+                }
                 return .none
                 
             case .fetchFacilityDetail(let id):
@@ -77,7 +90,12 @@ public struct ShowDetailFeature {
             case .didTappedMoreDetailImage:
                 state.detailImageHeight = state.detailImageHeight == 300 ? .infinity: 300
                 return .none
+            case .review:
+                return .none
             }
+        }
+        .ifLet(\.review, action: \.review) {
+            ReviewFeature()
         }
     }
 }
