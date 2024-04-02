@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import Calendar
+
 import ComposableArchitecture
 
 public struct PartyView: View {
@@ -18,7 +20,9 @@ public struct PartyView: View {
     
     public var body: some View {
         VStack {
-            Text("Party")
+            PickCalendarView(store: .init(initialState: PickerCalendarFeature.State(month: Date()), reducer: {
+                PickerCalendarFeature()
+            }))
         }
     }
 }
