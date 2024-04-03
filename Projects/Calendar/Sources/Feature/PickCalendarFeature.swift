@@ -30,35 +30,23 @@ public struct PickCalendarFeature {
         var daysInMonth: Int
         var firstWeekDay: Int
         var clickedDates: Set<Date> = []
-        var cell: PickCalendarCellFeature.State?
     }
     
     public enum Action {
-        case onAppear(day: Int)
         case didTappedMoveMonthButton(Int)
-        case cell(PickCalendarCellFeature.Action)
         case didTappedDate(date: Date)
     }
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .onAppear(let day):
-                state.cell = .init(day: day, isClicked: false)
-                return .none
             case .didTappedMoveMonthButton(let i):
                 state.month = Calendar.current.date(byAdding: .month, value: i, to: state.month) ?? Date()
-                return .none
-            case .cell(.didTappedDate(let date)):
-                state.clickedDates.insert(date)
                 return .none
             case .didTappedDate(let date):
                 state.clickedDates.insert(date)
                 return .none
             }
-        }
-        .ifLet(\.cell, action: \.cell) {
-            PickCalendarCellFeature()
         }
     }
     
