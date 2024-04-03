@@ -7,13 +7,15 @@
 
 import SwiftUI
 
+import Common
+
 import ComposableArchitecture
 
 public struct PickCalendarView: View {
     
-    private let store: StoreOf<PickerCalendarFeature>
+    private let store: StoreOf<PickCalendarFeature>
     
-    public init(store: StoreOf<PickerCalendarFeature>) {
+    public init(store: StoreOf<PickCalendarFeature>) {
         self.store = store
     }
     
@@ -27,12 +29,34 @@ public struct PickCalendarView: View {
                                 .foregroundStyle(.clear)
                         } else {
                             let day = index - viewStore.firstWeekDay + 1
-                            PickCalendarCellView(day: day, clicked: false)
+                            let date = getDate(for: index, to: viewStore.month)
+
+                            PickCalendarCellView(
+                                store: .init(
+                                    initialState: PickCalendarCellFeature.State(
+                                        day: day,
+                                        isClicked: viewStore.clickedDates.contains(date)
+                                    )) { PickCalendarCellFeature() }
+                            )
+                            .onTapGestureRectangle {
+                                viewStore.send(.didTappedDate(date: date))
+                            }
                         }
-                        
                     }
                 }
             }
+            
         }
     }
+    
+    private func getDate(for day: Int, to month: Date) -> Date {
+        return Calendar.current.date(byAdding: .day, value: day, to: startOfMonth(month: month)) ?? Date()
+    }
+    
+    private func startOfMonth(month: Date) -> Date {
+        let components = Calendar.current.dateComponents([.year, .month], from: month)
+        return Calendar.current.date(from: components)!
+    }
+    
+    
 }

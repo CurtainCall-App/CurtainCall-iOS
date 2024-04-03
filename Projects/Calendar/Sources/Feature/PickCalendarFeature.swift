@@ -10,7 +10,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-public struct PickerCalendarFeature {
+public struct PickCalendarFeature {
     public init() { }
     
     public struct State: Equatable {
@@ -29,25 +29,38 @@ public struct PickerCalendarFeature {
         var month: Date
         var daysInMonth: Int
         var firstWeekDay: Int
-        
+        var clickedDates: Set<Date> = []
+        var cell: PickCalendarCellFeature.State?
     }
     
     public enum Action {
-        
+        case onAppear(day: Int)
+        case didTappedMoveMonthButton(Int)
+        case cell(PickCalendarCellFeature.Action)
+        case didTappedDate(date: Date)
     }
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .onAppear(let day):
+                state.cell = .init(day: day, isClicked: false)
+                return .none
+            case .didTappedMoveMonthButton(let i):
+                state.month = Calendar.current.date(byAdding: .month, value: i, to: state.month) ?? Date()
+                return .none
+            case .cell(.didTappedDate(let date)):
+                state.clickedDates.insert(date)
+                return .none
+            case .didTappedDate(let date):
+                state.clickedDates.insert(date)
+                return .none
+            }
+        }
+        .ifLet(\.cell, action: \.cell) {
+            PickCalendarCellFeature()
         }
     }
     
-    private func getDate(for day: Int, to month: Date) -> Date {
-        return Calendar.current.date(byAdding: .day, value: day, to: startOfMonth(month: month))!
-    }
     
-    private func startOfMonth(month: Date) -> Date {
-        let components = Calendar.current.dateComponents([.year, .month], from: month)
-        return Calendar.current.date(from: components)!
-    }
 }

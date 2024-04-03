@@ -20,9 +20,14 @@ public struct PartyView: View {
     
     public var body: some View {
         VStack {
-            PickCalendarView(store: .init(initialState: PickerCalendarFeature.State(month: Date()), reducer: {
-                PickerCalendarFeature()
-            }))
+            PickCalendarView(
+                store: .init(
+                    initialState: PickCalendarFeature.State(
+                        month: Date()
+                    )) {
+                PickCalendarFeature()
+                    ._printChanges()
+            })
         }
     }
 }

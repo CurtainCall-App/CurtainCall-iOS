@@ -7,26 +7,32 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 public struct PickCalendarCellView: View {
-    var day: Int
-    var clicked: Bool = false
     
-    public init(day: Int, clicked: Bool) {
-        self.day = day
-        self.clicked = clicked
+    private let store: StoreOf<PickCalendarCellFeature>
+    
+    public init(store: StoreOf<PickCalendarCellFeature>) {
+        self.store = store
     }
     
     public var body: some View {
-        VStack {
-            RoundedRectangle(cornerRadius: 5)
-                .opacity(0)
-                .overlay(Text(String(day)))
-                .foregroundColor(.blue)
-                .background(clicked ? .yellow : .clear)
-            if clicked {
-                
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            VStack {
+                RoundedRectangle(cornerRadius: 5)
+                    .opacity(0)
+                    .overlay(Text(String(viewStore.day)))
+                    .foregroundColor(.blue)
+                    .background(viewStore.isClicked ? .yellow : .clear)
+                if viewStore.isClicked {
+                    
+                }
             }
-            
+//            .onTapGesture {
+//                viewStore.send(.didTappedDate(date: Date()))
+//            }
         }
+        
     }
 }
