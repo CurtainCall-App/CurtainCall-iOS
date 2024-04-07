@@ -47,7 +47,10 @@ public struct PickCalendarView: View {
                                 store: .init(
                                     initialState: PickCalendarCellFeature.State(
                                         day: day,
-                                        isClicked: viewStore.startDate == date || viewStore.endDate == date
+                                        isClicked: viewStore.startDate == date || viewStore.endDate == date,
+                                        isSunday: index % 7 == 0,
+                                        isSaturday: index % 7 == 6,
+                                        date: date
                                     )) { PickCalendarCellFeature() }
                             )
                             .onTapGestureRectangle {
