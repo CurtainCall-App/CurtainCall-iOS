@@ -22,6 +22,7 @@ public struct PickCalendarView: View {
     public var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             VStack {
+                topView
                 LazyVGrid(columns: Array(repeating: GridItem(), count: 7)) {
                     ForEach(0..<viewStore.daysInMonth + viewStore.firstWeekDay, id: \.self) { index in
                         if index < viewStore.firstWeekDay {
@@ -49,6 +50,23 @@ public struct PickCalendarView: View {
         }
     }
     
+    private var topView: some View {
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            VStack {
+                HStack(spacing: 10) {
+                    Spacer()
+                    Image(asset: CommonAsset.calendarBackIcon16px)
+                    Text(viewStore.month, formatter: Utils.yearMonthDateFormatter)
+                    Image(asset: CommonAsset.calendarNextIcon16px)
+                    Spacer()
+                }
+                .frame(height: 62)
+            }
+        }
+    }
+}
+
+private extension PickCalendarView {
     private func getDate(for day: Int, to month: Date) -> Date {
         return Calendar.current.date(byAdding: .day, value: day, to: startOfMonth(month: month)) ?? Date()
     }
@@ -57,6 +75,4 @@ public struct PickCalendarView: View {
         let components = Calendar.current.dateComponents([.year, .month], from: month)
         return Calendar.current.date(from: components)!
     }
-    
-    
 }
