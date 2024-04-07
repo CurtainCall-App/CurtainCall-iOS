@@ -21,7 +21,7 @@ public struct PickCalendarFeature {
             self.daysInMonth = daysInMonth
             
             let components = Calendar.current.dateComponents([.year, .month], from: month)
-            let firstDayOfMonth = Calendar.current.date(from: components)!
+            let firstDayOfMonth = Calendar.current.date(from: components) ?? Date()
             let firstWeekDay = Calendar.current.component(.weekday, from: firstDayOfMonth)
             self.firstWeekDay = firstWeekDay - 1
         }
@@ -42,6 +42,12 @@ public struct PickCalendarFeature {
             switch action {
             case .didTappedMoveMonthButton(let i):
                 state.month = Calendar.current.date(byAdding: .month, value: i, to: state.month) ?? Date()
+                let daysInMonth = Calendar.current.range(of: .day, in: .month, for: state.month)?.count ?? 0
+                state.daysInMonth = daysInMonth
+                let components = Calendar.current.dateComponents([.year, .month], from: state.month)
+                let firstDayOfMonth = Calendar.current.date(from: components) ?? Date()
+                let firstWeekDay = Calendar.current.component(.weekday, from: firstDayOfMonth)
+                state.firstWeekDay = firstWeekDay - 1
                 return .none
             case .didTappedDate(let date):
                 state.clickedDates.insert(date)

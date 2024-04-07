@@ -56,8 +56,14 @@ public struct PickCalendarView: View {
                 HStack(spacing: 10) {
                     Spacer()
                     Image(asset: CommonAsset.calendarBackIcon16px)
+                        .onTapGestureRectangle {
+                            viewStore.send(.didTappedMoveMonthButton(-1))
+                        }
                     Text(viewStore.month, formatter: Utils.yearMonthDateFormatter)
                     Image(asset: CommonAsset.calendarNextIcon16px)
+                        .onTapGestureRectangle {
+                            viewStore.send(.didTappedMoveMonthButton(1))
+                        }
                     Spacer()
                 }
                 .frame(height: 62)
