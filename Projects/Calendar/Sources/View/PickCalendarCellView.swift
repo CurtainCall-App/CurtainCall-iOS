@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import Common
+
 import ComposableArchitecture
 
 public struct PickCalendarCellView: View {
@@ -20,15 +22,29 @@ public struct PickCalendarCellView: View {
     public var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             VStack {
-                RoundedRectangle(cornerRadius: 5)
-                    .opacity(0)
-                    .overlay(Text(String(viewStore.day)))
-                    .foregroundColor(.blue)
-                    .background(viewStore.isClicked ? .yellow : .clear)
+                Text(String(viewStore.day))
+                    .foregroundColor(.gray1)
+                    .font(.body2_M)
+                    .background(
+                        Circle()
+                            .foregroundStyle(viewStore.isClicked ? Color.primary2 : .clear)
+                            .frame(width: 32, height: 32)
+                        )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    
+                    
+//                RoundedRectangle(cornerRadius: 5)
+//                    .opacity(0)
+//                    .overlay(Text(String(viewStore.day)))
+//                    .foregroundColor(.gray1)
+//                    .background(
+//                        Circle()
+//                            .foregroundStyle(viewStore.isClicked ? Color.primary2 : .clear))
                 if viewStore.isClicked {
                     
                 }
             }
+            
 //            .onTapGesture {
 //                viewStore.send(.didTappedDate(date: Date()))
 //            }

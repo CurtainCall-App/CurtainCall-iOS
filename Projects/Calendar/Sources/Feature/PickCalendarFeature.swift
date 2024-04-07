@@ -30,6 +30,8 @@ public struct PickCalendarFeature {
         var daysInMonth: Int
         var firstWeekDay: Int
         var clickedDates: Set<Date> = []
+        var startDate: Date?
+        var endDate: Date?
     }
     
     public enum Action {
@@ -50,7 +52,32 @@ public struct PickCalendarFeature {
                 state.firstWeekDay = firstWeekDay - 1
                 return .none
             case .didTappedDate(let date):
-                state.clickedDates.insert(date)
+                if state.startDate == nil && state.endDate == nil {
+                    state.startDate = date
+                    state.clickedDates.insert(date)
+                } else if state.startDate != nil, state.endDate == nil {
+                    state.endDate = date
+                    if state.startDate ?? Date() > state.endDate ?? Date() {
+                        let temp = state.startDate ?? Date()
+                        state.startDate = state.endDate
+                        state.endDate = temp
+                    }
+                    
+                    let components = Calendar.current.dateComponents([.day], from: state.startDate ?? Date(), to: state.endDate ?? Date())
+                    if let days = components.day {
+                        for day in 0..<days {
+                            if let date = Calendar.current.date(byAdding: .day, value: day, to: state.startDate ?? Date()) {
+                                state.clickedDates.insert(date)
+                            }
+                            state.clickedDates.insert(date)
+                        }
+                    }
+                    
+                } else {
+                    state.startDate = date
+                    state.endDate = nil
+                    state.clickedDates = [date]
+                }
                 return .none
             }
         }
