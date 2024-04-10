@@ -30,7 +30,7 @@ public struct PickCalendarFeature {
         var month: Date
         var daysInMonth: Int
         var firstWeekDay: Int
-        var clickedDates: Set<Date> = []
+        public var clickedDates: Set<Date> = []
         var startDate: Date?
         var endDate: Date?
         public var selectedDates: [Date] = []
