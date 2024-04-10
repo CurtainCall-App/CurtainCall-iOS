@@ -20,58 +20,73 @@ public struct PartyView: View {
     }
     
     public var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
-            ZStack {
-                Color.gray8
-                    .ignoresSafeArea(.container, edges: .top)
-                
-                VStack {
-                    topView
-                    emptyView
-                }
-                VStack {
-                    Spacer()
-                    recruitMemberButton
-                        .padding(.bottom, 20)
-                        .padding(.horizontal, 20)
-                }
-                VStack {
-                    IfLetStore(self.store.scope(state: \.calendar, action: \.calendar)) { store in
-                        VStack {
-                            Spacer().frame(height: 54)
-                            PickCalendarView(store: store)
-                                .background(.white)
-                                .clipShape(RoundedRectangle(cornerRadius: 16))
-                                .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
-                                .padding(.horizontal, 20)
-                                
-                            Spacer()
-                        }
+        ZStack {
+            Color.gray8
+                .ignoresSafeArea(.container, edges: .top)
+            
+            VStack {
+                topView
+                emptyView
+            }
+            VStack {
+                Spacer()
+                recruitMemberButton
+                    .padding(.bottom, 20)
+                    .padding(.horizontal, 20)
+            }
+            VStack {
+                IfLetStore(self.store.scope(state: \.calendar, action: \.calendar)) { store in
+                    VStack {
+                        Spacer().frame(height: 54)
+                        PickCalendarView(store: store)
+                            .background(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
+                            .padding(.horizontal, 20)
+                        
+                        Spacer()
                     }
                 }
             }
-            .toolbar(.hidden)
         }
+        .toolbar(.hidden)
+        
     }
     
     private var topView: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
-            HStack {
-                Text("파티원")
-                    .font(.heading2)
-                    .padding(.leading, 20)
-                Spacer()
+        HStack {
+            Text("파티원")
+                .font(.heading2)
+                .padding(.leading, 20)
+            Spacer()
+            if store.selectedDates.isEmpty {
                 Image(asset: CommonAsset.iconCalendar24px)
                     .padding(.trailing, 16)
                     .padding(.vertical, 10)
                     .onTapGestureRectangle {
-                        viewStore.send(.didTappedDurationButton)
+                        store.send(.didTappedDurationButton)
                     }
-                Image(asset: CommonAsset.iconSearch24px)
-                    .padding(.trailing, 10)
+            } else {
+                Text(PartyFeature.convertDateToString(dates: store.selectedDates))
+                    .font(.body4)
+                    .foregroundStyle(Color.primary1)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.primary2)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .padding(.trailing, 16)
                     .padding(.vertical, 10)
+                
+                    .onTapGestureRectangle {
+                        store.send(.didTappedDurationButton)
+                    }
             }
+            
+            Image(asset: CommonAsset.iconSearch24px)
+                .padding(.trailing, 10)
+                .padding(.vertical, 10)
         }
+        
         
     }
     

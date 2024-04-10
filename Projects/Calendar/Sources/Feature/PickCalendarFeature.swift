@@ -33,7 +33,7 @@ public struct PickCalendarFeature {
         var clickedDates: Set<Date> = []
         var startDate: Date?
         var endDate: Date?
-        var selectedDates: [Date] = []
+        public var selectedDates: [Date] = []
     }
     
     public enum Action {
