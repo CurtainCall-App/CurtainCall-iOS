@@ -13,7 +13,7 @@ let dependencies = Dependencies(
         SwiftPackageManagerDependencies([
             .remote(
                 url: "https://github.com/pointfreeco/swift-composable-architecture",
-                requirement: .upToNextMajor(from: "1.6.0")
+                requirement: .upToNextMajor(from: "1.9.0")
             ),
             .remote(
                 url: "https://github.com/Moya/Moya",
