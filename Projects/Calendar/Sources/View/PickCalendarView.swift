@@ -31,6 +31,7 @@ public struct PickCalendarView: View {
                         .frame(maxWidth: .infinity)
                 }
             }
+            .padding(.horizontal, 20)
             .padding(.top, 18)
             .padding(.bottom, 16)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 32, maximum: .infinity), spacing: 0), count: 7), spacing: 12) {
@@ -79,6 +80,9 @@ public struct PickCalendarView: View {
                     }
                 }
             }
+            .padding(.horizontal, 20)
+            
+            bottomView
         }
     }
     
@@ -100,6 +104,26 @@ public struct PickCalendarView: View {
         }
         .frame(height: 62)
         
+    }
+    
+    private var bottomView: some View {
+        HStack(spacing: 10) {
+            Text("초기화")
+                .font(.subTitle4)
+                .foregroundStyle(Color.gray4)
+                .frame(width: 90, height: 46)
+                .background(Color.gray8)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            Text("선택완료")
+                .font(.subTitle4)
+                .foregroundStyle(.black)
+                .frame(height: 46)
+                .frame(maxWidth: .infinity)
+                .background(Color.primary2)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 20)
     }
 }
 
