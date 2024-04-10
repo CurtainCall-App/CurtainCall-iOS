@@ -7,6 +7,8 @@
 
 import Foundation
 
+import Calendar
+
 import ComposableArchitecture
 
 @Reducer
@@ -15,15 +17,26 @@ public struct PartyFeature {
     
     public struct State: Equatable {    
         public init() { }
+        var calendar: PickCalendarFeature.State?
     }
     
     public enum Action {
-        
+        case didTappedDurationButton
+        case calendar(PickCalendarFeature.Action)
     }
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .calendar:
+                return .none
+            case .didTappedDurationButton:
+                state.calendar = .init(month: Date())
+                return .none
+            }
+        }
+        .ifLet(\.calendar, action: \.calendar) {
+            PickCalendarFeature()
         }
     }
 }

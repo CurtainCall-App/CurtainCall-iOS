@@ -21,7 +21,7 @@ public struct PickCalendarView: View {
     
     public var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
-            VStack {
+            VStack(spacing: 0) {
                 topView
                 Color.gray8.frame(height: 1)
                 HStack {
@@ -87,24 +87,22 @@ public struct PickCalendarView: View {
     
     private var topView: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
-            VStack {
-                HStack(spacing: 10) {
-                    Spacer()
-                    Image(asset: CommonAsset.calendarBackIcon16px)
-                        .onTapGestureRectangle {
-                            viewStore.send(.didTappedMoveMonthButton(-1))
-                        }
-                    Text(viewStore.month, formatter: Utils.yearMonthDateFormatter)
-                        .font(.subTitle4)
-                        .foregroundStyle(Color.gray1)
-                    Image(asset: CommonAsset.calendarNextIcon16px)
-                        .onTapGestureRectangle {
-                            viewStore.send(.didTappedMoveMonthButton(1))
-                        }
-                    Spacer()
-                }
-                .frame(height: 62)
+            HStack(spacing: 10) {
+                Spacer()
+                Image(asset: CommonAsset.calendarBackIcon16px)
+                    .onTapGestureRectangle {
+                        viewStore.send(.didTappedMoveMonthButton(-1))
+                    }
+                Text(viewStore.month, formatter: Utils.yearMonthDateFormatter)
+                    .font(.subTitle4)
+                    .foregroundStyle(Color.gray1)
+                Image(asset: CommonAsset.calendarNextIcon16px)
+                    .onTapGestureRectangle {
+                        viewStore.send(.didTappedMoveMonthButton(1))
+                    }
+                Spacer()
             }
+            .frame(height: 62)
         }
     }
 }

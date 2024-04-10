@@ -15,41 +15,64 @@ import ComposableArchitecture
 public struct PartyView: View {
     private let store: StoreOf<PartyFeature>
     
-    public init(store: StoreOf<PartyFeature>) { 
+    public init(store: StoreOf<PartyFeature>) {
         self.store = store
     }
     
     public var body: some View {
-        ZStack {
-            Color.gray8
-                .ignoresSafeArea(.container, edges: .top)
-            VStack {
-                topView
-                emptyView
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            ZStack {
+                Color.gray8
+                    .ignoresSafeArea(.container, edges: .top)
+                
+                VStack {
+                    topView
+                    emptyView
+                }
+                VStack {
+                    Spacer()
+                    recruitMemberButton
+                        .padding(.bottom, 20)
+                        .padding(.horizontal, 20)
+                }
+                VStack {
+                    IfLetStore(self.store.scope(state: \.calendar, action: \.calendar)) { store in
+                        VStack {
+                            Spacer().frame(height: 54)
+                            PickCalendarView(store: store)
+                                .background(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
+                                .padding(.horizontal, 20)
+                                
+                            Spacer()
+                        }
+                    }
+                }
             }
-            VStack {
-                Spacer()
-                recruitMemberButton
-                    .padding(.bottom, 20)
-                    .padding(.horizontal, 20)
-            }
+            .toolbar(.hidden)
         }
-        .toolbar(.hidden)
     }
     
     private var topView: some View {
-        HStack {
-            Text("파티원")
-                .font(.heading2)
-                .padding(.leading, 20)
-            Spacer()
-            Image(asset: CommonAsset.iconCalendar24px)
-                .padding(.trailing, 16)
-                .padding(.vertical, 10)
-            Image(asset: CommonAsset.iconSearch24px)
-                .padding(.trailing, 10)
-                .padding(.vertical, 10)
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            HStack {
+                Text("파티원")
+                    .font(.heading2)
+                    .padding(.leading, 20)
+                Spacer()
+                Image(asset: CommonAsset.iconCalendar24px)
+                    .padding(.trailing, 16)
+                    .padding(.vertical, 10)
+                    .onTapGestureRectangle {
+                        viewStore.send(.didTappedDurationButton)
+                    }
+                Image(asset: CommonAsset.iconSearch24px)
+                    .padding(.trailing, 10)
+                    .padding(.vertical, 10)
+            }
         }
+        
     }
     
     private var emptyView: some View {
