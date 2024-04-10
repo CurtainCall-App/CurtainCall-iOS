@@ -66,13 +66,33 @@ public struct PickCalendarView: View {
                                             .opacity(0.4)
                                     }
                                 } else if date != store.startDate && date != store.endDate {
-                                    Color.primary2.frame(height: 32)
-                                        .opacity(0.4)
-                                } else if date == store.endDate {
-                                    HStack {
+                                    if index % 7 == 0 {
                                         Color.primary2.frame(height: 32)
                                             .opacity(0.4)
-                                        Color.clear.frame(height: 32)
+                                            .roundedCorner(50, corners: [.topLeft, .bottomLeft])
+                                    } else if index % 7 == 6 {
+                                        Color.primary2.frame(height: 32)
+                                            .opacity(0.4)
+                                            .roundedCorner(50, corners: [.topRight, .bottomRight])
+                                    } else if day == 1 {
+                                        Color.primary2.frame(height: 32)
+                                            .opacity(0.4)
+                                            .roundedCorner(50, corners: [.topLeft, .bottomLeft])
+                                    } else if index == store.daysInMonth + store.firstWeekDay - 1 {
+                                        Color.primary2.frame(height: 32)
+                                            .opacity(0.4)
+                                            .roundedCorner(50, corners: [.topRight, .bottomRight])
+                                    } else {
+                                        Color.primary2.frame(height: 32)
+                                            .opacity(0.4)
+                                    }
+                                } else if date == store.endDate {
+                                    HStack {
+                                        if index % 7 != 0 {
+                                            Color.primary2.frame(height: 32)
+                                                .opacity(0.4)
+                                            Color.clear.frame(height: 32)
+                                        }
                                     }
                                 }
                             }
