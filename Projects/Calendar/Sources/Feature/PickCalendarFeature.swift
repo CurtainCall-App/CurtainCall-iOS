@@ -33,11 +33,14 @@ public struct PickCalendarFeature {
         var clickedDates: Set<Date> = []
         var startDate: Date?
         var endDate: Date?
+        var selectedDates: [Date] = []
     }
     
     public enum Action {
         case didTappedMoveMonthButton(Int)
         case didTappedDate(date: Date)
+        case didTappedResetbutton
+        case didTappedConfirmButton
     }
     
     public var body: some ReducerOf<Self> {
@@ -79,6 +82,15 @@ public struct PickCalendarFeature {
                     state.endDate = nil
                     state.clickedDates = [date]
                 }
+                return .none
+            case .didTappedResetbutton:
+                state.startDate = nil
+                state.endDate = nil
+                state.clickedDates = []
+                state.selectedDates = []
+                return .none
+            case .didTappedConfirmButton:
+                state.selectedDates = state.clickedDates.sorted { $0 < $1 }
                 return .none
             }
         }

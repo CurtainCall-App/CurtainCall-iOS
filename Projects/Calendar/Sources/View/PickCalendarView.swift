@@ -114,6 +114,9 @@ public struct PickCalendarView: View {
                 .frame(width: 90, height: 46)
                 .background(Color.gray8)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                .onTapGestureRectangle {
+                    store.send(.didTappedResetbutton)
+                }
             Text("선택완료")
                 .font(.subTitle4)
                 .foregroundStyle(.black)
@@ -121,6 +124,9 @@ public struct PickCalendarView: View {
                 .frame(maxWidth: .infinity)
                 .background(Color.primary2)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                .onTapGestureRectangle {
+                    store.send(.didTappedConfirmButton)
+                }
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
