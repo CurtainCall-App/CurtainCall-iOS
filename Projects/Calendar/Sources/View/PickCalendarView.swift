@@ -20,56 +20,75 @@ public struct PickCalendarView: View {
     }
     
     public var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
-            VStack {
-                topView
-                Color.gray8.frame(height: 1)
-                HStack {
-                    ForEach(Utils.weekdaySymbols, id: \.self) { symbol in
-                        Text(symbol)
-                            .font(.body2_SB)
-                            .foregroundStyle(.black)
-                            .frame(maxWidth: .infinity)
-                    }
+        VStack(spacing: 0) {
+            topView
+            Color.gray8.frame(height: 1)
+            HStack {
+                ForEach(Utils.weekdaySymbols, id: \.self) { symbol in
+                    Text(symbol)
+                        .font(.body2_SB)
+                        .foregroundStyle(.black)
+                        .frame(maxWidth: .infinity)
                 }
-                .padding(.top, 18)
-                .padding(.bottom, 16)
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 32, maximum: .infinity), spacing: 0), count: 7), spacing: 12) {
-                    ForEach(0..<viewStore.daysInMonth + viewStore.firstWeekDay, id: \.self) { index in
-                        if index < viewStore.firstWeekDay {
-                            RoundedRectangle(cornerRadius: 5)
-                                .foregroundStyle(.clear)
-                        } else {
-                            let day = index - viewStore.firstWeekDay + 1
-                            let date = getDate(for: index, to: viewStore.month)
-                            
-                            PickCalendarCellView(
-                                store: .init(
-                                    initialState: PickCalendarCellFeature.State(
-                                        day: day,
-                                        isClicked: viewStore.startDate == date || viewStore.endDate == date,
-                                        isSunday: index % 7 == 0,
-                                        isSaturday: index % 7 == 6,
-                                        date: date
-                                    )) { PickCalendarCellFeature() }
-                            )
-                            .onTapGestureRectangle {
-                                viewStore.send(.didTappedDate(date: date))
-                            }
-                            .padding(.vertical, 6)
-                            .background {
-                                if viewStore.clickedDates.contains(date) && viewStore.startDate != nil && viewStore.endDate != nil {
-                                    if date == viewStore.startDate {
-                                        HStack {
-                                            Color.clear.frame(height: 32)
-                                            Color.primary2.frame(height: 32)
-                                                .opacity(0.4)
-                                        }
-                                    } else if date != viewStore.startDate && date != viewStore.endDate {
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 18)
+            .padding(.bottom, 16)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 32, maximum: .infinity), spacing: 0), count: 7), spacing: 12) {
+                ForEach(0..<store.daysInMonth + store.firstWeekDay, id: \.self) { index in
+                    if index < store.firstWeekDay {
+                        RoundedRectangle(cornerRadius: 5)
+                            .foregroundStyle(.clear)
+                    } else {
+                        let day = index - store.firstWeekDay + 1
+                        let date = getDate(for: index, to: store.month)
+                        
+                        PickCalendarCellView(
+                            store: .init(
+                                initialState: PickCalendarCellFeature.State(
+                                    day: day,
+                                    isClicked: store.startDate == date || store.endDate == date,
+                                    isSunday: index % 7 == 0,
+                                    isSaturday: index % 7 == 6,
+                                    date: date
+                                )) { PickCalendarCellFeature() }
+                        )
+                        .onTapGestureRectangle {
+                            store.send(.didTappedDate(date: date))
+                        }
+                        .padding(.vertical, 6)
+                        .background {
+                            if store.clickedDates.contains(date) && store.startDate != nil && store.endDate != nil {
+                                if date == store.startDate {
+                                    HStack {
+                                        Color.clear.frame(height: 32)
                                         Color.primary2.frame(height: 32)
                                             .opacity(0.4)
-                                    } else if date == viewStore.endDate {
-                                        HStack {
+                                    }
+                                } else if date != store.startDate && date != store.endDate {
+                                    if index % 7 == 0 {
+                                        Color.primary2.frame(height: 32)
+                                            .opacity(0.4)
+                                            .roundedCorner(50, corners: [.topLeft, .bottomLeft])
+                                    } else if index % 7 == 6 {
+                                        Color.primary2.frame(height: 32)
+                                            .opacity(0.4)
+                                            .roundedCorner(50, corners: [.topRight, .bottomRight])
+                                    } else if day == 1 {
+                                        Color.primary2.frame(height: 32)
+                                            .opacity(0.4)
+                                            .roundedCorner(50, corners: [.topLeft, .bottomLeft])
+                                    } else if index == store.daysInMonth + store.firstWeekDay - 1 {
+                                        Color.primary2.frame(height: 32)
+                                            .opacity(0.4)
+                                            .roundedCorner(50, corners: [.topRight, .bottomRight])
+                                    } else {
+                                        Color.primary2.frame(height: 32)
+                                            .opacity(0.4)
+                                    }
+                                } else if date == store.endDate {
+                                    HStack {
+                                        if index % 7 != 0 {
                                             Color.primary2.frame(height: 32)
                                                 .opacity(0.4)
                                             Color.clear.frame(height: 32)
@@ -81,31 +100,56 @@ public struct PickCalendarView: View {
                     }
                 }
             }
+            .padding(.horizontal, 20)
             
+            bottomView
         }
     }
     
     private var topView: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
-            VStack {
-                HStack(spacing: 10) {
-                    Spacer()
-                    Image(asset: CommonAsset.calendarBackIcon16px)
-                        .onTapGestureRectangle {
-                            viewStore.send(.didTappedMoveMonthButton(-1))
-                        }
-                    Text(viewStore.month, formatter: Utils.yearMonthDateFormatter)
-                        .font(.subTitle4)
-                        .foregroundStyle(Color.gray1)
-                    Image(asset: CommonAsset.calendarNextIcon16px)
-                        .onTapGestureRectangle {
-                            viewStore.send(.didTappedMoveMonthButton(1))
-                        }
-                    Spacer()
+        HStack(spacing: 10) {
+            Spacer()
+            Image(asset: CommonAsset.calendarBackIcon16px)
+                .onTapGestureRectangle {
+                    store.send(.didTappedMoveMonthButton(-1))
                 }
-                .frame(height: 62)
-            }
+            Text(store.month, formatter: Utils.yearMonthDateFormatter)
+                .font(.subTitle4)
+                .foregroundStyle(Color.gray1)
+            Image(asset: CommonAsset.calendarNextIcon16px)
+                .onTapGestureRectangle {
+                    store.send(.didTappedMoveMonthButton(1))
+                }
+            Spacer()
         }
+        .frame(height: 62)
+        
+    }
+    
+    private var bottomView: some View {
+        HStack(spacing: 10) {
+            Text("초기화")
+                .font(.subTitle4)
+                .foregroundStyle(Color.gray4)
+                .frame(width: 90, height: 46)
+                .background(Color.gray8)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .onTapGestureRectangle {
+                    store.send(.didTappedResetbutton)
+                }
+            Text("선택완료")
+                .font(.subTitle4)
+                .foregroundStyle(.black)
+                .frame(height: 46)
+                .frame(maxWidth: .infinity)
+                .background(Color.primary2)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .onTapGestureRectangle {
+                    store.send(.didTappedConfirmButton)
+                }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 20)
     }
 }
 

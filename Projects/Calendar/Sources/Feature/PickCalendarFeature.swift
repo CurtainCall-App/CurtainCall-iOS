@@ -13,6 +13,7 @@ import ComposableArchitecture
 public struct PickCalendarFeature {
     public init() { }
     
+    @ObservableState
     public struct State: Equatable {
         public init(month: Date) {
             self.month = month
@@ -29,14 +30,17 @@ public struct PickCalendarFeature {
         var month: Date
         var daysInMonth: Int
         var firstWeekDay: Int
-        var clickedDates: Set<Date> = []
+        public var clickedDates: Set<Date> = []
         var startDate: Date?
         var endDate: Date?
+        public var selectedDates: [Date] = []
     }
     
     public enum Action {
         case didTappedMoveMonthButton(Int)
         case didTappedDate(date: Date)
+        case didTappedResetbutton
+        case didTappedConfirmButton
     }
     
     public var body: some ReducerOf<Self> {
@@ -78,6 +82,15 @@ public struct PickCalendarFeature {
                     state.endDate = nil
                     state.clickedDates = [date]
                 }
+                return .none
+            case .didTappedResetbutton:
+                state.startDate = nil
+                state.endDate = nil
+                state.clickedDates = []
+                state.selectedDates = []
+                return .none
+            case .didTappedConfirmButton:
+                state.selectedDates = state.clickedDates.sorted { $0 < $1 }
                 return .none
             }
         }
