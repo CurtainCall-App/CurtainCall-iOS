@@ -11,7 +11,7 @@ public struct FetchPartyListResponseDTO: Decodable {
     let content: [FetchPartyListResult]
 }
 
-public struct FetchPartyListResult: Equatable, Decodable {
+public struct FetchPartyListResult: Hashable, Equatable, Decodable {
     let id: Int
     let title: String
     let content: String

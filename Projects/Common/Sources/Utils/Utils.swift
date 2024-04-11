@@ -33,4 +33,30 @@ public struct Utils {
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: date)
     }
+    
+    public static func convertAPIDateStringToDay(dateString: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        let convertFormaater = DateFormatter()
+        convertFormaater.dateFormat = "yyyy-MM-dd (E)"
+        convertFormaater.locale = Locale(identifier: "ko-KR")
+        if let date = formatter.date(from: dateString) {
+            return convertFormaater.string(from: date)
+        } else {
+            return "날짜 정보 없음"
+        }
+    }
+    
+    public static func convertAPIDateStringToTime(dateString: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        let convertFormaater = DateFormatter()
+        convertFormaater.dateFormat = "HH:mm"
+        convertFormaater.locale = Locale(identifier: "ko-KR")
+        if let date = formatter.date(from: dateString) {
+            return convertFormaater.string(from: date)
+        } else {
+            return "날짜 정보 없음"
+        }
+    }
 }
