@@ -16,6 +16,7 @@ import NicknameSetting
 public struct LoginFeature {
     public init() { }
     
+    @ObservableState
     public struct State: Equatable {
         public init() { }
         var loginType: LoginType?
@@ -101,6 +102,7 @@ public struct LoginFeature {
     
     @Reducer
     public struct Path {
+        @ObservableState
         public enum State: Equatable {
             case termsOfService(TermsOfServiceFeature.State = .init())
             case nicknameSetting(NicknameSettingFeature.State = .init())

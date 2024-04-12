@@ -49,10 +49,10 @@ public struct PartyView: View {
                     .padding(.horizontal, 20)
             }
             VStack {
-                IfLetStore(self.store.scope(state: \.calendar, action: \.calendar)) { store in
+                if let pickCalendarStore = self.store.scope(state: \.calendar, action: \.calendar) {
                     VStack {
                         Spacer().frame(height: 54)
-                        PickCalendarView(store: store)
+                        PickCalendarView(store: pickCalendarStore)
                             .background(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 16))
                             .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
