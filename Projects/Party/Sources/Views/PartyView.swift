@@ -21,50 +21,63 @@ public struct PartyView: View {
     }
     
     public var body: some View {
-        ZStack {
-            Color.gray8
-                .ignoresSafeArea(.container, edges: .top)
-            
-            VStack {
-                topView
-                if store.partyList.isEmpty {
-                    emptyView
-                } else {
-                    ScrollView {
-                        VStack {
-                            ForEach(store.partyList, id: \.self) { info in
-                                makePartyItem(info: info)
+        NavigationStackStore(self.store.scope(state: \.path, action: \.path)) {
+            ZStack {
+                Color.gray8
+                    .ignoresSafeArea(.container, edges: .top)
+                
+                VStack {
+                    topView
+                    if store.partyList.isEmpty {
+                        emptyView
+                    } else {
+                        ScrollView {
+                            VStack {
+                                ForEach(store.partyList, id: \.self) { info in
+                                    makePartyItem(info: info)
+                                }
+                                
+                                Color.clear.padding(.bottom, 85)
                             }
+                        }
+                    }
+                    Spacer()
+                }
+                VStack {
+                    Spacer()
+                    recruitMemberButton
+                        .padding(.bottom, 20)
+                        .padding(.horizontal, 20)
+                        .onTapGestureRectangle {
+                            store.send(.didTappedRecruitMemberButton)
+                        }
+                }
+                VStack {
+                    IfLetStore(self.store.scope(state: \.calendar, action: \.calendar)) { store in
+                        VStack {
+                            Spacer().frame(height: 54)
+                            PickCalendarView(store: store)
+                                .background(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
+                                .padding(.horizontal, 20)
                             
-                            Color.clear.padding(.bottom, 85)
+                            Spacer()
                         }
                     }
                 }
-                Spacer()
             }
-            VStack {
-                Spacer()
-                recruitMemberButton
-                    .padding(.bottom, 20)
-                    .padding(.horizontal, 20)
-            }
-            VStack {
-                IfLetStore(self.store.scope(state: \.calendar, action: \.calendar)) { store in
-                    VStack {
-                        Spacer().frame(height: 54)
-                        PickCalendarView(store: store)
-                            .background(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                            .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
-                            .padding(.horizontal, 20)
-                        
-                        Spacer()
-                    }
-                }
+            .toolbar(.hidden)
+        } destination: {
+            switch $0 {
+            case .partyRecruit:
+                CaseLet(
+                    \PartyFeature.Path.State.partyRecruit,
+                     action: PartyFeature.Path.Action.partyRecruit,
+                     then: PartyRecruitView.init(store:)
+                )
             }
         }
-        .toolbar(.hidden)
-        
     }
     
     private var topView: some View {

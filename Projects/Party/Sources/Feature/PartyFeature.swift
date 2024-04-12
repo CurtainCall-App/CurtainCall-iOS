@@ -21,12 +21,15 @@ public struct PartyFeature {
         var calendar: PickCalendarFeature.State?
         var selectedDates: [Date] = []
         var partyList: [FetchPartyListResult] = []
+        var path = StackState<Path.State>()
     }
     
     public enum Action {
         case didTappedDurationButton
+        case didTappedRecruitMemberButton
         case calendar(PickCalendarFeature.Action)
         case partyListResponse([FetchPartyListResult])
+        case path(StackAction<Path.State, Path.Action>)
     }
     
     @Dependency (\.partyClient) var partyClient
@@ -50,10 +53,15 @@ public struct PartyFeature {
             case .didTappedDurationButton:
                 state.calendar = .init(month: Date())
                 return .none
+            case .didTappedRecruitMemberButton:
+                state.path.append(.partyRecruit(.init()))
+                return .none
             case .partyListResponse(let response):
                 state.partyList = response
                 return .none
             case .calendar:
+                return .none
+            case .path:
                 return .none
             }
         }
@@ -61,6 +69,24 @@ public struct PartyFeature {
             PickCalendarFeature()
         }
     }
+    
+    @Reducer
+    public struct Path {
+        public enum State: Equatable {
+            case partyRecruit(PartyRecruitFeature.State = .init())
+        }
+        
+        public enum Action {
+            case partyRecruit(PartyRecruitFeature.Action)
+        }
+        
+        public var body: some Reducer<State, Action> {
+            Scope(state: \.partyRecruit, action: \.partyRecruit) {
+                PartyRecruitFeature()
+            }
+        }
+    }
+    
     
     static public func convertDateToString(dates: [Date]) -> String {
         let formatter = DateFormatter()
