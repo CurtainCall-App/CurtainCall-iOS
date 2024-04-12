@@ -14,6 +14,7 @@ import NicknameSetting
 public struct TermsOfServiceFeature {
     public init() { }
     
+    @ObservableState
     public struct State: Equatable {
         public init() { }
         
@@ -21,7 +22,7 @@ public struct TermsOfServiceFeature {
         var isServiceCheck: Bool = false
         var isInfoCheck: Bool = false
         var isAgeCheck: Bool = false
-        @BindingState var isPossibleNext: Bool = false
+        var isPossibleNext: Bool = false
 //        var path = StackState<NicknameSettingFeature.State>()
     }
     

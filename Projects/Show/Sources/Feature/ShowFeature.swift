@@ -33,13 +33,14 @@ public struct ShowFeature {
         }
     }
     
+    @ObservableState
     public struct State: Equatable {
         public init() { }
         var selectedShowType: ShowType = .theater
         var selectedCategory: ShowSortFeature.CategoryType = .popular
         var showList: [ShowResponseContent] = []
         var page: Int = 0
-        @PresentationState var bottomSheet: ShowSortFeature.State?
+        @Presents var bottomSheet: ShowSortFeature.State?
         var isShowTooltip = !UserDefaults.standard.bool(forKey: UserDefaultKeys.isShowPopluarTooltip.rawValue)
         var path = StackState<Path.State>()
     }
@@ -107,10 +108,10 @@ public struct ShowFeature {
             case .didTappedSearch:
                 state.path.append(.showSearch())
                 return .none
-            case .path(.element(id: _, action: .showSeacrch(.didTappedCancelButton))):
+            case .path(.element(id: _, action: .showSearch(.didTappedCancelButton))):
                 state.path.removeAll()
                 return .none
-            case .path(.element(id: _, action: .showSeacrch(.didTappedShow(let show)))):
+            case .path(.element(id: _, action: .showSearch(.didTappedShow(let show)))):
                 state.path.append(.showDetail(.init(showId: show.id)))
                 return .none
             case .path(.element(id: _, action: .showDetail(.review(.didTappedReviewWriteButton(let info))))):
@@ -141,6 +142,8 @@ public struct ShowFeature {
     
     @Reducer
     public struct Path {
+        
+        @ObservableState
         public enum State: Equatable {
             case showSearch(ShowSearchFeature.State = .init(
                 recentSearches: (UserDefaults.standard.array(forKey: UserDefaultKeys.showRecentSearches.rawValue) as? [String] ?? []).suffix(10)
@@ -151,14 +154,14 @@ public struct ShowFeature {
         }
         
         public enum Action {
-            case showSeacrch(ShowSearchFeature.Action)
+            case showSearch(ShowSearchFeature.Action)
             case showDetail(ShowDetailFeature.Action)
             case reviewWrite(ReviewWriteFeature.Action)
             case reviewList(ReviewListFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
-            Scope(state: \.showSearch, action: \.showSeacrch) {
+            Scope(state: \.showSearch, action: \.showSearch) {
                 ShowSearchFeature()
             }
             

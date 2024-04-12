@@ -13,13 +13,14 @@ import ComposableArchitecture
 public struct ReviewWriteFeature {
     public init() { }
     
+    @ObservableState
     public struct State: Equatable {
         public init(showInfo: ReviewWriteViewComponents) {
             self.showInfo = showInfo
         }
         let showInfo: ReviewWriteViewComponents
-        @BindingState var grade: Double = 5
-        @BindingState var reviewText: String = ""
+        var grade: Double = 5
+        var reviewText: String = ""
     }
     
     public enum Action: BindableAction {
@@ -38,7 +39,7 @@ public struct ReviewWriteFeature {
         
         Reduce { state, action in
             switch action {
-            case .binding(\.$reviewText):
+            case .binding(\.reviewText):
                 return .none
             case .binding: return .none
             case .didTappedStar(let index):

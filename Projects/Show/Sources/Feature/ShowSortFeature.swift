@@ -38,6 +38,7 @@ public struct ShowSortFeature {
         }
     }
     
+    @ObservableState
     public struct State: Equatable {
         public init(categoryType: CategoryType) {
             self.categoryType = categoryType

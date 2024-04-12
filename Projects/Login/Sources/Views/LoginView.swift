@@ -13,7 +13,7 @@ import NicknameSetting
 import ComposableArchitecture
 
 public struct LoginView: View {
-    private let store: StoreOf<LoginFeature>
+    @Bindable private var store: StoreOf<LoginFeature>
     
     @EnvironmentObject var appRootManager: AppRootManager
     
@@ -22,62 +22,56 @@ public struct LoginView: View {
     }
     
     public var body: some View {
-        NavigationStackStore(self.store.scope(state: \.path, action: \.path)) {
-            WithViewStore(self.store, observe: { $0 }) { viewStore in
-                ZStack {
-                    Color(asset: CommonAsset.hex0D1327)
-                        .ignoresSafeArea()
-                    VStack {
-                        Spacer()
-                        Image(asset: CommonAsset.logoSplash64px)
-                        Spacer().frame(height: 74)
-                        Image(asset: CommonAsset.loginComment)
-                        Spacer().frame(height: 17)
-                        HStack(spacing: 16) {
-                            Image(asset: CommonAsset.loginKakaotalk)
-                                .onTapGesture { viewStore.send(.kakaoLoginTapped) }
-                            Image(asset: CommonAsset.loginNaver)
-                                .onTapGesture { viewStore.send(.naverLoginTapped) }
-                            Image(asset: CommonAsset.loginApple)
-                                .onTapGesture { viewStore.send(.appleLoginTapped) }
-                        }
-                        Spacer()
-                        
-                        HStack {
-                            Spacer()
-                            Text("로그인 없이 시작하기")
-                                .font(.body2_SB)
-                                .underline()
-                                .foregroundStyle(.white)
-                                .onTapGesture {
-                                    appRootManager.currentRoot = .main
-                                }
-                            Spacer()
-                        }
-                        
-                        Spacer().frame(height: 100)
+        NavigationStack(path: self.$store.scope(state: \.path, action: \.path)) {
+            ZStack {
+                Color(asset: CommonAsset.hex0D1327)
+                    .ignoresSafeArea()
+                VStack {
+                    Spacer()
+                    Image(asset: CommonAsset.logoSplash64px)
+                    Spacer().frame(height: 74)
+                    Image(asset: CommonAsset.loginComment)
+                    Spacer().frame(height: 17)
+                    HStack(spacing: 16) {
+                        Image(asset: CommonAsset.loginKakaotalk)
+                            .onTapGesture { store.send(.kakaoLoginTapped) }
+                        Image(asset: CommonAsset.loginNaver)
+                            .onTapGesture { store.send(.naverLoginTapped) }
+                        Image(asset: CommonAsset.loginApple)
+                            .onTapGesture { store.send(.appleLoginTapped) }
                     }
-                }
-                .onChange(of: viewStore.appRootView) { _ , newValue in
-                    appRootManager.currentRoot = newValue
+                    Spacer()
+                    
+                    HStack {
+                        Spacer()
+                        Text("로그인 없이 시작하기")
+                            .font(.body2_SB)
+                            .underline()
+                            .foregroundStyle(.white)
+                            .onTapGesture {
+                                appRootManager.currentRoot = .main
+                            }
+                        Spacer()
+                    }
+                    
+                    Spacer().frame(height: 100)
                 }
             }
+            .onChange(of: store.appRootView) { _ , newValue in
+                appRootManager.currentRoot = newValue
+            }
+        
             
-        } destination: {
-            switch $0 {
+        } destination: { store in
+            switch store.state {
             case .termsOfService:
-                CaseLet(
-                    \LoginFeature.Path.State.termsOfService,
-                     action: LoginFeature.Path.Action.termsOfService,
-                     then: TermsOfServiceView.init(store:)
-                    )
-            
+                if let store = store.scope(state: \.termsOfService, action: \.termsOfService) {
+                    TermsOfServiceView(store: store)
+                }
             case .nicknameSetting:
-                CaseLet(
-                    \LoginFeature.Path.State.nicknameSetting,
-                     action: LoginFeature.Path.Action.nicknameSetting,
-                     then: NicknameSettingView.init(store:)
-                    )
+                if let store = store.scope(state: \.nicknameSetting, action: \.nicknameSetting) {
+                    NicknameSettingView(store: store)
+                }
             }
         }
     }

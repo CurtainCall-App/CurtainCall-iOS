@@ -21,6 +21,7 @@ public struct ShowDetailFeature {
         case lostItem = "분실물"
     }
     
+    @ObservableState
     public struct State: Equatable {
         public init(showId: String) {
             self.showId = showId

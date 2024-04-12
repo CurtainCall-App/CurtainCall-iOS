@@ -67,15 +67,25 @@ public struct PartyView: View {
                     }
                 }
             }
-            .toolbar(.hidden)
-        } destination: {
-            switch $0 {
-            case .partyRecruit:
-                CaseLet(
-                    \PartyFeature.Path.State.partyRecruit,
-                     action: PartyFeature.Path.Action.partyRecruit,
-                     then: PartyRecruitView.init(store:)
-                )
+            VStack {
+                Spacer()
+                recruitMemberButton
+                    .padding(.bottom, 20)
+                    .padding(.horizontal, 20)
+            }
+            VStack {
+                if let pickCalendarStore = self.store.scope(state: \.calendar, action: \.calendar) {
+                    VStack {
+                        Spacer().frame(height: 54)
+                        PickCalendarView(store: pickCalendarStore)
+                            .background(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
+                            .padding(.horizontal, 20)
+                        
+                        Spacer()
+                    }
+                }
             }
         }
     }

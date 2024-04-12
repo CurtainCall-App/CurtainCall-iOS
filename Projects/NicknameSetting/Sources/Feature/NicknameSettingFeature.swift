@@ -14,10 +14,11 @@ import ComposableArchitecture
 public struct NicknameSettingFeature {
     public init() { }
     
+    @ObservableState
     public struct State: Equatable {
         public init() { }
-        @BindingState var nicknameText: String = ""
-        @BindingState var isPossibleNickname: Bool = false
+        var nicknameText: String = ""
+        var isPossibleNickname: Bool = false
         var isValidCount: Bool = false
         var isValidRegex: Bool = false
         var isTappedDuplicatedButton: Bool = false
@@ -40,7 +41,7 @@ public struct NicknameSettingFeature {
         
         Reduce { state, action in
             switch action {
-            case .binding(\.$nicknameText):
+            case .binding(\.nicknameText):
                 state.isValidCount = isValidCount(state.nicknameText)
                 state.isValidRegex = isValidRegex(state.nicknameText)
                 state.isPossibleNickname = false
