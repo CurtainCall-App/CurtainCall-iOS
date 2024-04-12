@@ -253,9 +253,5 @@ public struct PartyView: View {
         .background(.white)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.horizontal, 20)
-        
-        
-        
-        
     }
 }

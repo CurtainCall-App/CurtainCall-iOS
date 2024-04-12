@@ -19,13 +19,13 @@ public struct ShowFeature {
         case theater
         case musical
         
-        var title: String {
+        public var title: String {
             switch self {
             case .theater: return "연극"
             case .musical: return "뮤지컬"
             }
         }
-        var APIName: String {
+        public var APIName: String {
             switch self {
             case .theater: return "PLAY"
             case .musical: return "MUSICAL"

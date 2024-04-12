@@ -68,6 +68,9 @@ public struct PartyFeature {
         .ifLet(\.calendar, action: \.calendar) {
             PickCalendarFeature()
         }
+        .forEach(\.path, action: \.path) {
+            Path()
+        }
     }
     
     @Reducer
@@ -84,6 +87,7 @@ public struct PartyFeature {
         public var body: some Reducer<State, Action> {
             Scope(state: \.partyRecruit, action: \.partyRecruit) {
                 PartyRecruitFeature()
+                    ._printChanges()
             }
         }
     }

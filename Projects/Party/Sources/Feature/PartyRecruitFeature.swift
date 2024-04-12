@@ -8,6 +8,7 @@
 import Foundation
 
 import Common
+import Show
 
 import ComposableArchitecture
 
@@ -24,15 +25,34 @@ public struct PartyRecruitFeature {
     public struct State: Equatable {
         public init() { }
         var viewType: ViewType = .step1
+        var selectedShowType: ShowFeature.ShowType = .theater
+        var selectedCategory: ShowSortFeature.CategoryType = .popular
+        var showList: [ShowResponseContent] = []
+        var page: Int = 0
     }
     
+    @Dependency (\.showClient) var showClient
+    
     public enum Action {
-        
+        case fetchShowList(page: Int)
+        case showListResponse([ShowResponseContent])
     }
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .fetchShowList(let page):
+                state.page = page
+                return .run { [
+                    showType = state.selectedShowType,
+                    categoryType = state.selectedCategory
+                ] send in
+                    try await send(.showListResponse(self.showClient.fetchShowList(page, showType, categoryType).content))
+                }
+            case .showListResponse(let response):
+                state.showList.append(contentsOf: response)
+                return .none
+            }
         }
     }
 }

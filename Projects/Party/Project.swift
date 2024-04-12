@@ -19,6 +19,10 @@ let project = Project.makeModule(
         .project(
             target: "Calendar",
             path: .relativeToRoot("Projects/Calendar")
+        ),
+        .project(
+            target: "Show",
+            path: .relativeToRoot("Projects/Show")
         )
     ]
 )

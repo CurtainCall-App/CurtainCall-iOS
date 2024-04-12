@@ -8,12 +8,15 @@
 import SwiftUI
 
 import Common
+import Show
 
 import ComposableArchitecture
 
 public struct PartyRecruitView: View {
     
     private let store: StoreOf<PartyRecruitFeature>
+    
+    @Environment (\.dismiss) var dismiss
     
     public init(store: StoreOf<PartyRecruitFeature>) {
         self.store = store
@@ -22,9 +25,11 @@ public struct PartyRecruitView: View {
     public var body: some View {
         VStack {
             topView
-            stepView
-                .padding(.top, 20)
-            Spacer()
+            switch store.viewType {
+            case .step1: step1.onAppear { store.send(.fetchShowList(page: 0)) }
+            case .step2: EmptyView()
+            case .step3: EmptyView()
+            }
         }
         .toolbar(.hidden)
         
@@ -33,36 +38,22 @@ public struct PartyRecruitView: View {
     private var topView: some View {
         HStack {
             Image(asset: CommonAsset.navigationBackIcon)
+                .onTapGestureRectangle {
+                    dismiss()
+                }
             Spacer()
             Text("파티원 모집")
                 .font(.subTitle3)
                 .foregroundStyle(.black)
             Spacer()
             Image(asset: CommonAsset.navigationSearchIcon)
+                
         }
         .padding(.horizontal, 16)
         .frame(height: 44)
     }
     
-    private var stepView: some View {
-        switch store.viewType {
-        case .step1: Image(asset: CommonAsset.partyRecruitProgressStep1)
-        case .step2: Image(asset: CommonAsset.partyRecruitProgressStep2)
-        case .step3: Image(asset: CommonAsset.partyRecruitProgressStep3)
-        }
-    }
-    
-    private var showView: some View {
-        VStack {
-            Text("작품을 선택해주세요")
-                .foregroundStyle(.black)
-                .font(.subTitle4)
-                .padding(.top, 30)
-            
-        }
-    }
-    
-    private func makeShowTypeButton(type: ShowType) -> some View {
+    private func makeShowTypeButton(type: ShowFeature.ShowType) -> some View {
         Text(type.title)
             .font(.body2_SB)
             .foregroundStyle(store.selectedShowType == type ? Color.white : Color.gray6)
@@ -70,6 +61,45 @@ public struct PartyRecruitView: View {
             .padding(.vertical, 4)
             .background(store.selectedShowType == type ? Color.primary1 : Color.gray9)
             .clipShape(RoundedRectangle(cornerRadius: 30))
+    }
+    
+    private var categoryButton: some View {
+        HStack(spacing: 2) {
+            Text(store.selectedCategory.title)
+                .font(.body3)
+            Image(asset: CommonAsset.arrowTriangleDownFill)
+        }
+    }
+    
+    private var step1: some View {
+        VStack(spacing: 0) {
+            Image(asset: CommonAsset.partyRecruitProgressStep1)
+                .padding(.top, 20)
+            VStack(spacing: 0) {
+                HStack {
+                    Text("작품을 선택해주세요")
+                        .foregroundStyle(.black)
+                        .font(.subTitle4)
+                    Spacer()
+                }
+                .padding(.top, 30)
+                HStack {
+                    makeShowTypeButton(type: .theater)
+                    makeShowTypeButton(type: .musical)
+                    Spacer()
+                    categoryButton
+                }
+                .padding(.top, 12)
+                
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]) {
+                        
+                    }
+                }
+            }
+            .padding(.horizontal, 20)
+            Spacer()
+        }
     }
     
 }
