@@ -14,14 +14,14 @@ import ComposableArchitecture
 import NukeUI
 
 public struct PartyView: View {
-    private let store: StoreOf<PartyFeature>
+    @Bindable private var store: StoreOf<PartyFeature>
     
     public init(store: StoreOf<PartyFeature>) {
         self.store = store
     }
     
     public var body: some View {
-        NavigationStackStore(self.store.scope(state: \.path, action: \.path)) {
+        NavigationStack(path: self.$store.scope(state: \.path, action: \.path)) {
             ZStack {
                 Color.gray8
                     .ignoresSafeArea(.container, edges: .top)
@@ -36,7 +36,6 @@ public struct PartyView: View {
                                 ForEach(store.partyList, id: \.self) { info in
                                     makePartyItem(info: info)
                                 }
-                                
                                 Color.clear.padding(.bottom, 85)
                             }
                         }
@@ -53,10 +52,10 @@ public struct PartyView: View {
                         }
                 }
                 VStack {
-                    IfLetStore(self.store.scope(state: \.calendar, action: \.calendar)) { store in
+                    if let pickCalendarStore = self.store.scope(state: \.calendar, action: \.calendar) {
                         VStack {
                             Spacer().frame(height: 54)
-                            PickCalendarView(store: store)
+                            PickCalendarView(store: pickCalendarStore)
                                 .background(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 16))
                                 .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
@@ -66,25 +65,21 @@ public struct PartyView: View {
                         }
                     }
                 }
+                VStack {
+                    Spacer()
+                    recruitMemberButton
+                        .padding(.bottom, 20)
+                        .padding(.horizontal, 20)
+                        .onTapGestureRectangle {
+                            store.send(.didTappedRecruitMemberButton)
+                        }
+                }
             }
-            VStack {
-                Spacer()
-                recruitMemberButton
-                    .padding(.bottom, 20)
-                    .padding(.horizontal, 20)
-            }
-            VStack {
-                if let pickCalendarStore = self.store.scope(state: \.calendar, action: \.calendar) {
-                    VStack {
-                        Spacer().frame(height: 54)
-                        PickCalendarView(store: pickCalendarStore)
-                            .background(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                            .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
-                            .padding(.horizontal, 20)
-                        
-                        Spacer()
-                    }
+        } destination: { store in
+            switch store.state {
+            case .partyRecruit:
+                if let store = store.scope(state: \.partyRecruit, action: \.partyRecruit) {
+                    PartyRecruitView(store: store)
                 }
             }
         }

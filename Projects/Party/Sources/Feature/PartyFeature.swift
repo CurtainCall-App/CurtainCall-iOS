@@ -72,6 +72,7 @@ public struct PartyFeature {
     
     @Reducer
     public struct Path {
+        @ObservableState
         public enum State: Equatable {
             case partyRecruit(PartyRecruitFeature.State = .init())
         }
