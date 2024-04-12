@@ -13,7 +13,7 @@ import NicknameSetting
 import ComposableArchitecture
 
 public struct LoginView: View {
-    private let store: StoreOf<LoginFeature>
+    @Bindable private var store: StoreOf<LoginFeature>
     
     @EnvironmentObject var appRootManager: AppRootManager
     
@@ -22,7 +22,7 @@ public struct LoginView: View {
     }
     
     public var body: some View {
-        NavigationStackStore(self.store.scope(state: \.path, action: \.path)) {
+        NavigationStack(path: self.$store.scope(state: \.path, action: \.path)) {
             ZStack {
                 Color(asset: CommonAsset.hex0D1327)
                     .ignoresSafeArea()
@@ -62,21 +62,16 @@ public struct LoginView: View {
             }
         
             
-        } destination: {
-            switch $0 {
+        } destination: { store in
+            switch store.state {
             case .termsOfService:
-                CaseLet(
-                    \LoginFeature.Path.State.termsOfService,
-                     action: LoginFeature.Path.Action.termsOfService,
-                     then: TermsOfServiceView.init(store:)
-                    )
-            
+                if let store = store.scope(state: \.termsOfService, action: \.termsOfService) {
+                    TermsOfServiceView(store: store)
+                }
             case .nicknameSetting:
-                CaseLet(
-                    \LoginFeature.Path.State.nicknameSetting,
-                     action: LoginFeature.Path.Action.nicknameSetting,
-                     then: NicknameSettingView.init(store:)
-                    )
+                if let store = store.scope(state: \.nicknameSetting, action: \.nicknameSetting) {
+                    NicknameSettingView(store: store)
+                }
             }
         }
     }

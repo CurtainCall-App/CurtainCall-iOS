@@ -102,6 +102,7 @@ public struct LoginFeature {
     
     @Reducer
     public struct Path {
+        @ObservableState
         public enum State: Equatable {
             case termsOfService(TermsOfServiceFeature.State = .init())
             case nicknameSetting(NicknameSettingFeature.State = .init())

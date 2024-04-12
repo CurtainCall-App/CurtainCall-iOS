@@ -14,14 +14,14 @@ import ComposableArchitecture
 import NukeUI
 
 public struct ShowView: View {
-    private let store: StoreOf<ShowFeature>
+    @Bindable private var store: StoreOf<ShowFeature>
     
     public init(store: StoreOf<ShowFeature>) {
         self.store = store
     }
     
     public var body: some View {
-        NavigationStackStore(self.store.scope(state: \.path, action: \.path)) {
+        NavigationStack(path: self.$store.scope(state: \.path, action: \.path)) {
             VStack {
                 topbar
                 Spacer().frame(height: 20)
@@ -93,38 +93,29 @@ public struct ShowView: View {
             .onAppear {
                 store.send(.fetchShowList(page: 0))
             }
-            
             .sheet(store: self.store.scope(state: \.$bottomSheet, action: \.bottomSheet)) { store in
                 ShowSortBottomSheet(store: store)
                     .presentationDetents([.height(270)])
                     .presentationDragIndicator(.visible)
             }
-        } destination: {
-            switch $0 {
+        } destination: { store in
+            switch store.state {
             case .showSearch:
-                CaseLet(
-                    \ShowFeature.Path.State.showSearch,
-                     action: ShowFeature.Path.Action.showSeacrch,
-                     then: ShowSearchView.init(store:)
-                )
+                if let store = store.scope(state: \.showSearch, action: \.showSearch) {
+                    ShowSearchView(store: store)
+                }
             case .showDetail:
-                CaseLet(
-                    \ShowFeature.Path.State.showDetail,
-                     action: ShowFeature.Path.Action.showDetail,
-                     then: ShowDetailView.init(store:)
-                )
+                if let store = store.scope(state: \.showDetail, action: \.showDetail) {
+                    ShowDetailView(store: store)
+                }
             case .reviewWrite:
-                CaseLet(
-                    \ShowFeature.Path.State.reviewWrite,
-                     action: ShowFeature.Path.Action.reviewWrite,
-                     then: ReviewWriteView.init(store:)
-                )
+                if let store = store.scope(state: \.reviewWrite, action: \.reviewWrite) {
+                    ReviewWriteView(store: store)
+                }
             case .reviewList:
-                CaseLet(
-                    \ShowFeature.Path.State.reviewList,
-                     action: ShowFeature.Path.Action.reviewList,
-                     then: ReviewListView.init(store: )
-                )
+                if let store = store.scope(state: \.reviewList, action: \.reviewList) {
+                    ReviewListView(store: store)
+                }
             }
             
         }
