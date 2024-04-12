@@ -80,12 +80,9 @@ public struct ShowDetailView: View {
                         switch store.currentSelectedCategory {
                         case .detail:
                             detailTapView
-                            //                                    .onAppear {
-                            //                                        viewStore.send(.fetchFacilityDetail(id: viewStore.showInfo?.facilityId ?? ""))
-                            //                                    }
                         case .review:
-                            IfLetStore(self.store.scope(state: \.review, action: \.review)) {
-                                ReviewTabView(store: $0)
+                            if let reviewStore = self.store.scope(state: \.review, action: \.review) {
+                                ReviewTabView(store: reviewStore)
                             }
                         case .lostItem: Color.yellow
                         }

@@ -40,7 +40,7 @@ public struct ShowFeature {
         var selectedCategory: ShowSortFeature.CategoryType = .popular
         var showList: [ShowResponseContent] = []
         var page: Int = 0
-        @PresentationState var bottomSheet: ShowSortFeature.State?
+        @Presents var bottomSheet: ShowSortFeature.State?
         var isShowTooltip = !UserDefaults.standard.bool(forKey: UserDefaultKeys.isShowPopluarTooltip.rawValue)
         var path = StackState<Path.State>()
     }
