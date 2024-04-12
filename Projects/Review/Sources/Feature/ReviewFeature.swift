@@ -31,6 +31,7 @@ public struct ReviewFeature {
         }
     }
     
+    @ObservableState
     public struct State: Equatable {
         public init(showInfo: ReviewWriteViewComponents) {
             self.showInfo = showInfo

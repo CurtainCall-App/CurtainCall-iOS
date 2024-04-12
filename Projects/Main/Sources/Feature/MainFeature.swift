@@ -26,6 +26,7 @@ public struct MainFeature {
         case myPage
     }
     
+    @ObservableState
     public struct State: Equatable {
         public init() { }
         var selectedTabbarType: TabbarType = .home

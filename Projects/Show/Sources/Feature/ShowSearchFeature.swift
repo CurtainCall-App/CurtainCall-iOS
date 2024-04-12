@@ -15,11 +15,12 @@ import ComposableArchitecture
 public struct ShowSearchFeature {
     public init() { }
     
+    @ObservableState
     public struct State: Equatable {
         public init(recentSearches: [String]) {
             self.recentSearches = recentSearches
         }
-        @BindingState var showTitleText: String = ""
+        var showTitleText: String = ""
         var recentSearches: [String]
         var showList: [ShowResponseContent] = []
     }
@@ -45,7 +46,7 @@ public struct ShowSearchFeature {
         
         Reduce { state, action in
             switch action {
-            case .binding(\.$showTitleText):
+            case .binding(\.showTitleText):
                 if state.showTitleText.isEmpty { return .none }
                 return .run { [showTitle = state.showTitleText] send in
                     await send(.fetchShowList(keyword: showTitle))

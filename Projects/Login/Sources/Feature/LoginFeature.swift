@@ -16,6 +16,7 @@ import NicknameSetting
 public struct LoginFeature {
     public init() { }
     
+    @ObservableState
     public struct State: Equatable {
         public init() { }
         var loginType: LoginType?

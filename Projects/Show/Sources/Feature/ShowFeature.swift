@@ -33,6 +33,7 @@ public struct ShowFeature {
         }
     }
     
+    @ObservableState
     public struct State: Equatable {
         public init() { }
         var selectedShowType: ShowType = .theater

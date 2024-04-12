@@ -13,6 +13,7 @@ import ComposableArchitecture
 public struct PickCalendarCellFeature {
     public init() { }
     
+    @ObservableState
     public struct State: Equatable {
         public init(
             day: Int,

@@ -19,28 +19,26 @@ public struct ShowSortBottomSheet: View {
     }
     
     public var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
-            VStack {
-                Spacer()
-                .frame(height: 36)
-                ForEach(ShowSortFeature.CategoryType.allCases, id: \.self) { type in
-                    HStack {
-                        Text(type.title)
-                            .font(.body2_SB)
-                            .foregroundStyle(viewStore.categoryType == type ? Color.primary1 : Color.gray5)
-                        Spacer()
-                        if viewStore.categoryType == type {
-                            Image(asset: CommonAsset.iconCheckmarkPrimary2)
-                        }
-                    }
-                    .frame(height: 50)
-                    .onTapGestureRectangle {
-                        viewStore.send(.didTappedCategory(type))
+        VStack {
+            Spacer()
+            .frame(height: 36)
+            ForEach(ShowSortFeature.CategoryType.allCases, id: \.self) { type in
+                HStack {
+                    Text(type.title)
+                        .font(.body2_SB)
+                        .foregroundStyle(store.categoryType == type ? Color.primary1 : Color.gray5)
+                    Spacer()
+                    if store.categoryType == type {
+                        Image(asset: CommonAsset.iconCheckmarkPrimary2)
                     }
                 }
-                Spacer()
+                .frame(height: 50)
+                .onTapGestureRectangle {
+                    store.send(.didTappedCategory(type))
+                }
             }
-            .padding(.horizontal, 30)
+            Spacer()
         }
+        .padding(.horizontal, 30)
     }
 }
