@@ -10,6 +10,7 @@ import SwiftUI
 import Common
 import Show
 
+import NukeUI
 import ComposableArchitecture
 
 public struct PartyRecruitView: View {
@@ -71,6 +72,7 @@ public struct PartyRecruitView: View {
         }
     }
     
+    @MainActor
     private var step1: some View {
         VStack(spacing: 0) {
             Image(asset: CommonAsset.partyRecruitProgressStep1)
@@ -92,10 +94,38 @@ public struct PartyRecruitView: View {
                 .padding(.top, 12)
                 
                 ScrollView {
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]) {
-                        
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+                        ForEach(store.showList, id: \.self) { show in
+                            VStack(spacing: 6) {
+                                LazyImage(url: URL(string: show.poster)) {
+                                    state in
+                                    if let image = state.image {
+                                        image.resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                    } else if state.error != nil {
+                                        ProgressView()
+                                    } else {
+                                        ProgressView()
+                                    }
+                                }
+                                .frame(width: 105, height: 140)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                
+                                Text(show.name)
+                                    .font(.body3_SB)
+                                    .foregroundStyle(.black)
+                                    .lineLimit(1)
+                            }
+                            .onAppear {
+                                if show == store.showList.last {
+                                    store.send(.didScrollToLastItem)
+                                }
+                            }
+                            
+                        }
                     }
                 }
+                .padding(.top, 20)
             }
             .padding(.horizontal, 20)
             Spacer()

@@ -36,6 +36,7 @@ public struct PartyRecruitFeature {
     public enum Action {
         case fetchShowList(page: Int)
         case showListResponse([ShowResponseContent])
+        case didScrollToLastItem
     }
     
     public var body: some ReducerOf<Self> {
@@ -52,6 +53,10 @@ public struct PartyRecruitFeature {
             case .showListResponse(let response):
                 state.showList.append(contentsOf: response)
                 return .none
+            case .didScrollToLastItem:
+                return .run { [page = state.page] send in
+                    await send(.fetchShowList(page: page + 1))
+                }
             }
         }
     }
