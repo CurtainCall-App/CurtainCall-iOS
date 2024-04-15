@@ -15,7 +15,7 @@ import ComposableArchitecture
 
 public struct PartyRecruitView: View {
     
-    private let store: StoreOf<PartyRecruitFeature>
+    @Bindable private var store: StoreOf<PartyRecruitFeature>
     
     @Environment (\.dismiss) var dismiss
     
@@ -69,6 +69,9 @@ public struct PartyRecruitView: View {
             Text(store.selectedCategory.title)
                 .font(.body3)
             Image(asset: CommonAsset.arrowTriangleDownFill)
+        }
+        .onTapGestureRectangle {
+            store.send(.didTappedCategoryButton)
         }
     }
     
@@ -129,6 +132,11 @@ public struct PartyRecruitView: View {
             }
             .padding(.horizontal, 20)
             Spacer()
+        }
+        .sheet(item: $store.scope(state: \.bottomSheet, action: \.bottomSheet)) { store in
+            ShowSortBottomSheet(store: store)
+                .presentationDetents([.height(270)])
+                .presentationDragIndicator(.visible)
         }
     }
     
