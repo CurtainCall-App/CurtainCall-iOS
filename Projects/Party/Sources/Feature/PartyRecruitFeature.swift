@@ -27,23 +27,28 @@ public struct PartyRecruitFeature {
         var viewType: ViewType = .step1
         var selectedShowType: ShowFeature.ShowType = .theater
         var selectedCategory: ShowSortFeature.CategoryType = .popular
+        var selectedShow: ShowResponseContent?
         var showList: [ShowResponseContent] = []
         var page: Int = 0
-        
+        var isPossibleNextButton = false
         @Presents var bottomSheet: ShowSortFeature.State?
     }
     
-    public enum Action {
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
         case fetchShowList(page: Int)
         case showListResponse([ShowResponseContent])
         case didScrollToLastItem
         case didTappedCategoryButton
         case bottomSheet(PresentationAction<ShowSortFeature.Action>)
+        case didTappedNextButton
     }
     
     @Dependency (\.showClient) var showClient
     
     public var body: some ReducerOf<Self> {
+        BindingReducer()
+        
         Reduce { state, action in
             switch action {
             case .fetchShowList(let page):
@@ -60,6 +65,18 @@ public struct PartyRecruitFeature {
             case .didTappedCategoryButton:
                 state.bottomSheet = .init(categoryType: state.selectedCategory)
                 return .none
+            case .didTappedNextButton:
+                switch state.viewType {
+                case .step1: state.viewType = .step2
+                case .step2:
+                    state.isPossibleNextButton = false
+                    state.viewType = .step3
+                case .step3:
+                    if state.isPossibleNextButton {
+                        
+                    }
+                }
+                return .none
             case .didScrollToLastItem:
                 return .run { [page = state.page] send in
                     await send(.fetchShowList(page: page + 1))
@@ -72,8 +89,8 @@ public struct PartyRecruitFeature {
                 return .run { send in
                     await send(.fetchShowList(page: 0))
                 }
-            case .bottomSheet:
-                return .none
+            case .bottomSheet: return .none
+            case .binding: return .none
             }
         }
         .ifLet(\.$bottomSheet, action: \.bottomSheet) {

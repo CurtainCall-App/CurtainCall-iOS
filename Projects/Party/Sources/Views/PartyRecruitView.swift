@@ -28,8 +28,8 @@ public struct PartyRecruitView: View {
             topView
             switch store.viewType {
             case .step1: step1.onAppear { store.send(.fetchShowList(page: 0)) }
-            case .step2: EmptyView()
-            case .step3: EmptyView()
+            case .step2: step2
+            case .step3: step3
             }
         }
         .toolbar(.hidden)
@@ -75,68 +75,96 @@ public struct PartyRecruitView: View {
         }
     }
     
+    private var nextButton: some View {
+        VStack {
+            Spacer()
+            RectangleBottomButton(isEnable: $store.isPossibleNextButton, text: store.viewType != .step3 ? "다음" : "작성 완료") {
+                store.send(.didTappedNextButton)
+            }
+            .padding(.bottom, 10)
+            .padding(.horizontal, 20)
+        }
+    }
+    
     @MainActor
     private var step1: some View {
-        VStack(spacing: 0) {
-            Image(asset: CommonAsset.partyRecruitProgressStep1)
-                .padding(.top, 20)
+        ZStack {
             VStack(spacing: 0) {
-                HStack {
-                    Text("작품을 선택해주세요")
-                        .foregroundStyle(.black)
-                        .font(.subTitle4)
-                    Spacer()
-                }
-                .padding(.top, 30)
-                HStack {
-                    makeShowTypeButton(type: .theater)
-                    makeShowTypeButton(type: .musical)
-                    Spacer()
-                    categoryButton
-                }
-                .padding(.top, 12)
-                
-                ScrollView {
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
-                        ForEach(store.showList, id: \.self) { show in
-                            VStack(spacing: 6) {
-                                LazyImage(url: URL(string: show.poster)) {
-                                    state in
-                                    if let image = state.image {
-                                        image.resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                    } else if state.error != nil {
-                                        ProgressView()
-                                    } else {
-                                        ProgressView()
+                Image(asset: CommonAsset.partyRecruitProgressStep1)
+                    .padding(.top, 20)
+                VStack(spacing: 0) {
+                    HStack {
+                        Text("작품을 선택해주세요")
+                            .foregroundStyle(.black)
+                            .font(.subTitle4)
+                        Spacer()
+                    }
+                    .padding(.top, 30)
+                    HStack {
+                        makeShowTypeButton(type: .theater)
+                        makeShowTypeButton(type: .musical)
+                        Spacer()
+                        categoryButton
+                    }
+                    .padding(.top, 12)
+                    
+                    ScrollView {
+                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+                            ForEach(store.showList, id: \.self) { show in
+                                VStack(spacing: 6) {
+                                    LazyImage(url: URL(string: show.poster)) {
+                                        state in
+                                        if let image = state.image {
+                                            image.resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                        } else if state.error != nil {
+                                            ProgressView()
+                                        } else {
+                                            ProgressView()
+                                        }
+                                    }
+                                    .frame(width: 105, height: 140)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    
+                                    Text(show.name)
+                                        .font(.body3_SB)
+                                        .foregroundStyle(.black)
+                                        .lineLimit(1)
+                                }
+                                .onAppear {
+                                    if show == store.showList.last {
+                                        store.send(.didScrollToLastItem)
                                     }
                                 }
-                                .frame(width: 105, height: 140)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
                                 
-                                Text(show.name)
-                                    .font(.body3_SB)
-                                    .foregroundStyle(.black)
-                                    .lineLimit(1)
                             }
-                            .onAppear {
-                                if show == store.showList.last {
-                                    store.send(.didScrollToLastItem)
-                                }
-                            }
-                            
                         }
+                        Color.clear.frame(height: 70)
                     }
+                    .padding(.top, 20)
                 }
-                .padding(.top, 20)
+                .padding(.horizontal, 20)
+                Spacer()
             }
-            .padding(.horizontal, 20)
-            Spacer()
+            nextButton
         }
         .sheet(item: $store.scope(state: \.bottomSheet, action: \.bottomSheet)) { store in
             ShowSortBottomSheet(store: store)
                 .presentationDetents([.height(270)])
                 .presentationDragIndicator(.visible)
+        }
+    }
+    
+    private var step2: some View {
+        VStack {
+            Color.yellow
+            Spacer()
+        }
+    }
+    private var step3: some View {
+        VStack {
+            Color.green
+            Spacer()
         }
     }
     
