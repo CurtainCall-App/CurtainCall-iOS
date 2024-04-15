@@ -78,8 +78,9 @@ public struct ShowFeature {
                 }
                 state.selectedShowType = type
                 state.showList = []
-                return .run { send in
-                    await send(.fetchShowList(page: 0))
+                state.page = 0
+                return .run { [page = state.page] send in
+                    await send(.fetchShowList(page: page))
                 }
             case .didTappedCategory:
                 state.bottomSheet = ShowSortFeature.State(categoryType: state.selectedCategory)

@@ -62,6 +62,9 @@ public struct PartyRecruitView: View {
             .padding(.vertical, 4)
             .background(store.selectedShowType == type ? Color.primary1 : Color.gray9)
             .clipShape(RoundedRectangle(cornerRadius: 30))
+            .onTapGestureRectangle {
+                store.send(.didTappedShowTypeButton(type))
+            }
     }
     
     private var categoryButton: some View {
@@ -117,7 +120,7 @@ public struct PartyRecruitView: View {
                                         state in
                                         if let image = state.image {
                                             image.resizable()
-                                                .aspectRatio(contentMode: .fit)
+                                                .aspectRatio(contentMode: .fill)
                                         } else if state.error != nil {
                                             ProgressView()
                                         } else {

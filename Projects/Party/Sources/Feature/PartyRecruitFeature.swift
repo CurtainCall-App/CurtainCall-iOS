@@ -43,6 +43,7 @@ public struct PartyRecruitFeature {
         case bottomSheet(PresentationAction<ShowSortFeature.Action>)
         case didTappedNextButton
         case didTappedShowItem(ShowResponseContent)
+        case didTappedShowTypeButton(ShowFeature.ShowType)
     }
     
     @Dependency (\.showClient) var showClient
@@ -88,6 +89,16 @@ public struct PartyRecruitFeature {
             case .didScrollToLastItem:
                 return .run { [page = state.page] send in
                     await send(.fetchShowList(page: page + 1))
+                }
+            case .didTappedShowTypeButton(let type):
+                if type == state.selectedShowType {
+                    return .none
+                }
+                state.selectedShowType = type
+                state.showList = []
+                state.page = 0
+                return .run { [page = state.page] send in
+                    await send(.fetchShowList(page: page))
                 }
             case .bottomSheet(.presented(.didTappedCategory(let type))):
                 defer { state.bottomSheet = nil }
