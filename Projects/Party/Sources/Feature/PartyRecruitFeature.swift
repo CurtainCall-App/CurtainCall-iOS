@@ -42,6 +42,7 @@ public struct PartyRecruitFeature {
         case didTappedCategoryButton
         case bottomSheet(PresentationAction<ShowSortFeature.Action>)
         case didTappedNextButton
+        case didTappedShowItem(ShowResponseContent)
     }
     
     @Dependency (\.showClient) var showClient
@@ -66,8 +67,10 @@ public struct PartyRecruitFeature {
                 state.bottomSheet = .init(categoryType: state.selectedCategory)
                 return .none
             case .didTappedNextButton:
+                if !state.isPossibleNextButton { return .none }
                 switch state.viewType {
-                case .step1: state.viewType = .step2
+                case .step1: 
+                    state.viewType = .step2
                 case .step2:
                     state.isPossibleNextButton = false
                     state.viewType = .step3
@@ -76,6 +79,11 @@ public struct PartyRecruitFeature {
                         
                     }
                 }
+                return .none
+            case .didTappedShowItem(let item):
+                state.selectedShow = nil
+                state.selectedShow = item
+                state.isPossibleNextButton = state.selectedShow != nil
                 return .none
             case .didScrollToLastItem:
                 return .run { [page = state.page] send in

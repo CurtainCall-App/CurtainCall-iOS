@@ -112,6 +112,7 @@ public struct PartyRecruitView: View {
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
                             ForEach(store.showList, id: \.self) { show in
                                 VStack(spacing: 6) {
+                                    Spacer().frame(height: 10)
                                     LazyImage(url: URL(string: show.poster)) {
                                         state in
                                         if let image = state.image {
@@ -124,12 +125,22 @@ public struct PartyRecruitView: View {
                                         }
                                     }
                                     .frame(width: 105, height: 140)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .clipShape(
+                                        RoundedRectangle(cornerRadius: 10)
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.primary1, lineWidth: store.selectedShow == show ? 3 : 0)
+                                        )
+                                    
                                     
                                     Text(show.name)
                                         .font(.body3_SB)
                                         .foregroundStyle(.black)
                                         .lineLimit(1)
+                                }
+                                .onTapGestureRectangle {
+                                    store.send(.didTappedShowItem(show))
                                 }
                                 .onAppear {
                                     if show == store.showList.last {
