@@ -24,7 +24,7 @@ public struct SplashView: View {
                 isAnimation.toggle()
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                appRootManager.changeFirstView()
+                appRootManager.checkToken()
             }
         }
         .ignoresSafeArea()

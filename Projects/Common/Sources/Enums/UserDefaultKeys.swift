@@ -9,6 +9,8 @@ import Foundation
 
 public enum UserDefaultKeys: String {
     case accessToken
+    case refreshToken
+    case refreshTokenExpiresAt
     case isShowPopluarTooltip
     case showRecentSearches
 }

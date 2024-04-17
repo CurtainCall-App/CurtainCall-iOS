@@ -59,4 +59,10 @@ public struct Utils {
             return "날짜 정보 없음"
         }
     }
+    
+    public static func convertAPIDateForrmatToDate(dateString: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        return formatter.date(from: dateString)
+    }
 }
