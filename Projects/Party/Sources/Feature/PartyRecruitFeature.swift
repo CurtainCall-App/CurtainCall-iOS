@@ -70,7 +70,8 @@ public struct PartyRecruitFeature {
             case .didTappedNextButton:
                 if !state.isPossibleNextButton { return .none }
                 switch state.viewType {
-                case .step1: 
+                case .step1:
+                    state.isPossibleNextButton = false
                     state.viewType = .step2
                 case .step2:
                     state.isPossibleNextButton = false
