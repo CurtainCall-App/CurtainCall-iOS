@@ -9,6 +9,7 @@ import Foundation
 
 import Common
 import Show
+import Calendar
 
 import ComposableArchitecture
 
@@ -31,6 +32,7 @@ public struct PartyRecruitFeature {
         var showList: [ShowResponseContent] = []
         var page: Int = 0
         var isPossibleNextButton = false
+        var calendar: OnePickCalendarFeature.State?
         @Presents var bottomSheet: ShowSortFeature.State?
     }
     
@@ -44,6 +46,9 @@ public struct PartyRecruitFeature {
         case didTappedNextButton
         case didTappedShowItem(ShowResponseContent)
         case didTappedShowTypeButton(ShowFeature.ShowType)
+        case didTappedSelectedShowDate
+        case didTappedSelectedShowTime
+        case calendar(OnePickCalendarFeature.Action)
     }
     
     @Dependency (\.showClient) var showClient
@@ -109,12 +114,24 @@ public struct PartyRecruitFeature {
                 return .run { send in
                     await send(.fetchShowList(page: 0))
                 }
+            case .didTappedSelectedShowDate:
+                state.calendar = .init(month: Date())
+                return .none
+            case .didTappedSelectedShowTime:
+                return .none
+            case .calendar(.didTappedConfirmButton):
+                state.calendar = nil
+                return .none
+            case .calendar: return .none
             case .bottomSheet: return .none
             case .binding: return .none
             }
         }
         .ifLet(\.$bottomSheet, action: \.bottomSheet) {
             ShowSortFeature()
+        }
+        .ifLet(\.calendar, action: \.calendar) {
+            OnePickCalendarFeature()
         }
     }
 }

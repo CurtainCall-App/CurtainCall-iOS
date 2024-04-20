@@ -9,6 +9,7 @@ import SwiftUI
 
 import Common
 import Show
+import Calendar
 
 import NukeUI
 import ComposableArchitecture
@@ -183,65 +184,81 @@ public struct PartyRecruitView: View {
     }
     
     private var step2: some View {
-        VStack(spacing: 0) {
+        ZStack {
             VStack(spacing: 0) {
-                HStack {
-                    Text("공연 날짜를 선택해주세요.")
-                        .foregroundStyle(.black)
-                        .font(.subTitle4)
-                    Spacer()
-                }
-                .padding(.top, 30)
-                
-                HStack {
-                    Text("날짜를 선택해주세요.")
-                        .font(.body2_M)
-                        .foregroundStyle(Color.gray6)
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 12)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity)
-                .background(Color.gray9)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding(.top, 12)
-                
-                HStack {
-                    Text("시간대를 선택해주세요.")
-                        .foregroundStyle(.black)
-                        .font(.subTitle4)
-                    Spacer()
-                }
-                .padding(.top, 40)
-                
-                HStack {
-                    Text("시간을 선택해주세요.")
-                        .font(.body2_M)
-                        .foregroundStyle(Color.gray6)
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 12)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity)
-                .background(Color.gray9)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding(.top, 12)
-                
-                HStack {
-                    Text("인원을 선택해주세요.")
-                        .foregroundStyle(.black)
-                        .font(.subTitle4)
-                    Spacer()
-                }
-                .padding(.top, 40)
-                
-                stepper
+                VStack(spacing: 0) {
+                    HStack {
+                        Text("공연 날짜를 선택해주세요.")
+                            .foregroundStyle(.black)
+                            .font(.subTitle4)
+                        Spacer()
+                    }
+                    .padding(.top, 30)
+                    
+                    HStack {
+                        Text("날짜를 선택해주세요.")
+                            .font(.body2_M)
+                            .foregroundStyle(Color.gray6)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 12)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .background(Color.gray9)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding(.top, 12)
+                    .onTapGestureRectangle {
+                        store.send(.didTappedSelectedShowDate)
+                    }
+                    
+                    HStack {
+                        Text("시간대를 선택해주세요.")
+                            .foregroundStyle(.black)
+                            .font(.subTitle4)
+                        Spacer()
+                    }
+                    .padding(.top, 40)
+                    
+                    HStack {
+                        Text("시간을 선택해주세요.")
+                            .font(.body2_M)
+                            .foregroundStyle(Color.gray6)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 12)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .background(Color.gray9)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(.top, 12)
+                    
+                    HStack {
+                        Text("인원을 선택해주세요.")
+                            .foregroundStyle(.black)
+                            .font(.subTitle4)
+                        Spacer()
+                    }
+                    .padding(.top, 40)
+                    
+                    stepper
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .padding(.top, 12)
+                }
+                Spacer()
             }
-            Spacer()
+            .padding(.horizontal, 20)
+            if let pickCalendarStore = self.store.scope(state: \.calendar, action: \.calendar) {
+                VStack {
+                    Spacer().frame(height: 110)
+                    OnePickCalendarView(store: pickCalendarStore)
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
+                        .padding(.horizontal, 20)
+                    Spacer()
+                }
+            }
         }
-        .padding(.horizontal, 20)
     }
     
     private var stepper: some View {

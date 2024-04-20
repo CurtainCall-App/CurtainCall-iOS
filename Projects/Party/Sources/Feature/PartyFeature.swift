@@ -18,7 +18,7 @@ public struct PartyFeature {
     @ObservableState
     public struct State: Equatable {
         public init() { }
-        var calendar: PickCalendarFeature.State?
+        var calendar: TwoPickCalendarFeature.State?
         var selectedDates: [Date] = []
         var partyList: [FetchPartyListResult] = []
         var path = StackState<Path.State>()
@@ -27,7 +27,7 @@ public struct PartyFeature {
     public enum Action {
         case didTappedDurationButton
         case didTappedRecruitMemberButton
-        case calendar(PickCalendarFeature.Action)
+        case calendar(TwoPickCalendarFeature.Action)
         case partyListResponse([FetchPartyListResult])
         case path(StackAction<Path.State, Path.Action>)
     }
@@ -66,7 +66,7 @@ public struct PartyFeature {
             }
         }
         .ifLet(\.calendar, action: \.calendar) {
-            PickCalendarFeature()
+            TwoPickCalendarFeature()
         }
         .forEach(\.path, action: \.path) {
             Path()

@@ -1,8 +1,8 @@
 //
-//  PickerCalendarFeature.swift
+//  OnePickCalendarFeature.swift
 //  Calendar
 //
-//  Created by 김민석 on 4/2/24.
+//  Created by 김민석 on 4/20/24.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-public struct PickCalendarFeature {
+public struct OnePickCalendarFeature {
     public init() { }
     
     @ObservableState
@@ -30,16 +30,13 @@ public struct PickCalendarFeature {
         var month: Date
         var daysInMonth: Int
         var firstWeekDay: Int
-        public var clickedDates: Set<Date> = []
-        var startDate: Date?
-        var endDate: Date?
-        public var selectedDates: [Date] = []
+        var currentSelectedDate: Date?
+        var selectedDate: Date?
     }
     
     public enum Action {
         case didTappedMoveMonthButton(Int)
         case didTappedDate(date: Date)
-        case didTappedResetbutton
         case didTappedConfirmButton
     }
     
@@ -56,41 +53,12 @@ public struct PickCalendarFeature {
                 state.firstWeekDay = firstWeekDay - 1
                 return .none
             case .didTappedDate(let date):
-                if state.startDate == nil && state.endDate == nil {
-                    state.startDate = date
-                    state.clickedDates.insert(date)
-                } else if state.startDate != nil, state.endDate == nil {
-                    state.endDate = date
-                    if state.startDate ?? Date() > state.endDate ?? Date() {
-                        let temp = state.startDate ?? Date()
-                        state.startDate = state.endDate
-                        state.endDate = temp
-                    }
-                    
-                    let components = Calendar.current.dateComponents([.day], from: state.startDate ?? Date(), to: state.endDate ?? Date())
-                    if let days = components.day {
-                        for day in 0..<days {
-                            if let date = Calendar.current.date(byAdding: .day, value: day, to: state.startDate ?? Date()) {
-                                state.clickedDates.insert(date)
-                            }
-                            state.clickedDates.insert(date)
-                        }
-                    }
-                    
-                } else {
-                    state.startDate = date
-                    state.endDate = nil
-                    state.clickedDates = [date]
-                }
-                return .none
-            case .didTappedResetbutton:
-                state.startDate = nil
-                state.endDate = nil
-                state.clickedDates = []
-                state.selectedDates = []
+                state.currentSelectedDate = nil
+                state.currentSelectedDate = date
                 return .none
             case .didTappedConfirmButton:
-                state.selectedDates = state.clickedDates.sorted { $0 < $1 }
+                state.selectedDate = state.currentSelectedDate
+                state.currentSelectedDate = nil
                 return .none
             }
         }
@@ -98,3 +66,4 @@ public struct PickCalendarFeature {
     
     
 }
+

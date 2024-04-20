@@ -11,11 +11,11 @@ import Common
 
 import ComposableArchitecture
 
-public struct PickCalendarView: View {
+public struct TwoPickCalendarView: View {
     
-    private let store: StoreOf<PickCalendarFeature>
+    private let store: StoreOf<TwoPickCalendarFeature>
     
-    public init(store: StoreOf<PickCalendarFeature>) {
+    public init(store: StoreOf<TwoPickCalendarFeature>) {
         self.store = store
     }
     
@@ -153,7 +153,7 @@ public struct PickCalendarView: View {
     }
 }
 
-private extension PickCalendarView {
+private extension TwoPickCalendarView {
     private func getDate(for day: Int, to month: Date) -> Date {
         return Calendar.current.date(byAdding: .day, value: day, to: startOfMonth(month: month)) ?? Date()
     }
