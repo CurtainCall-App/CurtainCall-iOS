@@ -33,6 +33,7 @@ public struct PartyRecruitFeature {
         var page: Int = 0
         var isPossibleNextButton = false
         var calendar: OnePickCalendarFeature.State?
+        var partyDate: Date?
         @Presents var bottomSheet: ShowSortFeature.State?
     }
     
@@ -115,11 +116,31 @@ public struct PartyRecruitFeature {
                     await send(.fetchShowList(page: 0))
                 }
             case .didTappedSelectedShowDate:
-                state.calendar = .init(month: Date())
+                guard let startDateString = state.selectedShow?.startDate,
+                      let startDate = Utils.convertDateStringToDate(dateString: startDateString),
+                      let endDateString = state.selectedShow?.endDate,
+                      let endDate = Utils.convertDateStringToDate(dateString: endDateString) else {
+                    return .none
+                }
+                let components = Calendar.current.dateComponents([.day],
+                                                                 from: startDate,
+                                                                 to: endDate
+                )
+                var duringDate: Set<Date> = []
+                if let days = components.day {
+                    for day in 0...days {
+                        if let date = Calendar.current.date(byAdding: .day, value: day, to: startDate) {
+                            duringDate.insert(date)
+                        }
+                    }
+                }
+                duringDate.insert(endDate)
+                state.calendar = .init(month: Date(), duringDate: duringDate)
                 return .none
             case .didTappedSelectedShowTime:
                 return .none
             case .calendar(.didTappedConfirmButton):
+                state.partyDate = state.calendar?.selectedDate
                 state.calendar = nil
                 return .none
             case .calendar: return .none

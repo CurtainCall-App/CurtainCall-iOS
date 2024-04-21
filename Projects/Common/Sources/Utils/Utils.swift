@@ -28,6 +28,12 @@ public struct Utils {
         return header
     }()
     
+    public static func convertDateStringToDate(dateString: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.date(from: dateString)
+    }
+    
     public static func convertDateToAPIString(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"

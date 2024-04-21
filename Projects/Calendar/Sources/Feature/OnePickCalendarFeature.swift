@@ -15,7 +15,7 @@ public struct OnePickCalendarFeature {
     
     @ObservableState
     public struct State: Equatable {
-        public init(month: Date) {
+        public init(month: Date, duringDate: Set<Date>) {
             self.month = month
             
             let daysInMonth = Calendar.current.range(of: .day, in: .month, for: month)?.count ?? 0
@@ -25,13 +25,16 @@ public struct OnePickCalendarFeature {
             let firstDayOfMonth = Calendar.current.date(from: components) ?? Date()
             let firstWeekDay = Calendar.current.component(.weekday, from: firstDayOfMonth)
             self.firstWeekDay = firstWeekDay - 1
+            
+            self.duringDate = duringDate
         }
         
         var month: Date
+        var duringDate: Set<Date>
         var daysInMonth: Int
         var firstWeekDay: Int
         var currentSelectedDate: Date?
-        var selectedDate: Date?
+        public var selectedDate: Date?
     }
     
     public enum Action {

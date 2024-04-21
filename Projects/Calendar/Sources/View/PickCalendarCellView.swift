@@ -26,7 +26,7 @@ public struct PickCalendarCellView: View {
                     store.isSunday ? Color.red : store.isSaturday ? Color.blue : Color.gray1
                 )
                 .font(.body2_M)
-                .opacity(store.date < Date() ? 0.5 : 1)
+                .opacity(store.enableClickAction ? 1 : 0.5)
                 .background(
                     Circle()
                         .foregroundStyle(store.isClicked ? Color.primary2 : .clear)

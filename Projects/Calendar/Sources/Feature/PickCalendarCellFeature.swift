@@ -20,13 +20,15 @@ public struct PickCalendarCellFeature {
             isClicked: Bool,
             isSunday: Bool,
             isSaturday: Bool,
-            date: Date
+            date: Date,
+            enableClickAction: Bool
         ) {
             self.day = day
             self.isClicked = isClicked
             self.isSunday = isSunday
             self.isSaturday = isSaturday
             self.date = date
+            self.enableClickAction = enableClickAction
         }
         
         var day: Int
@@ -34,6 +36,7 @@ public struct PickCalendarCellFeature {
         var isSaturday: Bool
         var isClicked: Bool
         var date: Date
+        var enableClickAction: Bool
     }
     
     public enum Action {

@@ -196,11 +196,19 @@ public struct PartyRecruitView: View {
                     .padding(.top, 30)
                     
                     HStack {
-                        Text("날짜를 선택해주세요.")
-                            .font(.body2_M)
-                            .foregroundStyle(Color.gray6)
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 12)
+                        if let date = store.partyDate {
+                            Text(Utils.convertDateToAPIString(date: date))
+                                .font(.body2_M)
+                                .foregroundStyle(.black)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 12)
+                        } else {
+                            Text("날짜를 선택해주세요.")
+                                .font(.body2_M)
+                                .foregroundStyle(Color.gray6)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 12)
+                        }
                         Spacer()
                     }
                     .frame(maxWidth: .infinity)

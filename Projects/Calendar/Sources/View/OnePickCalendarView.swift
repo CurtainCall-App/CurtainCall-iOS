@@ -49,11 +49,14 @@ public struct OnePickCalendarView: View {
                                     isClicked: store.currentSelectedDate == date,
                                     isSunday: index % 7 == 0,
                                     isSaturday: index % 7 == 6,
-                                    date: date
+                                    date: date,
+                                    enableClickAction: store.duringDate.contains(date)
                                 )) { PickCalendarCellFeature() }
                         )
                         .onTapGestureRectangle {
-                            store.send(.didTappedDate(date: date))
+                            if store.duringDate.contains(date) {
+                                store.send(.didTappedDate(date: date))
+                            }
                         }
                         .padding(.vertical, 6)
                     }
@@ -108,6 +111,6 @@ private extension OnePickCalendarView {
     
     private func startOfMonth(month: Date) -> Date {
         let components = Calendar.current.dateComponents([.year, .month], from: month)
-        return Calendar.current.date(from: components)!
+        return Calendar.current.date(from: components) ?? Date()
     }
 }

@@ -50,7 +50,8 @@ public struct TwoPickCalendarView: View {
                                     isClicked: store.startDate == date || store.endDate == date,
                                     isSunday: index % 7 == 0,
                                     isSaturday: index % 7 == 6,
-                                    date: date
+                                    date: date,
+                                    enableClickAction: true
                                 )) { PickCalendarCellFeature() }
                         )
                         .onTapGestureRectangle {
