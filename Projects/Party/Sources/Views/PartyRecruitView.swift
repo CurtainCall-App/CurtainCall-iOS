@@ -267,7 +267,7 @@ public struct PartyRecruitView: View {
             }
             .padding(.horizontal, 20)
             if let pickCalendarStore = self.store.scope(state: \.calendar, action: \.calendar) {
-                VStack {
+                VStack(spacing: 0) {
                     Spacer().frame(height: 110)
                     OnePickCalendarView(store: pickCalendarStore)
                         .background(.white)
@@ -300,7 +300,10 @@ public struct PartyRecruitView: View {
                 .frame(height: 45)
                 .frame(maxWidth: .infinity)
                 .background(Color.primary2)
-            Text("0")
+                .onTapGestureRectangle {
+                    store.send(.didTappedStepper(-1))
+                }
+            Text("\(store.partyMemberCount)")
                 .font(.subTitle2)
                 .frame(height: 45)
                 .frame(maxWidth: .infinity)
@@ -309,6 +312,9 @@ public struct PartyRecruitView: View {
                 .frame(height: 45)
                 .frame(maxWidth: .infinity)
                 .background(Color.primary2)
+                .onTapGestureRectangle {
+                    store.send(.didTappedStepper(1))
+                }
         }
         
     }

@@ -36,6 +36,7 @@ public struct PartyRecruitFeature {
         var partyTime: String?
         var calendar: OnePickCalendarFeature.State?
         var timeSelect: TimeSelectFeature.State?
+        var partyMemberCount: Int = 1
         @Presents var bottomSheet: ShowSortFeature.State?
     }
     
@@ -51,6 +52,7 @@ public struct PartyRecruitFeature {
         case didTappedShowTypeButton(ShowFeature.ShowType)
         case didTappedSelectedShowDate
         case didTappedSelectedShowTime
+        case didTappedStepper(Int)
         case calendar(OnePickCalendarFeature.Action)
         case timeSelect(TimeSelectFeature.Action)
     }
@@ -150,14 +152,20 @@ public struct PartyRecruitFeature {
                 let times = timesString.map { $0.split { $0 == ":" }.dropLast().joined(separator: ":") }
                 state.timeSelect = .init(times: times)
                 return .none
+            case .didTappedStepper(let i):
+                guard state.partyMemberCount + i >= 1 else { return .none }
+                state.partyMemberCount += i
+                return .none
             case .calendar(.didTappedConfirmButton):
                 state.partyDate = state.calendar?.selectedDate
                 state.calendar = nil
+                state.isPossibleNextButton = state.partyTime != nil && state.partyDate != nil
                 return .none
             case .calendar: return .none
             case .timeSelect(.didTappedTime(let time)):
                 state.partyTime = time
                 state.timeSelect = nil
+                state.isPossibleNextButton = state.partyTime != nil && state.partyDate != nil
                 return .none
             case .timeSelect: return .none
             case .bottomSheet: return .none
