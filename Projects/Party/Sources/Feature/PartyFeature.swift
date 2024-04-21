@@ -97,7 +97,6 @@ public struct PartyFeature {
         let formatter = DateFormatter()
         formatter.dateFormat = "yy.MM.dd"
         formatter.timeZone = TimeZone(abbreviation: "UTC")
-        print("##", dates)
         if dates.count == 1, let date = dates.first {
             return formatter.string(from: date)
         } else {

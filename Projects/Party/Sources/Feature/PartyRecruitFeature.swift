@@ -133,7 +133,7 @@ public struct PartyRecruitFeature {
                 if let days = components.day {
                     for day in 0...days {
                         if let date = Calendar.current.date(byAdding: .day, value: day, to: startDate) {
-                            duringDate.insert(date)
+                            duringDate.insert(date.addingTimeInterval(54000))
                         }
                     }
                 }
@@ -145,8 +145,7 @@ public struct PartyRecruitFeature {
             case .didTappedSelectedShowTime:
                 guard let show = state.selectedShow,
                       let partyDate = state.partyDate,
-                      let weekDay = Calendar.current.dateComponents([.weekday], from: partyDate).weekday,
-                      let dayOfWeek = DayOfWeek(week: weekDay) else { return .none }
+                      let dayOfWeek = DayOfWeek(week: Calendar.current.component(.weekday, from: partyDate)) else { return .none }
                 let timesString = show.showTimes.filter { $0.dayOfWeek == dayOfWeek }.map { $0.time }
                 let times = timesString.map { $0.split { $0 == ":" }.dropLast().joined(separator: ":") }
                 state.timeSelect = .init(times: times)

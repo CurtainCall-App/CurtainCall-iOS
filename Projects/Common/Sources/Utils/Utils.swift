@@ -31,12 +31,14 @@ public struct Utils {
     public static func convertDateStringToDate(dateString: String) -> Date? {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(identifier: "UTC")
         return formatter.date(from: dateString)
     }
     
     public static func convertDateToAPIString(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(identifier: "UTC")
         return formatter.string(from: date)
     }
     
@@ -69,6 +71,7 @@ public struct Utils {
     public static func convertAPIDateForrmatToDate(dateString: String) -> Date? {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        formatter.locale = Locale(identifier: "ko-KR")
         return formatter.date(from: dateString)
     }
 }

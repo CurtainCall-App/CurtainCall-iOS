@@ -16,14 +16,17 @@ public struct OnePickCalendarFeature {
     @ObservableState
     public struct State: Equatable {
         public init(month: Date, duringDate: Set<Date>) {
+            var calendar = Calendar.current
+            calendar.locale = Locale(identifier: "ko-KR")
+            
             self.month = month
             
-            let daysInMonth = Calendar.current.range(of: .day, in: .month, for: month)?.count ?? 0
+            let daysInMonth = calendar.range(of: .day, in: .month, for: month)?.count ?? 0
             self.daysInMonth = daysInMonth
             
-            let components = Calendar.current.dateComponents([.year, .month], from: month)
-            let firstDayOfMonth = Calendar.current.date(from: components) ?? Date()
-            let firstWeekDay = Calendar.current.component(.weekday, from: firstDayOfMonth)
+            let components = calendar.dateComponents([.year, .month], from: month)
+            let firstDayOfMonth = calendar.date(from: components) ?? Date()
+            let firstWeekDay = calendar.component(.weekday, from: firstDayOfMonth)
             self.firstWeekDay = firstWeekDay - 1
             
             self.duringDate = duringDate
@@ -47,12 +50,14 @@ public struct OnePickCalendarFeature {
         Reduce { state, action in
             switch action {
             case .didTappedMoveMonthButton(let i):
-                state.month = Calendar.current.date(byAdding: .month, value: i, to: state.month) ?? Date()
-                let daysInMonth = Calendar.current.range(of: .day, in: .month, for: state.month)?.count ?? 0
+                var calendar = Calendar.current
+                calendar.locale = Locale(identifier: "ko-KR")
+                state.month = calendar.date(byAdding: .month, value: i, to: state.month) ?? Date()
+                let daysInMonth = calendar.range(of: .day, in: .month, for: state.month)?.count ?? 0
                 state.daysInMonth = daysInMonth
-                let components = Calendar.current.dateComponents([.year, .month], from: state.month)
-                let firstDayOfMonth = Calendar.current.date(from: components) ?? Date()
-                let firstWeekDay = Calendar.current.component(.weekday, from: firstDayOfMonth)
+                let components = calendar.dateComponents([.year, .month], from: state.month)
+                let firstDayOfMonth = calendar.date(from: components) ?? Date()
+                let firstWeekDay = calendar.component(.weekday, from: firstDayOfMonth)
                 state.firstWeekDay = firstWeekDay - 1
                 return .none
             case .didTappedDate(let date):

@@ -42,6 +42,7 @@ public struct OnePickCalendarView: View {
                     } else {
                         let day = index - store.firstWeekDay + 1
                         let date = getDate(for: index, to: store.month)
+                        
                         PickCalendarCellView(
                             store: .init(
                                 initialState: PickCalendarCellFeature.State(
@@ -54,6 +55,7 @@ public struct OnePickCalendarView: View {
                                 )) { PickCalendarCellFeature() }
                         )
                         .onTapGestureRectangle {
+                            print("##", date)
                             if store.duringDate.contains(date) {
                                 store.send(.didTappedDate(date: date))
                             }
@@ -106,11 +108,15 @@ public struct OnePickCalendarView: View {
 
 private extension OnePickCalendarView {
     private func getDate(for day: Int, to month: Date) -> Date {
-        return Calendar.current.date(byAdding: .day, value: day, to: startOfMonth(month: month)) ?? Date()
+        var calendar = Calendar.current
+        calendar.locale = Locale(identifier: "ko-KR")
+        return calendar.date(byAdding: .day, value: day, to: startOfMonth(month: month)) ?? Date()
     }
     
     private func startOfMonth(month: Date) -> Date {
-        let components = Calendar.current.dateComponents([.year, .month], from: month)
-        return Calendar.current.date(from: components) ?? Date()
+        var calendar = Calendar.current
+        calendar.locale = Locale(identifier: "ko-KR")
+        let components = calendar.dateComponents([.year, .month], from: month)
+        return calendar.date(from: components) ?? Date()
     }
 }

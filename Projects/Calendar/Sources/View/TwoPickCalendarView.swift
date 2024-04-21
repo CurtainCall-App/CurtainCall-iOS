@@ -156,11 +156,15 @@ public struct TwoPickCalendarView: View {
 
 private extension TwoPickCalendarView {
     private func getDate(for day: Int, to month: Date) -> Date {
-        return Calendar.current.date(byAdding: .day, value: day, to: startOfMonth(month: month)) ?? Date()
+        var calendar = Calendar.current
+        calendar.locale = Locale(identifier: "ko-KR")
+        return calendar.date(byAdding: .day, value: day, to: startOfMonth(month: month)) ?? Date()
     }
     
     private func startOfMonth(month: Date) -> Date {
-        let components = Calendar.current.dateComponents([.year, .month], from: month)
-        return Calendar.current.date(from: components)!
+        var calendar = Calendar.current
+        calendar.locale = Locale(identifier: "ko-KR")
+        let components = calendar.dateComponents([.year, .month], from: month)
+        return calendar.date(from: components) ?? Date()
     }
 }
