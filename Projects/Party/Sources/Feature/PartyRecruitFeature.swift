@@ -32,8 +32,10 @@ public struct PartyRecruitFeature {
         var showList: [ShowResponseContent] = []
         var page: Int = 0
         var isPossibleNextButton = false
-        var calendar: OnePickCalendarFeature.State?
         var partyDate: Date?
+        var partyTime: String?
+        var calendar: OnePickCalendarFeature.State?
+        var timeSelect: TimeSelectFeature.State?
         @Presents var bottomSheet: ShowSortFeature.State?
     }
     
@@ -50,6 +52,7 @@ public struct PartyRecruitFeature {
         case didTappedSelectedShowDate
         case didTappedSelectedShowTime
         case calendar(OnePickCalendarFeature.Action)
+        case timeSelect(TimeSelectFeature.Action)
     }
     
     @Dependency (\.showClient) var showClient
@@ -135,15 +138,29 @@ public struct PartyRecruitFeature {
                     }
                 }
                 duringDate.insert(endDate)
+                state.timeSelect = nil
+                state.partyTime = nil
                 state.calendar = .init(month: Date(), duringDate: duringDate)
                 return .none
             case .didTappedSelectedShowTime:
+                guard let show = state.selectedShow,
+                      let partyDate = state.partyDate,
+                      let weekDay = Calendar.current.dateComponents([.weekday], from: partyDate).weekday,
+                      let dayOfWeek = DayOfWeek(week: weekDay) else { return .none }
+                let timesString = show.showTimes.filter { $0.dayOfWeek == dayOfWeek }.map { $0.time }
+                let times = timesString.map { $0.split { $0 == ":" }.dropLast().joined(separator: ":") }
+                state.timeSelect = .init(times: times)
                 return .none
             case .calendar(.didTappedConfirmButton):
                 state.partyDate = state.calendar?.selectedDate
                 state.calendar = nil
                 return .none
             case .calendar: return .none
+            case .timeSelect(.didTappedTime(let time)):
+                state.partyTime = time
+                state.timeSelect = nil
+                return .none
+            case .timeSelect: return .none
             case .bottomSheet: return .none
             case .binding: return .none
             }
@@ -153,6 +170,9 @@ public struct PartyRecruitFeature {
         }
         .ifLet(\.calendar, action: \.calendar) {
             OnePickCalendarFeature()
+        }
+        .ifLet(\.timeSelect, action: \.timeSelect) {
+            TimeSelectFeature()
         }
     }
 }

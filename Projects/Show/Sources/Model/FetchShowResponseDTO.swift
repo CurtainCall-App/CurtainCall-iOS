@@ -46,4 +46,17 @@ public enum DayOfWeek: String, Decodable {
     case thursday = "THURSDAY"
     case tuesday = "TUESDAY"
     case wednesday = "WEDNESDAY"
+    
+    public init?(week: Int) {
+        switch week {
+        case 1: self = .sunday
+        case 2: self = .monday
+        case 3: self = .tuesday
+        case 4: self = .wednesday
+        case 5: self = .thursday
+        case 6: self = .friday
+        case 7: self = .saturday
+        default: return nil
+        }
+    }
 }

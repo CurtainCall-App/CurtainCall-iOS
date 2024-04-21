@@ -228,17 +228,28 @@ public struct PartyRecruitView: View {
                     .padding(.top, 40)
                     
                     HStack {
-                        Text("시간을 선택해주세요.")
-                            .font(.body2_M)
-                            .foregroundStyle(Color.gray6)
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 12)
+                        if let time = store.partyTime {
+                            Text(time)
+                                .font(.body2_M)
+                                .foregroundStyle(.black)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 12)
+                        } else {
+                            Text("시간을 선택해주세요.")
+                                .font(.body2_M)
+                                .foregroundStyle(Color.gray6)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 12)
+                        }
                         Spacer()
                     }
                     .frame(maxWidth: .infinity)
                     .background(Color.gray9)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding(.top, 12)
+                    .onTapGestureRectangle {
+                        store.send(.didTappedSelectedShowTime)
+                    }
                     
                     HStack {
                         Text("인원을 선택해주세요.")
@@ -265,6 +276,20 @@ public struct PartyRecruitView: View {
                         .padding(.horizontal, 20)
                     Spacer()
                 }
+            }
+            
+            if let timeSelectStore = self.store.scope(state: \.timeSelect, action: \.timeSelect) {
+                VStack(spacing: 0) {
+                    Spacer().frame(height: 220)
+                    VStack {
+                        TimeSelectView(store: timeSelectStore)
+                    }
+                    .background(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
             }
         }
     }
