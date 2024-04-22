@@ -38,6 +38,8 @@ public struct PartyRecruitFeature {
         var timeSelect: TimeSelectFeature.State?
         var partyMemberCount: Int = 1
         @Presents var bottomSheet: ShowSortFeature.State?
+        var partyTitle: String = ""
+        var partyContent: String = ""
     }
     
     public enum Action: BindableAction {
@@ -64,6 +66,12 @@ public struct PartyRecruitFeature {
         
         Reduce { state, action in
             switch action {
+            case .binding(\.partyTitle):
+                print("##", state.partyTitle)
+                return .none
+            case .binding(\.partyContent):
+                print("##", state.partyContent)
+                return .none
             case .fetchShowList(let page):
                 state.page = page
                 return .run { [

@@ -320,9 +320,72 @@ public struct PartyRecruitView: View {
     }
     
     private var step3: some View {
-        VStack {
-            Color.green
-            Spacer()
+        ScrollView {
+            VStack(spacing: 0) {
+                HStack {
+                    Text("제목을 적어주세요.")
+                        .foregroundStyle(.black)
+                        .font(.subTitle4)
+                    Spacer()
+                }
+                .padding(.top, 30)
+                
+                HStack {
+                    TextField("", text: $store.partyTitle, prompt: Text("예시) OOO 함께 볼 사람 구해요!").foregroundStyle(Color.gray6))
+                        .font(.body2_M)
+                        .foregroundStyle(.black)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 12)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+                .background(Color.gray9)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding(.top, 12)
+                
+                HStack {
+                    Text("내용을 적어주세요.")
+                        .foregroundStyle(.black)
+                        .font(.subTitle4)
+                    Spacer()
+                }
+                .padding(.top, 40)
+                
+                TextEditor(text: $store.partyContent)
+                    .font(.body2_M)
+                    .foregroundStyle(.black)
+                    .scrollContentBackground(.hidden)
+                    .background(.clear)
+                    .background(alignment: .topLeading) {
+                        TextEditor(text: .constant(store.partyContent.isEmpty ? "예시)\n이번주 공연 같이 볼 3명 구합니다.\n구체적인 내용은 톡방 생성되면 이야기해요!" : ""))
+                            .font(.body2_M)
+                            .foregroundStyle(Color.gray6)
+                            .scrollContentBackground(.hidden)
+                            .background(.clear)
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 12)
+                
+                .frame(maxWidth: .infinity)
+                .frame(minHeight: 130)
+                .background(Color.gray9)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding(.top, 12)
+                
+                if store.partyContent.count > 500 {
+                    HStack {
+                        Text("500자 이내로 작성해주세요")
+                            .font(.body3)
+                            .foregroundStyle(.red)
+                        Spacer()
+                    }
+                    .padding(.top, 12)
+                }
+                
+                Spacer()
+            }
+            .padding(.horizontal, 20)
+            Color.clear.frame(height: 70)
         }
     }
     
