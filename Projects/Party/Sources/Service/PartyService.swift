@@ -13,6 +13,7 @@ import Moya
 
 enum PartyAPI {
     case fetchPartyList(page: Int, startDate: String, endDate: String)
+    case createParty(body: CreatePartyBody)
 }
 
 extension PartyAPI: TargetType {
@@ -20,9 +21,15 @@ extension PartyAPI: TargetType {
     var path: String {
         switch self {
         case .fetchPartyList: return "/parties"
+        case .createParty: return "/parties"
         }
     }
-    var method: Moya.Method { .get }
+    var method: Moya.Method {
+        switch self {
+        case .fetchPartyList: return .get
+        case .createParty: return .post
+        }
+    }
     
     var task: Moya.Task {
         var param: [String: Any] = [:]
@@ -33,6 +40,8 @@ extension PartyAPI: TargetType {
             param.updateValue(startDate, forKey: "startDate")
             param.updateValue(endDate, forKey: "endDate")
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
+        case .createParty(let body):
+            return .requestJSONEncodable(body)
         }
     }
     

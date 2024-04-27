@@ -57,9 +57,12 @@ public struct PartyRecruitFeature {
         case didTappedStepper(Int)
         case calendar(OnePickCalendarFeature.Action)
         case timeSelect(TimeSelectFeature.Action)
+        case successCreateParty(CreatePartyResponseDTO)
+        case failToCreateParty
     }
     
     @Dependency (\.showClient) var showClient
+    @Dependency (\.partyClient) var partyClient
     
     public var body: some ReducerOf<Self> {
         BindingReducer()
@@ -67,10 +70,10 @@ public struct PartyRecruitFeature {
         Reduce { state, action in
             switch action {
             case .binding(\.partyTitle):
-                print("##", state.partyTitle)
+                state.isPossibleNextButton = !state.partyTitle.isEmpty && !state.partyContent.isEmpty
                 return .none
             case .binding(\.partyContent):
-                print("##", state.partyContent)
+                state.isPossibleNextButton = !state.partyTitle.isEmpty && !state.partyContent.isEmpty
                 return .none
             case .fetchShowList(let page):
                 state.page = page
@@ -92,15 +95,37 @@ public struct PartyRecruitFeature {
                 case .step1:
                     state.isPossibleNextButton = false
                     state.viewType = .step2
+                    return .none
                 case .step2:
                     state.isPossibleNextButton = false
                     state.viewType = .step3
+                    return .none
                 case .step3:
-                    if state.isPossibleNextButton {
-                        
+                    guard state.isPossibleNextButton,
+                          let show = state.selectedShow,
+                          let date = state.partyDate,
+                          let time = state.partyTime else { return .none }
+                    let dateString = Utils.convertDateToAPIString(date: date)
+                    let APIDate = dateString + "T" + time + ":00"
+                    return .run { [
+                        title = state.partyTitle,
+                        content = state.partyContent,
+                        maxCount = state.partyMemberCount
+                    ] send in
+                        do {
+                            try await send(.successCreateParty(partyClient.createParty(
+                                .init(
+                                    showId: show.id,
+                                    showAt: APIDate,
+                                    title: title,
+                                    content: content,
+                                    maxMemberNum: maxCount)))
+                            )
+                        } catch {
+                            await send(.failToCreateParty)
+                        }
                     }
                 }
-                return .none
             case .didTappedShowItem(let item):
                 state.selectedShow = nil
                 state.selectedShow = item
@@ -175,6 +200,8 @@ public struct PartyRecruitFeature {
                 state.timeSelect = nil
                 state.isPossibleNextButton = state.partyTime != nil && state.partyDate != nil
                 return .none
+            case .successCreateParty: return .none
+            case .failToCreateParty: return .none
             case .timeSelect: return .none
             case .bottomSheet: return .none
             case .binding: return .none

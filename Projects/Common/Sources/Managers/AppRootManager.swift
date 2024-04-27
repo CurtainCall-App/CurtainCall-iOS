@@ -43,6 +43,7 @@ public final class AppRootManager: ObservableObject {
             case .success(let response):
                 do {
                     let data = try JSONDecoder().decode(RequestRefreshTokenDTO.self, from: response.data)
+                    print(data)
                     UserDefaults.standard.setValue(data.accessToken, forKey: UserDefaultKeys.accessToken.rawValue)
                     UserDefaults.standard.setValue(data.refreshToken, forKey: UserDefaultKeys.refreshToken.rawValue)
                     UserDefaults.standard.setValue(data.refreshTokenExpiresAt, forKey: UserDefaultKeys.refreshTokenExpiresAt.rawValue)
