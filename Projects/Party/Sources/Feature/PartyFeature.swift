@@ -61,7 +61,7 @@ public struct PartyFeature {
                 state.partyList = response
                 return .none
             case .didTappedPartyList(let id):
-                state.path.append(.partyDetail(.init()))
+                state.path.append(.partyDetail(.init(id: id)))
                 return .none
             case .calendar:
                 return .none
@@ -82,7 +82,7 @@ public struct PartyFeature {
         @ObservableState
         public enum State: Equatable {
             case partyRecruit(PartyRecruitFeature.State = .init())
-            case partyDetail(PartyDetailFeature.State = .init())
+            case partyDetail(PartyDetailFeature.State = .init(id: 0))
         }
         
         public enum Action {

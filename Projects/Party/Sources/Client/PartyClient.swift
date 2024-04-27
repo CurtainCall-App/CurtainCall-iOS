@@ -14,11 +14,15 @@ import Moya
 struct PartyClient {
     var fetchPartyList: (Int, Date, Date) async throws ->  FetchPartyListResponseDTO
     var createParty: (CreatePartyBody) async throws -> CreatePartyResponseDTO
+    var fetchPartyDetail: (Int) async throws -> FetchPartyDetailResponseDTO
 }
 
 extension PartyClient: DependencyKey {
     static var liveValue = {
-        Self(fetchPartyList: fetchPartyList, createParty: createParty)
+        Self(fetchPartyList: fetchPartyList, 
+             createParty: createParty,
+             fetchPartyDetail: fetchPartyDetail
+        )
     }()
     
     static func fetchPartyList(page: Int, startDate: Date, endDate: Date) async throws -> FetchPartyListResponseDTO {
@@ -33,7 +37,11 @@ extension PartyClient: DependencyKey {
     static func createParty(body: CreatePartyBody) async throws -> CreatePartyResponseDTO {
         return try await MoyaProvider<PartyAPI>()
             .request(.createParty(body: body))
-        
+    }
+    
+    static func fetchPartyDetail(id: Int) async throws -> FetchPartyDetailResponseDTO {
+        return try await MoyaProvider<PartyAPI>()
+            .request(.fetchPartyDetail(id: id))
     }
 }
 

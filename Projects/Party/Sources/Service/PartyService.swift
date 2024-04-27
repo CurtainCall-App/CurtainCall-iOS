@@ -14,6 +14,7 @@ import Moya
 enum PartyAPI {
     case fetchPartyList(page: Int, startDate: String, endDate: String)
     case createParty(body: CreatePartyBody)
+    case fetchPartyDetail(id: Int)
 }
 
 extension PartyAPI: TargetType {
@@ -22,12 +23,14 @@ extension PartyAPI: TargetType {
         switch self {
         case .fetchPartyList: return "/parties"
         case .createParty: return "/parties"
+        case .fetchPartyDetail(let id): return "/parties/\(id)"
         }
     }
     var method: Moya.Method {
         switch self {
         case .fetchPartyList: return .get
         case .createParty: return .post
+        case .fetchPartyDetail: return .get
         }
     }
     
@@ -42,6 +45,8 @@ extension PartyAPI: TargetType {
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
         case .createParty(let body):
             return .requestJSONEncodable(body)
+        case .fetchPartyDetail:
+            return .requestPlain
         }
     }
     
