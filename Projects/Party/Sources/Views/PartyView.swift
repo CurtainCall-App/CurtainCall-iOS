@@ -35,6 +35,9 @@ public struct PartyView: View {
                             VStack {
                                 ForEach(store.partyList, id: \.self) { info in
                                     makePartyItem(info: info)
+                                        .onTapGestureRectangle {
+                                            store.send(.didTappedPartyList(id: info.id))
+                                        }
                                 }
                                 Color.clear.padding(.bottom, 85)
                             }
@@ -80,6 +83,13 @@ public struct PartyView: View {
             case .partyRecruit:
                 if let store = store.scope(state: \.partyRecruit, action: \.partyRecruit) {
                     PartyRecruitView(store: store)
+                }
+            case .partyDetail:
+                if let store = store.scope(
+                    state: \.partyDetail,
+                    action: \.partyDetail
+                ) {
+                    PartyDetailView(store: store)
                 }
             }
         }
