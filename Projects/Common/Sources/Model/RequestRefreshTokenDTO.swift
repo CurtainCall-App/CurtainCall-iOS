@@ -1,14 +1,14 @@
 //
-//  LoginResponseDTO.swift
-//  Login
+//  RequestRefreshTokenDTO.swift
+//  Common
 //
-//  Created by 김민석 on 1/19/24.
+//  Created by 김민석 on 4/17/24.
 //
 
 import Foundation
 
-public struct LoginResponseDTO: Decodable {
-    let memberId: Int?
+public struct RequestRefreshTokenDTO: Decodable {
+    let memberId: Int
     let accessToken: String
     let accessTokenExpiresAt: String
     let refreshToken: String

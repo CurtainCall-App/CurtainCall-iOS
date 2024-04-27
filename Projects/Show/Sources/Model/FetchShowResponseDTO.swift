@@ -10,7 +10,7 @@ import Foundation
 import Common
 
 public struct FetchShowResponseDTO: Decodable {
-    let content: [ShowResponseContent]
+    public let content: [ShowResponseContent]
 }
 
 public struct ShowResponseContent: Hashable, Equatable, Decodable {
@@ -18,26 +18,26 @@ public struct ShowResponseContent: Hashable, Equatable, Decodable {
         lhs.id == rhs.id
     }
     
-    let id: String
-    let name: String
-    let startDate: String
-    let endDate: String
-    let facilityName: String
-    let poster: String
-    let genre: Genre
-    let showTimes: [ShowTime]
-    let runtime: String
-    let reviewCount: Int
-    let reviewGradeSum: Int
-    let reviewGradeAvg: Double
+    public let id: String
+    public let name: String
+    public let startDate: String
+    public let endDate: String
+    public let facilityName: String
+    public let poster: String
+    public let genre: Genre
+    public let showTimes: [ShowTime]
+    public let runtime: String
+    public let reviewCount: Int
+    public let reviewGradeSum: Int
+    public let reviewGradeAvg: Double
 }
 
-struct ShowTime: Decodable, Hashable {
-    let dayOfWeek: DayOfWeek
-    let time: String
+public struct ShowTime: Decodable, Hashable {
+    public let dayOfWeek: DayOfWeek
+    public let time: String
 }
 
-enum DayOfWeek: String, Decodable {
+public enum DayOfWeek: String, Decodable {
     case friday = "FRIDAY"
     case hol = "HOL"
     case monday = "MONDAY"
@@ -46,4 +46,17 @@ enum DayOfWeek: String, Decodable {
     case thursday = "THURSDAY"
     case tuesday = "TUESDAY"
     case wednesday = "WEDNESDAY"
+    
+    public init?(week: Int) {
+        switch week {
+        case 1: self = .saturday
+        case 2: self = .sunday
+        case 3: self = .monday
+        case 4: self = .tuesday
+        case 5: self = .wednesday
+        case 6: self = .thursday
+        case 7: self = .friday
+        default: return nil
+        }
+    }
 }

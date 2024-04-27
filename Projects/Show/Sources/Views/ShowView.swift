@@ -93,7 +93,7 @@ public struct ShowView: View {
             .onAppear {
                 store.send(.fetchShowList(page: 0))
             }
-            .sheet(store: self.store.scope(state: \.$bottomSheet, action: \.bottomSheet)) { store in
+            .sheet(item: $store.scope(state: \.bottomSheet, action: \.bottomSheet)) { store in
                 ShowSortBottomSheet(store: store)
                     .presentationDetents([.height(270)])
                     .presentationDragIndicator(.visible)

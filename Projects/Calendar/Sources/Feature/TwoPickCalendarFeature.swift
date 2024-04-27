@@ -10,7 +10,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-public struct PickCalendarFeature {
+public struct TwoPickCalendarFeature {
     public init() { }
     
     @ObservableState

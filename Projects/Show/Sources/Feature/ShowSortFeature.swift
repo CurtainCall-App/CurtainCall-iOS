@@ -19,7 +19,7 @@ public struct ShowSortFeature {
         case endTime
         case dictionary
         
-        var title: String {
+        public var title: String {
             switch self {
             case .popular: return "인기순"
             case .star: return "별점순"
@@ -28,7 +28,7 @@ public struct ShowSortFeature {
             }
         }
         
-        var APIName: String {
+        public var APIName: String {
             switch self {
             case .popular: return "reviewGradeAvg"
             case .star: return "reviewGradeAvg"

@@ -85,6 +85,8 @@ public struct LoginFeature {
                     state.path.append(.termsOfService())
                 }
                 UserDefaults.standard.setValue(response.accessToken, forKey: UserDefaultKeys.accessToken.rawValue)
+                UserDefaults.standard.setValue(response.refreshToken, forKey: UserDefaultKeys.refreshToken.rawValue)
+                UserDefaults.standard.setValue(response.refreshTokenExpiresAt, forKey: UserDefaultKeys.refreshTokenExpiresAt.rawValue)
                 return .none
             case .withoutLoginButtonTapped:
                 return .none

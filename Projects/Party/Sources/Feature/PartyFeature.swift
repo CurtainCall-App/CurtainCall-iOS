@@ -18,15 +18,18 @@ public struct PartyFeature {
     @ObservableState
     public struct State: Equatable {
         public init() { }
-        var calendar: PickCalendarFeature.State?
+        var calendar: TwoPickCalendarFeature.State?
         var selectedDates: [Date] = []
         var partyList: [FetchPartyListResult] = []
+        var path = StackState<Path.State>()
     }
     
     public enum Action {
         case didTappedDurationButton
-        case calendar(PickCalendarFeature.Action)
+        case didTappedRecruitMemberButton
+        case calendar(TwoPickCalendarFeature.Action)
         case partyListResponse([FetchPartyListResult])
+        case path(StackAction<Path.State, Path.Action>)
     }
     
     @Dependency (\.partyClient) var partyClient
@@ -50,23 +53,50 @@ public struct PartyFeature {
             case .didTappedDurationButton:
                 state.calendar = .init(month: Date())
                 return .none
+            case .didTappedRecruitMemberButton:
+                state.path.append(.partyRecruit(.init()))
+                return .none
             case .partyListResponse(let response):
                 state.partyList = response
                 return .none
             case .calendar:
                 return .none
+            case .path:
+                return .none
             }
         }
         .ifLet(\.calendar, action: \.calendar) {
-            PickCalendarFeature()
+            TwoPickCalendarFeature()
+        }
+        .forEach(\.path, action: \.path) {
+            Path()
         }
     }
+    
+    @Reducer
+    public struct Path {
+        @ObservableState
+        public enum State: Equatable {
+            case partyRecruit(PartyRecruitFeature.State = .init())
+        }
+        
+        public enum Action {
+            case partyRecruit(PartyRecruitFeature.Action)
+        }
+        
+        public var body: some Reducer<State, Action> {
+            Scope(state: \.partyRecruit, action: \.partyRecruit) {
+                PartyRecruitFeature()
+                    ._printChanges()
+            }
+        }
+    }
+    
     
     static public func convertDateToString(dates: [Date]) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yy.MM.dd"
         formatter.timeZone = TimeZone(abbreviation: "UTC")
-        print("##", dates)
         if dates.count == 1, let date = dates.first {
             return formatter.string(from: date)
         } else {
