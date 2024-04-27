@@ -40,6 +40,8 @@ public struct PartyRecruitFeature {
         @Presents var bottomSheet: ShowSortFeature.State?
         var partyTitle: String = ""
         var partyContent: String = ""
+        var isSuccessCreateParty: Bool = false
+        var isFailedToCreateParty: Bool = false
     }
     
     public enum Action: BindableAction {
@@ -59,6 +61,7 @@ public struct PartyRecruitFeature {
         case timeSelect(TimeSelectFeature.Action)
         case successCreateParty(CreatePartyResponseDTO)
         case failToCreateParty
+        case dismissToast
     }
     
     @Dependency (\.showClient) var showClient
@@ -102,6 +105,7 @@ public struct PartyRecruitFeature {
                     return .none
                 case .step3:
                     guard state.isPossibleNextButton,
+                          !state.isFailedToCreateParty,
                           let show = state.selectedShow,
                           let date = state.partyDate,
                           let time = state.partyTime else { return .none }
@@ -125,6 +129,7 @@ public struct PartyRecruitFeature {
                             await send(.failToCreateParty)
                         }
                     }
+                    .animation()
                 }
             case .didTappedShowItem(let item):
                 state.selectedShow = nil
@@ -200,8 +205,19 @@ public struct PartyRecruitFeature {
                 state.timeSelect = nil
                 state.isPossibleNextButton = state.partyTime != nil && state.partyDate != nil
                 return .none
-            case .successCreateParty: return .none
-            case .failToCreateParty: return .none
+            case .successCreateParty:
+                state.isSuccessCreateParty = true
+                return .none
+            case .failToCreateParty:
+                state.isFailedToCreateParty = true
+                return .run { send in
+                    try await Task.sleep(for: .seconds(1))
+                    await send(.dismissToast)
+                }.animation()
+            case .dismissToast:
+                state.isFailedToCreateParty = false
+                state.isSuccessCreateParty = false
+                return .none
             case .timeSelect: return .none
             case .bottomSheet: return .none
             case .binding: return .none

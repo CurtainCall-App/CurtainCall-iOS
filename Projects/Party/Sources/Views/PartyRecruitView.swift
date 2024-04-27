@@ -46,8 +46,38 @@ public struct PartyRecruitView: View {
             .toolbar(.hidden)
             VStack {
                 Spacer()
-                nextButton
+                if store.isFailedToCreateParty {
+                    VStack {
+                        Spacer()
+                        ToastPopupView(type: .failed, text: "오류로 인해 모집글 업로드에 실패했어요")
+//                            .onAppear {
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                                    store.send(.dismissToast, animation: .easeIn(duration: 1.0))
+//                                }
+//                            }
+                    }
+                } else if store.isSuccessCreateParty {
+                    VStack {
+                        Spacer()
+                        ToastPopupView(type: .success, text: "파티원 모집글이 업로드되었어요")
+//                            .onAppear {
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                                    store.send(.dismissToast, animation: .easeIn(duration: 1.0))
+//                                }
+//                            }
+                            .onDisappear {
+                                dismiss()
+                            }
+                    }
+                } else {
+                    nextButton
+                        .onAppear {
+                            store.send(.dismissToast)
+                        }
+                }
             }
+            
+            
         }
         
     }
