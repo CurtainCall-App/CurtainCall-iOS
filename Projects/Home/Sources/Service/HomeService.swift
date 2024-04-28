@@ -13,6 +13,7 @@ import Moya
 
 enum HomeAPI {
     case fetchShowRecommendations
+    case fetchShowTop10
 }
 
 extension HomeAPI: TargetType {
@@ -21,18 +22,25 @@ extension HomeAPI: TargetType {
     var path: String {
         switch self {
         case .fetchShowRecommendations: return "/show-recommendations"
+        case .fetchShowTop10: return "/box-office"
         }
     }
     
     var method: Moya.Method {
         switch self {
         case .fetchShowRecommendations: return .get
+        case .fetchShowTop10: return .get
         }
     }
     
     var task: Moya.Task {
+        var param: [String: Any] = [:]
         switch self {
         case .fetchShowRecommendations: return .requestPlain
+        case .fetchShowTop10:
+            param.updateValue("WEEK", forKey: "type")
+            param.updateValue(Utils.convertDateToAPIString(date: Date()), forKey: "baseDate")
+            return .requestParameters(parameters: param, encoding: URLEncoding.default)
         }
     }
     

@@ -17,6 +17,7 @@ public struct HomeFeature {
     public struct State: Equatable {
         public init() { }
         var showRecommendations: [FetchShowRecomandationResponseResult] = []
+        var showTop10: [FetchShowTop10Result] = []
     }
     
     @Dependency (\.homeClient) var homeClient
@@ -25,6 +26,9 @@ public struct HomeFeature {
         case fetchShowRecommendations
         case showRecommendationsResponse([FetchShowRecomandationResponseResult])
         case showRecommendationsError(Error)
+        case fetchShowTop10
+        case showTop10Response([FetchShowTop10Result])
+        case showTop10Error(Error)
     }
     
     public var body: some ReducerOf<Self> {
@@ -42,6 +46,20 @@ public struct HomeFeature {
                 state.showRecommendations = response
                 return .none
             case .showRecommendationsError(let error):
+                print(error.localizedDescription)
+                return .none
+            case .fetchShowTop10:
+                return .run { send in
+                    do {
+                        try await send(.showTop10Response(homeClient.fetchShowTop10().content))
+                    } catch {
+                        await send(.showTop10Error(error))
+                    }
+                }
+            case .showTop10Response(let response):
+                state.showTop10 = response.suffix(10)
+                return .none
+            case .showTop10Error(let error):
                 print(error.localizedDescription)
                 return .none
             }

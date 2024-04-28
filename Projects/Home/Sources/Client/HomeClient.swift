@@ -12,17 +12,23 @@ import Moya
 
 struct HomeClient {
     var fetchShowRecommendations: () async throws -> FetchShowRecomandationResponseDTO
+    var fetchShowTop10: () async throws -> FetchShowTop10ResponseDTO
 }
 
 extension HomeClient: DependencyKey {
     static var liveValue = {
         Self(
-            fetchShowRecommendations: fetchShowRecommendations
+            fetchShowRecommendations: fetchShowRecommendations,
+            fetchShowTop10: fetchShowTop10
         )
     }()
     
     static func fetchShowRecommendations() async throws -> FetchShowRecomandationResponseDTO {
         return try await MoyaProvider<HomeAPI>().request(.fetchShowRecommendations)
+    }
+    
+    static func fetchShowTop10() async throws -> FetchShowTop10ResponseDTO {
+        return try await MoyaProvider<HomeAPI>().request(.fetchShowTop10)
     }
 }
 
