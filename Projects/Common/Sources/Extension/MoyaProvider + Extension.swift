@@ -27,4 +27,25 @@ extension MoyaProvider {
             }
         }
     }
+    
+    public func request(_ target: Target) async throws -> Bool {
+        return try await withCheckedThrowingContinuation { continuation in
+            self.request(target) { result in
+                switch result {
+                case .success(let response):
+                    if (200..<300) ~= response.statusCode {
+                        continuation.resume(returning: true)
+                        return
+                    } else {
+                        print(response.statusCode)
+                        continuation.resume(returning: false)
+                        return
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
 }

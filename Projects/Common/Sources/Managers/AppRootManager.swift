@@ -47,6 +47,7 @@ public final class AppRootManager: ObservableObject {
                     UserDefaults.standard.setValue(data.accessToken, forKey: UserDefaultKeys.accessToken.rawValue)
                     UserDefaults.standard.setValue(data.refreshToken, forKey: UserDefaultKeys.refreshToken.rawValue)
                     UserDefaults.standard.setValue(data.refreshTokenExpiresAt, forKey: UserDefaultKeys.refreshTokenExpiresAt.rawValue)
+                    print(data)
                 } catch {
                     print("error: \(error.localizedDescription)")
                 }

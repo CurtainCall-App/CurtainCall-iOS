@@ -16,6 +16,7 @@ enum PartyAPI {
     case createParty(body: CreatePartyBody)
     case fetchPartyDetail(id: Int)
     case fetchDidParticipated(id: Int)
+    case putParticipate(id: Int)
 }
 
 extension PartyAPI: TargetType {
@@ -26,6 +27,7 @@ extension PartyAPI: TargetType {
         case .createParty: return "/parties"
         case .fetchPartyDetail(let id): return "/parties/\(id)"
         case .fetchDidParticipated: return "/member/participated"
+        case .putParticipate(let id): return "/member/parties/\(id)"
         }
     }
     var method: Moya.Method {
@@ -34,6 +36,7 @@ extension PartyAPI: TargetType {
         case .createParty: return .post
         case .fetchPartyDetail: return .get
         case .fetchDidParticipated: return .get
+        case .putParticipate: return .put
         }
     }
     
@@ -53,6 +56,8 @@ extension PartyAPI: TargetType {
         case .fetchDidParticipated(let id):
             param.updateValue(id, forKey: "partyIds")
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
+        case .putParticipate:
+            return .requestPlain
         }
     }
     

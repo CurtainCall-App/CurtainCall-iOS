@@ -262,7 +262,7 @@ struct PartyDetailView: View {
                             .background(Color.primary2)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .onTapGestureRectangle {
-                                
+                                store.send(.didTappedParticipateButton)
                             }
                     }
                 }

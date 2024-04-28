@@ -33,6 +33,9 @@ public struct PartyDetailFeature {
         case checkParticipated(Bool)
         case successPartyDetailResponse(FetchPartyDetailResponseDTO)
         case failToPartyDetailResponse(Error)
+        case didTappedParticipateButton
+        case putParticipateResponse(Bool)
+        case putParticipateError(Error)
     }
     
     public var body: some ReducerOf<Self> {
@@ -54,6 +57,14 @@ public struct PartyDetailFeature {
                         await send(.checkParticipated(false))
                     }
                 }
+            case .didTappedParticipateButton:
+                return .run { [id = state.id] send in
+                    do {
+                        try await send(.putParticipateResponse(partyClient.putParticipate(id)))
+                    } catch {
+                        await send(.putParticipateError(error))
+                    }
+                }
             case .checkParticipated(let check):
                 state.isParticipated = check
                 return .none
@@ -61,6 +72,11 @@ public struct PartyDetailFeature {
                 state.partyDetailInfo = response
                 return .none
             case .failToPartyDetailResponse(let error):
+                return .none
+            case .putParticipateResponse(let check):
+                state.isParticipated = check
+                return .none
+            case .putParticipateError(let error):
                 return .none
             }
         }
