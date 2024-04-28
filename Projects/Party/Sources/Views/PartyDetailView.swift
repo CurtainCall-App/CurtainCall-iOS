@@ -245,6 +245,9 @@ struct PartyDetailView: View {
                                 .frame(width: 110)
                                 .background(Color.gray8)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .onTapGestureRectangle {
+                                    store.send(.)
+                                }
                             Text("TALK 시작하기")
                                 .font(.subTitle4)
                                 .foregroundStyle(Color.primary1)
