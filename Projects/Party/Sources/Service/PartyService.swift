@@ -14,6 +14,10 @@ import Moya
 enum PartyAPI {
     case fetchPartyList(page: Int, startDate: String, endDate: String)
     case createParty(body: CreatePartyBody)
+    case fetchPartyDetail(id: Int)
+    case fetchDidParticipated(id: Int)
+    case putParticipate(id: Int)
+    case deleteParticipate(id: Int)
 }
 
 extension PartyAPI: TargetType {
@@ -22,12 +26,21 @@ extension PartyAPI: TargetType {
         switch self {
         case .fetchPartyList: return "/parties"
         case .createParty: return "/parties"
+        case .fetchPartyDetail(let id): return "/parties/\(id)"
+        case .fetchDidParticipated: return "/member/participated"
+        case .putParticipate(let id): return "/member/parties/\(id)"
+        case .deleteParticipate(let id): return "/member/parties/\(id)"
+
         }
     }
     var method: Moya.Method {
         switch self {
         case .fetchPartyList: return .get
         case .createParty: return .post
+        case .fetchPartyDetail: return .get
+        case .fetchDidParticipated: return .get
+        case .putParticipate: return .put
+        case .deleteParticipate: return .delete
         }
     }
     
@@ -42,6 +55,15 @@ extension PartyAPI: TargetType {
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
         case .createParty(let body):
             return .requestJSONEncodable(body)
+        case .fetchPartyDetail:
+            return .requestPlain
+        case .fetchDidParticipated(let id):
+            param.updateValue(id, forKey: "partyIds")
+            return .requestParameters(parameters: param, encoding: URLEncoding.default)
+        case .putParticipate:
+            return .requestPlain
+        case .deleteParticipate:
+            return .requestPlain
         }
     }
     

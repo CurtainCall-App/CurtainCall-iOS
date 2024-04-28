@@ -27,6 +27,7 @@ public struct PartyFeature {
     public enum Action {
         case didTappedDurationButton
         case didTappedRecruitMemberButton
+        case didTappedPartyList(id: Int)
         case calendar(TwoPickCalendarFeature.Action)
         case partyListResponse([FetchPartyListResult])
         case path(StackAction<Path.State, Path.Action>)
@@ -59,6 +60,9 @@ public struct PartyFeature {
             case .partyListResponse(let response):
                 state.partyList = response
                 return .none
+            case .didTappedPartyList(let id):
+                state.path.append(.partyDetail(.init(id: id)))
+                return .none
             case .calendar:
                 return .none
             case .path:
@@ -78,15 +82,21 @@ public struct PartyFeature {
         @ObservableState
         public enum State: Equatable {
             case partyRecruit(PartyRecruitFeature.State = .init())
+            case partyDetail(PartyDetailFeature.State = .init(id: 0))
         }
         
         public enum Action {
             case partyRecruit(PartyRecruitFeature.Action)
+            case partyDetail(PartyDetailFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
             Scope(state: \.partyRecruit, action: \.partyRecruit) {
                 PartyRecruitFeature()
+                    ._printChanges()
+            }
+            Scope(state: \.partyDetail, action: \.partyDetail) {
+                PartyDetailFeature()
                     ._printChanges()
             }
         }

@@ -14,11 +14,21 @@ import Moya
 struct PartyClient {
     var fetchPartyList: (Int, Date, Date) async throws ->  FetchPartyListResponseDTO
     var createParty: (CreatePartyBody) async throws -> CreatePartyResponseDTO
+    var fetchPartyDetail: (Int) async throws -> FetchPartyDetailResponseDTO
+    var fetchDidParticipated: (Int) async throws -> FetchDidParticipatedResponseDTO
+    var putParticipate: (Int) async throws -> Bool
+    var deleteParticipate: (Int) async throws -> Bool
 }
 
 extension PartyClient: DependencyKey {
     static var liveValue = {
-        Self(fetchPartyList: fetchPartyList, createParty: createParty)
+        Self(fetchPartyList: fetchPartyList, 
+             createParty: createParty,
+             fetchPartyDetail: fetchPartyDetail,
+             fetchDidParticipated: fetchDidParticipated,
+             putParticipate: putParticipate,
+             deleteParticipate: deleteParticipate
+        )
     }()
     
     static func fetchPartyList(page: Int, startDate: Date, endDate: Date) async throws -> FetchPartyListResponseDTO {
@@ -33,7 +43,26 @@ extension PartyClient: DependencyKey {
     static func createParty(body: CreatePartyBody) async throws -> CreatePartyResponseDTO {
         return try await MoyaProvider<PartyAPI>()
             .request(.createParty(body: body))
-        
+    }
+    
+    static func fetchPartyDetail(id: Int) async throws -> FetchPartyDetailResponseDTO {
+        return try await MoyaProvider<PartyAPI>()
+            .request(.fetchPartyDetail(id: id))
+    }
+    
+    static func fetchDidParticipated(id: Int) async throws -> FetchDidParticipatedResponseDTO {
+        return try await MoyaProvider<PartyAPI>()
+            .request(.fetchDidParticipated(id: id))
+    }
+    
+    static func putParticipate(id: Int) async throws -> Bool {
+        return try await MoyaProvider<PartyAPI>()
+            .request(.putParticipate(id: id))
+    }
+    
+    static func deleteParticipate(id: Int) async throws -> Bool {
+        return try await MoyaProvider<PartyAPI>()
+            .request(.deleteParticipate(id: id))
     }
 }
 
