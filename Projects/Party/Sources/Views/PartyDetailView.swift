@@ -61,28 +61,26 @@ struct PartyDetailView: View {
                     Spacer()
                         .frame(height: 40)
                     
-                    VStack {
-                        Text("TALK 입장")
-                            .font(.subTitle4)
-                            .foregroundStyle(Color.primary1)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 55)
-                            .background(Color.primary2)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .padding(.horizontal, 20)
-                            .padding(.bottom, 10)
-                    }
+                    makeBottomButton()
+//                    VStack {
+//                        Text("TALK 입장")
+//                            .font(.subTitle4)
+//                            .foregroundStyle(Color.primary1)
+//                            .frame(maxWidth: .infinity)
+//                            .frame(height: 55)
+//                            .background(Color.primary2)
+//                            .clipShape(RoundedRectangle(cornerRadius: 10))
+//                            .padding(.horizontal, 20)
+//                            .padding(.bottom, 10)
+//                    }
                 }
                 .frame(maxWidth: .infinity)
-                
-                
-                
-                
             }
         }
         .toolbar(.hidden)
         .onAppear {
             store.send(.fetchPartyDetail)
+            store.send(.fetchDidParticipated)
         }
         
     }
@@ -223,6 +221,57 @@ struct PartyDetailView: View {
             }
         }
         .padding(.horizontal, 16)
+    }
+    
+    private func makeBottomButton() -> some View {
+        VStack {
+            if let creatorId = store.partyDetailInfo?.creatorId {
+                if creatorId == UserDefaults.standard.integer(forKey: UserDefaultKeys.userId.rawValue) {
+                    Text("TALK 입장")
+                        .font(.subTitle4)
+                        .foregroundStyle(Color.primary1)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 55)
+                        .background(Color.primary2)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        
+                } else {
+                    if store.isParticipated {
+                        HStack(spacing: 10) {
+                            Text("참여 취소")
+                                .font(.subTitle4)
+                                .foregroundStyle(Color.gray4)
+                                .frame(height: 55)
+                                .frame(width: 110)
+                                .background(Color.gray8)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            Text("TALK 시작하기")
+                                .font(.subTitle4)
+                                .foregroundStyle(Color.primary1)
+                                .frame(height: 55)
+                                .frame(maxWidth: .infinity)
+                                .background(Color.primary2)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        }
+                    } else {
+                        Text("참여하기")
+                            .font(.subTitle4)
+                            .foregroundStyle(Color.primary1)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 55)
+                            .background(Color.primary2)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .onTapGestureRectangle {
+                                
+                            }
+                    }
+                }
+            } else {
+                EmptyView()
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 10)
     }
 }
 

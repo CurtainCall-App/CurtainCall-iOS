@@ -22,12 +22,15 @@ public struct PartyDetailFeature {
         }
         let id: Int
         var partyDetailInfo: FetchPartyDetailResponseDTO?
+        var isParticipated: Bool = false
     }
     
     @Dependency (\.partyClient) var partyClient
     
     public enum Action {
         case fetchPartyDetail
+        case fetchDidParticipated
+        case checkParticipated(Bool)
         case successPartyDetailResponse(FetchPartyDetailResponseDTO)
         case failToPartyDetailResponse(Error)
     }
@@ -43,6 +46,17 @@ public struct PartyDetailFeature {
                         await send(.failToPartyDetailResponse(error))
                     }
                 }
+            case .fetchDidParticipated:
+                return .run { [id = state.id] send in
+                    do {
+                        try await send(.checkParticipated(partyClient.fetchDidParticipated(id).content.first?.participated ?? false))
+                    } catch {
+                        await send(.checkParticipated(false))
+                    }
+                }
+            case .checkParticipated(let check):
+                state.isParticipated = check
+                return .none
             case .successPartyDetailResponse(let response):
                 state.partyDetailInfo = response
                 return .none

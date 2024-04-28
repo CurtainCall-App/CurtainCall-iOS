@@ -81,6 +81,7 @@ public struct LoginFeature {
             case .requestLogin(let response):
                 if let memberId = response.memberId {
                     state.appRootView = .main
+                    UserDefaults.standard.setValue(memberId, forKey: UserDefaultKeys.userId.rawValue)
                 } else {
                     state.path.append(.termsOfService())
                 }

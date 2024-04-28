@@ -67,8 +67,9 @@ public struct NicknameSettingFeature {
                         // TODO: 에러처리
                     }
                 }
-            case .responseSignup:
+            case .responseSignup(let response):
                 state.appRoot = .main
+                UserDefaults.standard.setValue(response.id, forKey: UserDefaultKeys.userId.rawValue)
                 return .none
             }
         }

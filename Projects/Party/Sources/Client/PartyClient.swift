@@ -15,13 +15,15 @@ struct PartyClient {
     var fetchPartyList: (Int, Date, Date) async throws ->  FetchPartyListResponseDTO
     var createParty: (CreatePartyBody) async throws -> CreatePartyResponseDTO
     var fetchPartyDetail: (Int) async throws -> FetchPartyDetailResponseDTO
+    var fetchDidParticipated: (Int) async throws -> FetchDidParticipatedResponseDTO
 }
 
 extension PartyClient: DependencyKey {
     static var liveValue = {
         Self(fetchPartyList: fetchPartyList, 
              createParty: createParty,
-             fetchPartyDetail: fetchPartyDetail
+             fetchPartyDetail: fetchPartyDetail,
+             fetchDidParticipated: fetchDidParticipated
         )
     }()
     
@@ -42,6 +44,11 @@ extension PartyClient: DependencyKey {
     static func fetchPartyDetail(id: Int) async throws -> FetchPartyDetailResponseDTO {
         return try await MoyaProvider<PartyAPI>()
             .request(.fetchPartyDetail(id: id))
+    }
+    
+    static func fetchDidParticipated(id: Int) async throws -> FetchDidParticipatedResponseDTO {
+        return try await MoyaProvider<PartyAPI>()
+            .request(.fetchDidParticipated(id: id))
     }
 }
 
