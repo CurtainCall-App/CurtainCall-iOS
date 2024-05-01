@@ -20,10 +20,7 @@ public struct FetchShowTop10Result: Decodable, Hashable, Equatable {
     let genre: Genre
     let showTimes: [ShowTime]
     let runtime: String
-    let reviewCount, reviewGradeSum: Int
+    let reviewCount: Int
+    let reviewGradeSum: Int
     let reviewGradeAvg: Double
-}
-
-public struct ShowTime: Decodable, Hashable, Equatable {
-    let dayOfWeek, time: String
 }

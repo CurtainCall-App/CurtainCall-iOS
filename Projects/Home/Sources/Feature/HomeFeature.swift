@@ -18,6 +18,7 @@ public struct HomeFeature {
         public init() { }
         var showRecommendations: [FetchShowRecomandationResponseResult] = []
         var showTop10: [FetchShowTop10Result] = []
+        var showToOpen: [FetchToOpenShowResult] = []
     }
     
     @Dependency (\.homeClient) var homeClient
@@ -29,6 +30,9 @@ public struct HomeFeature {
         case fetchShowTop10
         case showTop10Response([FetchShowTop10Result])
         case showTop10Error(Error)
+        case fetchToOpenShow
+        case toOpenShowResponse([FetchToOpenShowResult])
+        case toOpenShowError(Error)
     }
     
     public var body: some ReducerOf<Self> {
@@ -62,7 +66,22 @@ public struct HomeFeature {
             case .showTop10Error(let error):
                 print(error.localizedDescription)
                 return .none
+            case .fetchToOpenShow:
+                return .run { send in
+                    do {
+                        try await send(.toOpenShowResponse(homeClient.fetchShowToOpen().content))
+                    } catch {
+                        await send(.toOpenShowError(error))
+                    }
+                }
+            case .toOpenShowResponse(let response):
+                state.showToOpen = response
+                return .none
+            case .toOpenShowError(let error):
+                print(error.localizedDescription)
+                return .none
             }
         }
     }
+
 }

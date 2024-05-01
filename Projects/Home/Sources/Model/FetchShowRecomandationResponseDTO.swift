@@ -9,12 +9,10 @@ import Foundation
 
 import Common
 
-// MARK: - Welcome
 public struct FetchShowRecomandationResponseDTO: Decodable, Equatable {
     let content: [FetchShowRecomandationResponseResult]
 }
 
-// MARK: - Content
 public struct FetchShowRecomandationResponseResult: Decodable, Equatable, Hashable {
     let id: Int
     let description: String

@@ -14,6 +14,7 @@ import Moya
 enum HomeAPI {
     case fetchShowRecommendations
     case fetchShowTop10
+    case fetchShowToOpen
 }
 
 extension HomeAPI: TargetType {
@@ -23,6 +24,7 @@ extension HomeAPI: TargetType {
         switch self {
         case .fetchShowRecommendations: return "/show-recommendations"
         case .fetchShowTop10: return "/box-office"
+        case .fetchShowToOpen: return "/shows-to-open"
         }
     }
     
@@ -30,6 +32,7 @@ extension HomeAPI: TargetType {
         switch self {
         case .fetchShowRecommendations: return .get
         case .fetchShowTop10: return .get
+        case .fetchShowToOpen: return .get
         }
     }
     
@@ -41,12 +44,14 @@ extension HomeAPI: TargetType {
             param.updateValue("WEEK", forKey: "type")
             param.updateValue(Utils.convertDateToAPIString(date: Date()), forKey: "baseDate")
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
+        case .fetchShowToOpen:
+            param.updateValue(0, forKey: "page")
+            param.updateValue(Utils.convertDateToAPIString(date: Date()), forKey: "startDate")
+            return .requestParameters(parameters: param, encoding: URLEncoding.default)
         }
     }
     
-    var headers: [String : String]? {
-        Utils.authHeader
-    }
+    var headers: [String : String]? { nil }
     
     
 }
