@@ -15,6 +15,7 @@ enum HomeAPI {
     case fetchShowRecommendations
     case fetchShowTop10
     case fetchShowToOpen
+    case fetchShowToEnd
 }
 
 extension HomeAPI: TargetType {
@@ -25,6 +26,7 @@ extension HomeAPI: TargetType {
         case .fetchShowRecommendations: return "/show-recommendations"
         case .fetchShowTop10: return "/box-office"
         case .fetchShowToOpen: return "/shows-to-open"
+        case .fetchShowToEnd: return "/shows-to-end"
         }
     }
     
@@ -33,6 +35,7 @@ extension HomeAPI: TargetType {
         case .fetchShowRecommendations: return .get
         case .fetchShowTop10: return .get
         case .fetchShowToOpen: return .get
+        case .fetchShowToEnd: return .get
         }
     }
     
@@ -47,6 +50,10 @@ extension HomeAPI: TargetType {
         case .fetchShowToOpen:
             param.updateValue(0, forKey: "page")
             param.updateValue(Utils.convertDateToAPIString(date: Date()), forKey: "startDate")
+            return .requestParameters(parameters: param, encoding: URLEncoding.default)
+        case .fetchShowToEnd:
+            param.updateValue(0, forKey: "page")
+            param.updateValue(Utils.convertDateToAPIString(date: Date()), forKey: "endDate")
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
         }
     }

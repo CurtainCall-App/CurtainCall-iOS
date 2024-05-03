@@ -14,6 +14,7 @@ struct HomeClient {
     var fetchShowRecommendations: () async throws -> FetchShowRecomandationResponseDTO
     var fetchShowTop10: () async throws -> FetchShowTop10ResponseDTO
     var fetchShowToOpen: () async throws -> FetchToOpenShowResponseDTO
+    var fetchShowToEnd: () async throws -> FetchShowToEndResponseDTO
 }
 
 extension HomeClient: DependencyKey {
@@ -21,7 +22,8 @@ extension HomeClient: DependencyKey {
         Self(
             fetchShowRecommendations: fetchShowRecommendations,
             fetchShowTop10: fetchShowTop10,
-            fetchShowToOpen: fetchShowToOpen
+            fetchShowToOpen: fetchShowToOpen,
+            fetchShowToEnd: fetchShowToEnd
         )
     }()
     
@@ -35,6 +37,10 @@ extension HomeClient: DependencyKey {
     
     static func fetchShowToOpen() async throws -> FetchToOpenShowResponseDTO {
         return try await MoyaProvider<HomeAPI>().request(.fetchShowToOpen)
+    }
+    
+    static func fetchShowToEnd() async throws -> FetchShowToEndResponseDTO {
+        return try await MoyaProvider<HomeAPI>().request(.fetchShowToEnd)
     }
 }
 

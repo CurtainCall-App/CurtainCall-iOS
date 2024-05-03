@@ -27,6 +27,7 @@ public struct HomeView: View {
                     recommandationViews
                     top10View
                     toOpenShowView
+                    toEndShowView
                 }
             }
             .scrollIndicators(.hidden)
@@ -37,6 +38,7 @@ public struct HomeView: View {
             store.send(.fetchShowRecommendations)
             store.send(.fetchShowTop10)
             store.send(.fetchToOpenShow)
+            store.send(.fetchToEndShow)
         }
         
     }
@@ -305,7 +307,86 @@ public struct HomeView: View {
                             VStack {
                                 HStack {
                                     let day = getTodayDiffDay(date: Utils.convertDateStringToDate(dateString: info.startDate) ?? Date())
-                                    Text(day == 0 ? "D-ㅇay" : "D-\(day)")
+                                    Text(day == 0 ? "D-Day" : "D-\(day)")
+                                        .font(.body4)
+                                        .foregroundStyle(.white)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 3)
+                                        .background(
+                                            Color.black.opacity(0.6)
+                                            
+                                        )
+                                        .roundedCorner(6, corners: .allCorners)
+                                        .padding([.top, .leading], 8)
+                                    Spacer()
+                                }
+                                Spacer()
+                            }
+                            
+                        }
+                        
+                    }
+                    Spacer().frame(width: 20)
+                })
+            }
+            .padding(.top, 12)
+            .scrollIndicators(.hidden)
+        }
+        .padding(.top, 40)
+        .padding(.leading, 20)
+    }
+    
+    @MainActor
+    private var toEndShowView: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text("티켓 마감 임박")
+                    .font(.subTitle2)
+                    .foregroundStyle(.black)
+                Spacer()
+            }
+            ScrollView(.horizontal) {
+                LazyHGrid(rows: [.init(.flexible(maximum: 120))], spacing: 12, content: {
+                    ForEach(Array(zip(store.showToEnd.indices, store.showToEnd)), id: \.0) { index, info in
+                        ZStack {
+                            VStack(spacing: 0) {
+                                LazyImage(url: URL(string: info.poster)) { state in
+                                    if let image = state.image {
+                                        image.resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                    } else {
+                                        ProgressView()
+                                    }
+                                }
+                                .frame(width: 120, height: 160)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                
+                                HStack {
+                                    Text(info.genre.nameKR)
+                                        .font(.caption_)
+                                        .foregroundStyle(.white)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
+                                        .background(Color.primary1)
+                                        .clipShape(Capsule())
+                                        .padding(.top, 14)
+                                    Spacer()
+                                }
+                                
+                                HStack {
+                                    Text(info.name)
+                                        .font(.body3_SB)
+                                        .foregroundStyle(.black)
+                                        .lineLimit(1)
+                                        .padding(.top, 8)
+                                    Spacer()
+                                }
+                                .frame(maxWidth: 120)
+                            }
+                            VStack {
+                                HStack {
+                                    let day = getTodayDiffDay(date: Utils.convertDateStringToDate(dateString: info.endDate) ?? Date())
+                                    Text(day == 0 ? "D-Day" : "D-\(day)")
                                         .font(.body4)
                                         .foregroundStyle(.white)
                                         .padding(.horizontal, 8)
