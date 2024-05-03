@@ -8,6 +8,7 @@
 import Foundation
 
 import ComposableArchitecture
+import Show
 
 @Reducer
 public struct HomeFeature {
@@ -20,6 +21,7 @@ public struct HomeFeature {
         var showTop10: [FetchShowTop10Result] = []
         var showToOpen: [FetchToOpenShowResult] = []
         var showToEnd: [FetchShowToEndResult] = []
+        var path = StackState<Path.State>()
     }
     
     @Dependency (\.homeClient) var homeClient
@@ -38,6 +40,7 @@ public struct HomeFeature {
         case toEndShowReseponse([FetchShowToEndResult])
         case toEndShowError(Error)
         case didTappedShow(id: String)
+        case path(StackAction<Path.State, Path.Action>)
     }
     
     public var body: some ReducerOf<Self> {
@@ -99,8 +102,32 @@ public struct HomeFeature {
             case .toEndShowError(let error):
                 print(error.localizedDescription)
                 return .none
-            case .didTappedShow:
+            case .didTappedShow(let id):
+                state.path.append(.showDetail(.init(showId: id)))
                 return .none
+            case .path: return .none
+            }
+        }
+        .forEach(\.path, action: \.path) {
+            Path()
+        }
+    }
+    
+    @Reducer
+    public struct Path {
+        
+        @ObservableState
+        public enum State: Equatable {
+            case showDetail(ShowDetailFeature.State = .init(showId: ""))
+        }
+        
+        public enum Action {
+            case showDetail(ShowDetailFeature.Action)
+        }
+        
+        public var body: some Reducer<State, Action> {
+            Scope(state: \.showDetail, action: \.showDetail) {
+                ShowDetailFeature()
             }
         }
     }

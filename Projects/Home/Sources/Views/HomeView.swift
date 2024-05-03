@@ -8,38 +8,49 @@
 import SwiftUI
 
 import Common
+import Show
 
 import ComposableArchitecture
 import NukeUI
 
 public struct HomeView: View {
-    private let store: StoreOf<HomeFeature>
+    @Bindable private var store: StoreOf<HomeFeature>
     
     public init(store: StoreOf<HomeFeature>) {
         self.store = store
     }
     
     public var body: some View {
-        VStack(alignment: .leading) {
-            topbar
-            ScrollView {
-                VStack {
-                    recommandationViews
-                    top10View
-                    toOpenShowView
-                    toEndShowView
+        NavigationStack(path: self.$store.scope(state: \.path, action: \.path)) {
+            VStack(alignment: .leading) {
+                topbar
+                ScrollView {
+                    VStack {
+                        recommandationViews
+                        top10View
+                        toOpenShowView
+                        toEndShowView
+                    }
+                }
+                .scrollIndicators(.hidden)
+                Spacer()
+                
+            }
+            .onAppear {
+                store.send(.fetchShowRecommendations)
+                store.send(.fetchShowTop10)
+                store.send(.fetchToOpenShow)
+                store.send(.fetchToEndShow)
+            }
+        } destination: { store in
+            switch store.state {
+            case .showDetail:
+                if let store = store.scope(state: \.showDetail, action: \.showDetail) {
+                    ShowDetailView(store: store)
                 }
             }
-            .scrollIndicators(.hidden)
-            Spacer()
-            
         }
-        .onAppear {
-            store.send(.fetchShowRecommendations)
-            store.send(.fetchShowTop10)
-            store.send(.fetchToOpenShow)
-            store.send(.fetchToEndShow)
-        }
+        
         
     }
     
@@ -59,6 +70,9 @@ public struct HomeView: View {
                 defaultRecommandView
                 ForEach(store.showRecommendations, id: \.self) { info in
                     makeRecommandationView(info: info)
+                        .onTapGestureRectangle {
+                            store.send(.didTappedShow(id: info.showId))
+                        }
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
@@ -243,7 +257,9 @@ public struct HomeView: View {
                                 }
                                 Spacer()
                             }
-                            
+                        }
+                        .onTapGestureRectangle {
+                            store.send(.didTappedShow(id: info.id))
                         }
                         
                     }
@@ -324,6 +340,9 @@ public struct HomeView: View {
                             }
                             
                         }
+                        .onTapGestureRectangle {
+                            store.send(.didTappedShow(id: info.id))
+                        }
                         
                     }
                     Spacer().frame(width: 20)
@@ -402,6 +421,9 @@ public struct HomeView: View {
                                 Spacer()
                             }
                             
+                        }
+                        .onTapGestureRectangle {
+                            store.send(.didTappedShow(id: info.id))
                         }
                         
                     }
