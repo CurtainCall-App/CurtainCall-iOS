@@ -16,6 +16,7 @@ enum HomeAPI {
     case fetchShowTop10
     case fetchShowToOpen
     case fetchShowToEnd
+    case fetchShowToCost
 }
 
 extension HomeAPI: TargetType {
@@ -27,6 +28,7 @@ extension HomeAPI: TargetType {
         case .fetchShowTop10: return "/box-office"
         case .fetchShowToOpen: return "/shows-to-open"
         case .fetchShowToEnd: return "/shows-to-end"
+        case .fetchShowToCost: return "/cost-effective-shows"
         }
     }
     
@@ -36,6 +38,7 @@ extension HomeAPI: TargetType {
         case .fetchShowTop10: return .get
         case .fetchShowToOpen: return .get
         case .fetchShowToEnd: return .get
+        case .fetchShowToCost: return .get
         }
     }
     
@@ -55,6 +58,8 @@ extension HomeAPI: TargetType {
             param.updateValue(0, forKey: "page")
             param.updateValue(Utils.convertDateToAPIString(date: Date()), forKey: "endDate")
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
+        case .fetchShowToCost:
+            return .requestPlain
         }
     }
     

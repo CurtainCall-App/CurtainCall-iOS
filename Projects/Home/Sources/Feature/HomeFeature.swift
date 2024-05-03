@@ -21,6 +21,7 @@ public struct HomeFeature {
         var showTop10: [FetchShowTop10Result] = []
         var showToOpen: [FetchToOpenShowResult] = []
         var showToEnd: [FetchShowToEndResult] = []
+        var showToCost: [FetchShowCostShowResult] = []
         var path = StackState<Path.State>()
     }
     
@@ -40,6 +41,9 @@ public struct HomeFeature {
         case toEndShowReseponse([FetchShowToEndResult])
         case toEndShowError(Error)
         case didTappedShow(id: String)
+        case fetchToCostShow
+        case toCostShowResponse([FetchShowCostShowResult])
+        case toCostShowError(Error)
         case path(StackAction<Path.State, Path.Action>)
     }
     
@@ -100,6 +104,20 @@ public struct HomeFeature {
                 state.showToEnd = response
                 return .none
             case .toEndShowError(let error):
+                print(error.localizedDescription)
+                return .none
+            case .fetchToCostShow:
+                return .run { send in
+                    do {
+                        try await send(.toCostShowResponse(homeClient.fetchShowToCost().content))
+                    } catch {
+                        await send(.toCostShowError(error))
+                    }
+                }
+            case .toCostShowResponse(let response):
+                state.showToCost = response
+                return .none
+            case .toCostShowError(let error):
                 print(error.localizedDescription)
                 return .none
             case .didTappedShow(let id):

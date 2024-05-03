@@ -30,6 +30,7 @@ public struct HomeView: View {
                         top10View
                         toOpenShowView
                         toEndShowView
+                        toCostShowView
                     }
                 }
                 .scrollIndicators(.hidden)
@@ -41,6 +42,7 @@ public struct HomeView: View {
                 store.send(.fetchShowTop10)
                 store.send(.fetchToOpenShow)
                 store.send(.fetchToEndShow)
+                store.send(.fetchToCostShow)
             }
         } destination: { store in
             switch store.state {
@@ -422,6 +424,68 @@ public struct HomeView: View {
                             }
                             
                         }
+                        .onTapGestureRectangle {
+                            store.send(.didTappedShow(id: info.id))
+                        }
+                        
+                    }
+                    Spacer().frame(width: 20)
+                })
+            }
+            .padding(.top, 12)
+            .scrollIndicators(.hidden)
+        }
+        .padding(.top, 40)
+        .padding(.leading, 20)
+    }
+    
+    @MainActor
+    private var toCostShowView: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text("가성비 좋은 공연")
+                    .font(.subTitle2)
+                    .foregroundStyle(.black)
+                Spacer()
+            }
+            ScrollView(.horizontal) {
+                LazyHGrid(rows: [.init(.flexible(maximum: 120))], spacing: 12, content: {
+                    ForEach(Array(zip(store.showToCost.indices, store.showToCost)), id: \.0) { index, info in
+                        VStack(spacing: 0) {
+                            LazyImage(url: URL(string: info.poster)) { state in
+                                if let image = state.image {
+                                    image.resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                } else {
+                                    ProgressView()
+                                }
+                            }
+                            .frame(width: 120, height: 160)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            
+                            HStack {
+                                Text(info.genre.nameKR)
+                                    .font(.caption_)
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.primary1)
+                                    .clipShape(Capsule())
+                                    .padding(.top, 14)
+                                Spacer()
+                            }
+                            
+                            HStack {
+                                Text(info.name)
+                                    .font(.body3_SB)
+                                    .foregroundStyle(.black)
+                                    .lineLimit(1)
+                                    .padding(.top, 8)
+                                Spacer()
+                            }
+                            .frame(maxWidth: 120)
+                        }
+                        
                         .onTapGestureRectangle {
                             store.send(.didTappedShow(id: info.id))
                         }
