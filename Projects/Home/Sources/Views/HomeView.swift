@@ -9,6 +9,7 @@ import SwiftUI
 
 import Common
 import Show
+import Review
 
 import ComposableArchitecture
 import NukeUI
@@ -49,6 +50,10 @@ public struct HomeView: View {
             case .showDetail:
                 if let store = store.scope(state: \.showDetail, action: \.showDetail) {
                     ShowDetailView(store: store)
+                }
+            case .reviewWrite:
+                if let store = store.scope(state: \.reviewWrite, action: \.reviewWrite) {
+                    ReviewWriteView(store: store)
                 }
             }
         }

@@ -9,6 +9,7 @@ import Foundation
 
 import ComposableArchitecture
 import Show
+import Review
 
 @Reducer
 public struct HomeFeature {
@@ -123,6 +124,9 @@ public struct HomeFeature {
             case .didTappedShow(let id):
                 state.path.append(.showDetail(.init(showId: id)))
                 return .none
+            case .path(.element(id: _, action: .showDetail(.review(.didTappedReviewWriteButton(let info))))):
+                state.path.append(.reviewWrite(.init(showInfo: info)))
+                return .none
             case .path: return .none
             }
         }
@@ -137,15 +141,20 @@ public struct HomeFeature {
         @ObservableState
         public enum State: Equatable {
             case showDetail(ShowDetailFeature.State = .init(showId: ""))
+            case reviewWrite(ReviewWriteFeature.State = .init(showInfo: ReviewWriteViewComponents(showId: "", showImage: "", showName: "", genre: .play)))
         }
         
         public enum Action {
             case showDetail(ShowDetailFeature.Action)
+            case reviewWrite(ReviewWriteFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
             Scope(state: \.showDetail, action: \.showDetail) {
                 ShowDetailFeature()
+            }
+            Scope(state: \.reviewWrite, action: \.reviewWrite) {
+                ReviewWriteFeature()
             }
         }
     }
