@@ -11,13 +11,13 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>커튼콜</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
-    <key>NMFClientId</key>
-    <string>$(NAVER_NMFClientId)</string>
+	<string>2.0.0</string>
+	<key>NMFClientId</key>
+	<string>$(NAVER_NMFClientId)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

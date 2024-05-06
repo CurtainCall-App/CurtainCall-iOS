@@ -14,7 +14,8 @@ let project = Project.makeModule(
     dependencies: [
         .external(name: "ComposableArchitecture"),
         .external(name: "Moya"),
-        .external(name: "NukeUI")
+        .external(name: "NukeUI"),
+        .external(name: "FirebaseAnalytics")
     ],
     sources: ["Sources/**", "Secret/**"],
     resources: ["Resources/**"]

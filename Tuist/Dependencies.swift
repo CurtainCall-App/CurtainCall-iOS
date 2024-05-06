@@ -26,6 +26,10 @@ let dependencies = Dependencies(
             .remote(
                 url: "https://github.com/kean/Nuke",
                 requirement: .upToNextMajor(from: "12.0.0")
+            ),
+            .remote(
+                url: "https://github.com/firebase/firebase-ios-sdk",
+                requirement: .upToNextMajor(from: "10.24.0")
             )
             
         ]),
