@@ -507,7 +507,7 @@ public struct HomeView: View {
                             .frame(maxWidth: 120)
                             
                             HStack {
-                                Text("\(info.minTicketPrice)원~")
+                                Text(Utils.convertIntInComma(value: info.minTicketPrice) + "원~")
                                     .font(.caption_)
                                     .foregroundStyle(Color.systemRed)
                                     .padding(.horizontal, 4)
