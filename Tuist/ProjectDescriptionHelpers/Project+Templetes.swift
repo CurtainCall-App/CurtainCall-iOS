@@ -31,7 +31,7 @@ public extension Project {
                 )
             ], defaultSettings: .recommended)
 
-        let appTarget = Target(
+        let appTarget = Target.target(
             name: name,
             destinations: destinations,
             product: product,
@@ -67,7 +67,7 @@ public extension Project {
 
 extension Scheme {
     static func makeScheme(target: ConfigurationName, name: String) -> Scheme {
-        return Scheme(
+        return Scheme.scheme(
             name: name,
             shared: true,
             buildAction: .buildAction(targets: ["\(name)"]),
