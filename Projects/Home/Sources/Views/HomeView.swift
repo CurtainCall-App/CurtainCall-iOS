@@ -326,6 +326,14 @@ public struct HomeView: View {
                                     Spacer()
                                 }
                                 .frame(maxWidth: 120)
+                                
+                                HStack {
+                                    Text(convertAPIDateStringToDay(dateString: info.startDate) + "~")
+                                        .font(.body5)
+                                        .foregroundStyle(Color.gray5)
+                                    Spacer()
+                                }
+                                .padding(.top, 3)
                             }
                             VStack {
                                 HStack {
@@ -408,6 +416,14 @@ public struct HomeView: View {
                                     Spacer()
                                 }
                                 .frame(maxWidth: 120)
+                                
+                                HStack {
+                                    Text("~" + convertAPIDateStringToDay(dateString: info.endDate))
+                                        .font(.body5)
+                                        .foregroundStyle(Color.gray5)
+                                    Spacer()
+                                }
+                                .padding(.top, 3)
                             }
                             VStack {
                                 HStack {
@@ -489,6 +505,22 @@ public struct HomeView: View {
                                 Spacer()
                             }
                             .frame(maxWidth: 120)
+                            
+                            HStack {
+                                Text("\(info.minTicketPrice)원~")
+                                    .font(.caption_)
+                                    .foregroundStyle(Color.systemRed)
+                                    .padding(.horizontal, 4)
+                                    .padding(.vertical, 2)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .stroke(Color.systemRed, lineWidth: 1)
+                                    )
+                                    .clipShape(RoundedRectangle(cornerRadius: 4))
+                                
+                                Spacer()
+                            }
+                            .padding(.top, 6)
                         }
                         
                         .onTapGestureRectangle {
@@ -511,5 +543,18 @@ extension HomeView {
     func getTodayDiffDay(date: Date) -> Int {
         let components = Calendar.current.dateComponents([.day], from: Date(), to: date)
         return components.day ?? 0
+    }
+    
+    func convertAPIDateStringToDay(dateString: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let convertFormaater = DateFormatter()
+        convertFormaater.dateFormat = "yy.MM.dd (E)"
+        convertFormaater.locale = Locale(identifier: "ko-KR")
+        if let date = formatter.date(from: dateString) {
+            return convertFormaater.string(from: date)
+        } else {
+            return "날짜 정보 없음"
+        }
     }
 }
