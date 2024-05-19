@@ -62,17 +62,6 @@ struct PartyDetailView: View {
                         .frame(height: 40)
                     
                     makeBottomButton()
-//                    VStack {
-//                        Text("TALK 입장")
-//                            .font(.subTitle4)
-//                            .foregroundStyle(Color.primary1)
-//                            .frame(maxWidth: .infinity)
-//                            .frame(height: 55)
-//                            .background(Color.primary2)
-//                            .clipShape(RoundedRectangle(cornerRadius: 10))
-//                            .padding(.horizontal, 20)
-//                            .padding(.bottom, 10)
-//                    }
                 }
                 .frame(maxWidth: .infinity)
             }
@@ -246,7 +235,7 @@ struct PartyDetailView: View {
                                 .background(Color.gray8)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .onTapGestureRectangle {
-                                    store.send(.)
+                                    store.send(.didTappedCancelParticipateButton)
                                 }
                             Text("TALK 시작하기")
                                 .font(.subTitle4)

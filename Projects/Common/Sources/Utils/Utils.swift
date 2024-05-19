@@ -74,4 +74,10 @@ public struct Utils {
         formatter.locale = Locale(identifier: "ko-KR")
         return formatter.date(from: dateString)
     }
+    
+    public static func convertIntInComma(value: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: NSNumber(integerLiteral: value)) ?? ""
+    }
 }

@@ -14,6 +14,7 @@ import ComposableArchitecture
 import KakaoSDKCommon
 import KakaoSDKAuth
 import NaverThirdPartyLogin
+import FirebaseCore
 
 @main
 struct CurtainCallApp: App {
@@ -24,6 +25,7 @@ struct CurtainCallApp: App {
         NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
         initKakaoLoginSDK()
         initNaverLoginSDK()
+        FirebaseApp.configure()
         UITextField.appearance().clearButtonMode = .whileEditing
     }
     
