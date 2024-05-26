@@ -18,7 +18,7 @@ public struct NoticeFeature {
     @ObservableState
     public struct State: Equatable {
         public init() { }
-        var noticeList: [FetchNoticeListResult] = []
+        public var noticeList: [FetchNoticeListResult] = []
     }
     
     public enum Action {

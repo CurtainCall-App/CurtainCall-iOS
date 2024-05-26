@@ -8,12 +8,12 @@
 import Foundation
 
 public struct FetchNoticeListResponseDTO: Decodable {
-    let content: [FetchNoticeListResult]
+    public let content: [FetchNoticeListResult]
 }
 
-public struct FetchNoticeListResult: Equatable, Decodable {
-    let id: Int
-    let title: String
-    let createdAt: String
+public struct FetchNoticeListResult: Hashable, Equatable, Decodable {
+    public let id: Int
+    public let title: String
+    public let createdAt: String
 }
 
