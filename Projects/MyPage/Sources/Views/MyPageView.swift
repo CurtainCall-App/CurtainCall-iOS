@@ -12,23 +12,34 @@ import Common
 import ComposableArchitecture
 
 public struct MyPageView: View {
-    private let store: StoreOf<MyPageFeature>
+    private var store: StoreOf<MyPageFeature>
     
     public init(store: StoreOf<MyPageFeature>) {
         self.store = store
     }
     
     public var body: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                profileView
-                Color.gray9.frame(height: 10)
-                myActivityView
-                Color.gray9.frame(height: 10)
-                serviceView
-                bottomView
+        NavigationStackStore(self.store.scope(state: \.path, action: \.path)) {
+            ScrollView {
+                VStack(alignment: .leading) {
+                    profileView
+                    Color.gray9.frame(height: 10)
+                    myActivityView
+                    Color.gray9.frame(height: 10)
+                    serviceView
+                    bottomView
+                }
+            }
+        } destination: { store in
+            switch store.state {
+            case .notice:
+                if let store = store.scope(state: \.notice, action: \.notice) {
+                    NoticeView(store: store)
+                }
             }
         }
+
+        
     }
     
     private var profileView: some View {
@@ -99,6 +110,9 @@ public struct MyPageView: View {
                 Image(asset: CommonAsset.arrowRightIcon16px)
             }
             .frame(height: 51)
+            .onTapGestureRectangle {
+                store.send(.didTappedNoticeView)
+            }
             HStack(spacing: 12) {
                 Text("자주 묻는 질문")
                     .font(.body2_M)
