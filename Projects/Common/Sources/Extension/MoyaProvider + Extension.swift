@@ -15,7 +15,7 @@ extension MoyaProvider {
                 switch result {
                 case .success(let response):
                     guard let result = try? JSONDecoder().decode(T.self, from: response.data) else {
-                        print(String(data: response.data, encoding: .utf8) ?? "")
+                        print("##" + (String(data: response.data, encoding: .utf8) ?? "") + "\(response.statusCode)")
                         continuation.resume(throwing: MoyaError.jsonMapping(response))
                         return
                     }

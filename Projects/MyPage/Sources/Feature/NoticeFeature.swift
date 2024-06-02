@@ -23,6 +23,7 @@ public struct NoticeFeature {
     
     public enum Action {
         case fetchNoticeList
+        case didTappedNoticeView(id: Int)
         case noticeListResponse([FetchNoticeListResult])
         case noticeListError(Error)
     }
@@ -45,6 +46,8 @@ public struct NoticeFeature {
                 return .none
             case .noticeListError(let error):
                 print(error.localizedDescription)
+                return .none
+            case .didTappedNoticeView:
                 return .none
             }
             

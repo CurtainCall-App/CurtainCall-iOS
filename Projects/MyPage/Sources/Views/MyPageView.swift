@@ -36,6 +36,10 @@ public struct MyPageView: View {
                 if let store = store.scope(state: \.notice, action: \.notice) {
                     NoticeView(store: store)
                 }
+            case .noticeDetail:
+                if let store = store.scope(state: \.noticeDetail, action: \.noticeDetail) {
+                    NoticeDetailView(store: store)
+                }
             }
         }
 

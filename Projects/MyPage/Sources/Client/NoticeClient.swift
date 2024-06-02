@@ -12,15 +12,23 @@ import ComposableArchitecture
 
 struct NoticeClient {
     var fetchNoticeList: () async throws -> FetchNoticeListResponseDTO
+    var fetchNoticeDetail: (Int) async throws -> FetchNoticeDetailResponseDTO
 }
 
 extension NoticeClient: DependencyKey {
     static var liveValue: NoticeClient = {
-        Self(fetchNoticeList: fetchNoticeList)
+        Self(
+            fetchNoticeList: fetchNoticeList,
+            fetchNoticeDetail: fetchNoticeDetail(id:)
+        )
     }()
     
     static func fetchNoticeList() async throws -> FetchNoticeListResponseDTO {
         return try await MoyaProvider<NoticeAPI>().request(.fetchNotice)
+    }
+    
+    static func fetchNoticeDetail(id: Int) async throws -> FetchNoticeDetailResponseDTO {
+        return try await MoyaProvider<NoticeAPI>().request(.fetchNoticeDetail(id: id))
     }
 }
 

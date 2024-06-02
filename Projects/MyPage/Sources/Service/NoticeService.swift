@@ -21,7 +21,7 @@ extension NoticeAPI: TargetType {
     var path: String {
         switch self {
         case .fetchNotice: return "/notices"
-        case .fetchNoticeDetail(let id): return "/notice/\(id)"
+        case .fetchNoticeDetail(let id): return "/notices/\(id)"
         }
     }
     

@@ -62,6 +62,9 @@ struct NoticeView: View {
                     }
                 }
                 .padding([.vertical, .horizontal], 20)
+                .onTapGestureRectangle {
+                    store.send(.didTappedNoticeView(id: info.id))
+                }
                 Color.gray8.frame(height: 1)
                     .padding(.horizontal, 20)
             }
