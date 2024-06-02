@@ -15,15 +15,53 @@ public struct MyPageFeature {
     
     public struct State: Equatable {
         public init() { }
+        var path = StackState<Path.State>()
     }
     
     public enum Action {
-        
+        case didTappedNoticeView
+        case path(StackAction<Path.State, Path.Action>)
     }
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .didTappedNoticeView:
+                state.path.append(.notice())
+                return .none
+            case .path(.element(id: _, action: .notice(.didTappedNoticeView(let id)))):
+                state.path.append(.noticeDetail(.init(id: id)))
+                return .none
+            case .path:
+                return .none
+            }
+        }
+        .forEach(\.path, action: \.path) {
+            Path()
+        }
+    }
+    
+    @Reducer
+    public struct Path {
+        
+        @ObservableState
+        public enum State: Equatable {
+            case notice(NoticeFeature.State = .init())
+            case noticeDetail(NoticeDetailFeature.State = .init(id: 0))
+        }
+        
+        public enum Action {
+            case notice(NoticeFeature.Action)
+            case noticeDetail(NoticeDetailFeature.Action)
+        }
+        
+        public var body: some Reducer<State, Action> {
+            Scope(state: \.notice, action: \.notice) {
+                NoticeFeature()
+            }
+            Scope(state: \.noticeDetail, action: \.noticeDetail) {
+                NoticeDetailFeature()
+            }
         }
     }
 }
