@@ -20,6 +20,7 @@ public struct MyPageFeature {
     
     public enum Action {
         case didTappedNoticeView
+        case didTappedFAQView
         case path(StackAction<Path.State, Path.Action>)
     }
     
@@ -28,6 +29,9 @@ public struct MyPageFeature {
             switch action {
             case .didTappedNoticeView:
                 state.path.append(.notice())
+                return .none
+            case .didTappedFAQView:
+                state.path.append(.FAQ())
                 return .none
             case .path(.element(id: _, action: .notice(.didTappedNoticeView(let id)))):
                 state.path.append(.noticeDetail(.init(id: id)))
@@ -48,11 +52,13 @@ public struct MyPageFeature {
         public enum State: Equatable {
             case notice(NoticeFeature.State = .init())
             case noticeDetail(NoticeDetailFeature.State = .init(id: 0))
+            case FAQ(FAQFeature.State = .init())
         }
         
         public enum Action {
             case notice(NoticeFeature.Action)
             case noticeDetail(NoticeDetailFeature.Action)
+            case FAQ(FAQFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
@@ -61,6 +67,9 @@ public struct MyPageFeature {
             }
             Scope(state: \.noticeDetail, action: \.noticeDetail) {
                 NoticeDetailFeature()
+            }
+            Scope(state: \.FAQ, action: \.FAQ) {
+                FAQFeature()
             }
         }
     }
