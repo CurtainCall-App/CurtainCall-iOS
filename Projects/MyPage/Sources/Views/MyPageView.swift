@@ -40,6 +40,10 @@ public struct MyPageView: View {
                 if let store = store.scope(state: \.noticeDetail, action: \.noticeDetail) {
                     NoticeDetailView(store: store)
                 }
+            case .FAQ:
+                if let store = store.scope(state: \.FAQ, action: \.FAQ) {
+                    FAQView(store: store)
+                }
             }
         }
 
@@ -125,6 +129,9 @@ public struct MyPageView: View {
             }
             .frame(height: 51)
             .padding(.bottom, 30)
+            .onTapGestureRectangle {
+                store.send(.didTappedFAQView)
+            }
         }
         .padding(.horizontal, 20)
     }
