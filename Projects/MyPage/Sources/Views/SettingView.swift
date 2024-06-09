@@ -21,75 +21,84 @@ struct SettingView: View {
     }
     
     var body: some View {
-        VStack(spacing: 30) {
-            HStack {
-                Text("계정")
-                    .font(.subTitle4)
-                    .foregroundStyle(.black)
+        ZStack {
+            VStack(spacing: 30) {
+                HStack {
+                    Text("계정")
+                        .font(.subTitle4)
+                        .foregroundStyle(.black)
+                    Spacer()
+                }
+                .padding(.top, 40)
+                .padding(.horizontal, 20)
+                
+                HStack {
+                    Text("로그아웃")
+                        .font(.body2_M)
+                        .foregroundStyle(.black)
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
+                .onTapGestureRectangle {
+                    store.send(.didTappedLogout)
+                }
+                
+                HStack {
+                    Text("계정 삭제")
+                        .font(.body2_M)
+                        .foregroundStyle(.black)
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
+                
+                Color.gray9.frame(height: 10).padding(.vertical, 10)
+                
+                HStack {
+                    Text("정보")
+                        .font(.subTitle4)
+                        .foregroundStyle(.black)
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
+                
+                HStack {
+                    Text("개인정보 처리방침")
+                        .font(.body2_M)
+                        .foregroundStyle(.black)
+                    Spacer()
+                    Text("보기")
+                        .font(.body4)
+                        .foregroundStyle(Color.gray5)
+                }
+                .padding(.horizontal, 20)
+                
+                HStack {
+                    Text("서비스 이용약관")
+                        .font(.body2_M)
+                        .foregroundStyle(.black)
+                    Spacer()
+                    Text("보기")
+                        .font(.body4)
+                        .foregroundStyle(Color.gray5)
+                }
+                .padding(.horizontal, 20)
+                
                 Spacer()
             }
-            .padding(.top, 40)
-            .padding(.horizontal, 20)
-            
-            HStack {
-                Text("로그아웃")
-                    .font(.body2_M)
-                    .foregroundStyle(.black)
-                Spacer()
+            .navigationTitle("설정")
+            .navigationBarBackButtonHidden()
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Image(asset: CommonAsset.navigationBackIcon)
+                        .onTapGesture {
+                            dismiss()
+                        }
+                }
             }
-            .padding(.horizontal, 20)
             
-            HStack {
-                Text("계정 삭제")
-                    .font(.body2_M)
-                    .foregroundStyle(.black)
-                Spacer()
-            }
-            .padding(.horizontal, 20)
-            
-            Color.gray9.frame(height: 10).padding(.vertical, 10)
-            
-            HStack {
-                Text("정보")
-                    .font(.subTitle4)
-                    .foregroundStyle(.black)
-                Spacer()
-            }
-            .padding(.horizontal, 20)
-            
-            HStack {
-                Text("개인정보 처리방침")
-                    .font(.body2_M)
-                    .foregroundStyle(.black)
-                Spacer()
-                Text("보기")
-                    .font(.body4)
-                    .foregroundStyle(Color.gray5)
-            }
-            .padding(.horizontal, 20)
-            
-            HStack {
-                Text("서비스 이용약관")
-                    .font(.body2_M)
-                    .foregroundStyle(.black)
-                Spacer()
-                Text("보기")
-                    .font(.body4)
-                    .foregroundStyle(Color.gray5)
-            }
-            .padding(.horizontal, 20)
-            
-            Spacer()
-        }
-        .navigationTitle("설정")
-        .navigationBarBackButtonHidden()
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Image(asset: CommonAsset.navigationBackIcon)
-                    .onTapGesture {
-                        dismiss()
-                    }
+            if let store = store.scope(state: \.popup, action: \.popup) {
+                CurtainCallPopupView(store: store)
             }
         }
     }
