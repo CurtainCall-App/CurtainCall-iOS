@@ -10,9 +10,11 @@ import Foundation
 import Moya
 
 public final class AppRootManager: ObservableObject {
+    
+    static public let shared: AppRootManager = .init()
     @Published public var currentRoot: AppRootType = .splash
     
-    public init() { }
+    private init() { }
     
     public enum AppRootType: String {
         case splash

@@ -11,7 +11,6 @@ public struct SplashView: View {
     
     public init() { }
     
-    @EnvironmentObject var appRootManager: AppRootManager
     @State private var isAnimation: Bool = false
     
     public var body: some View {
@@ -24,7 +23,7 @@ public struct SplashView: View {
                 isAnimation.toggle()
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                appRootManager.checkToken()
+                AppRootManager.shared.checkToken()
             }
         }
         .ignoresSafeArea()

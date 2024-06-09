@@ -5,9 +5,17 @@
 //  Created by 김민석 on 4/7/24.
 //
 
-import Foundation
+import SwiftUI
 
 public struct Utils {
+    
+    public static func logout() {
+        UserDefaultKeys.allCases.forEach {
+            UserDefaults.standard.removeObject(forKey: $0.rawValue)
+        }
+        AppRootManager.shared.currentRoot = .login
+    }
+    
     public static let yearMonthDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy년 MM월"

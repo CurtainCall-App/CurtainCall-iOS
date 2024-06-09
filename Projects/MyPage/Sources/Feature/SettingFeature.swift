@@ -5,7 +5,7 @@
 //  Created by 김민석 on 6/9/24.
 //
 
-import Foundation
+import SwiftUI
 
 import Common
 
@@ -16,8 +16,11 @@ public struct SettingFeature {
     
     @ObservableState
     public struct State: Equatable {
-        public init() { }
+        public static func == (lhs: SettingFeature.State, rhs: SettingFeature.State) -> Bool {
+            lhs.popup == rhs.popup
+        }
         
+        public init() { }
         var popup: CurtainCallPopupFeature.State?
     }
     
@@ -29,6 +32,12 @@ public struct SettingFeature {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .popup(.didTappedAllow):
+                Utils.logout()
+                return .none
+            case .popup(.didTappedCancel):
+                state.popup = nil
+                return .none
             case .popup: return .none
             case .didTappedLogout:
                 state.popup = .init(

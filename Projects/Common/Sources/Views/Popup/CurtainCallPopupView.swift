@@ -13,6 +13,8 @@ public struct CurtainCallPopupView: View {
     
     private let store: StoreOf<CurtainCallPopupFeature>
     
+    @Environment (\.dismiss) var dismiss
+    
     public init(store: StoreOf<CurtainCallPopupFeature>) {
         self.store = store
     }
@@ -37,6 +39,9 @@ public struct CurtainCallPopupView: View {
                             .frame(maxWidth: .infinity)
                             .background(Color.gray8)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .onTapGestureRectangle {
+                                store.send(.didTappedCancel)
+                            }
                         Text(allow)
                             .font(.body2_SB)
                             .foregroundStyle(.white)
@@ -44,6 +49,9 @@ public struct CurtainCallPopupView: View {
                             .frame(maxWidth: .infinity)
                             .background(Color.primary1)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .onTapGestureRectangle {
+                                store.send(.didTappedAllow)
+                            }
                     } else {
                         
                     }
