@@ -52,6 +52,10 @@ public struct MyPageView: View {
                 if let store = store.scope(state: \.deleteAccount, action: \.deleteAccount) {
                     DeleteAccountView(store: store)
                 }
+            case .deleteAccountDetail:
+                if let store = store.scope(state: \.deleteAccountDetail, action: \.deleteAccountDetail) {
+                    DeleteAccountDetailView(store: store)
+                }
              }
         }
 
