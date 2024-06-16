@@ -43,8 +43,8 @@ public struct MyPageFeature {
             case .path(.element(id: _, action: .setting(.deleteAccount))):
                 state.path.append(.deleteAccount(.init()))
                 return .none
-            case .path(.element(id: _, action: .deleteAccount(.didTappedDeleteAccount))):
-                state.path.append(.deleteAccountDetail(.init()))
+            case .path(.element(id: _, action: .deleteAccount(.didTappedDeleteAccount(let type, let content)))):
+                state.path.append(.deleteAccountDetail(.init(body: .init(reason: type.APIName, content: content))))
                 return .none
             case .path:
                 return .none
@@ -65,7 +65,7 @@ public struct MyPageFeature {
             case FAQ(FAQFeature.State = .init())
             case setting(SettingFeature.State = .init())
             case deleteAccount(DeleteAccountFeature.State = .init())
-            case deleteAccountDetail(DeleteAccountDetailFeature.State = .init())
+            case deleteAccountDetail(DeleteAccountDetailFeature.State = .init(body: DeleteAccountBody(reason: "", content: "")))
         }
         
         public enum Action {

@@ -62,7 +62,7 @@ struct DeleteAccountView: View {
             VStack {
                 Spacer()
                 RectangleBottomButton(isEnable: $store.isEnableDeleteAccount, text: "다음") {
-                    store.send(.didTappedDeleteAccount)
+                    store.send(.didTappedDeleteAccount(type: store.deleteAccountType ?? .기록삭제, content: store.content))
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 10)

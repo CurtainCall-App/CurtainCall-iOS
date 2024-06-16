@@ -103,12 +103,30 @@ struct DeleteAccountDetailView: View {
             
             VStack {
                 Spacer()
-                RectangleBottomButton(isEnable: .constant(true), text: "다음") {
-                    store.send(.deleteAccount)
+                if store.isFailedDeleteAccount {
+                    VStack {
+                        Spacer()
+                        ToastPopupView(type: .failed, text: "오류로 인해 계정삭제에 실패했어요")
+                    }
+                } else if store.isSuccessDeleteAccount {
+                    VStack {
+                        Spacer()
+                        ToastPopupView(type: .success, text: "계정이 삭제되었어요")
+                            .onDisappear {
+                                Utils.logout()
+                            }
+                    }
+                } else {
+                    RectangleBottomButton(isEnable: .constant(true), text: "계정 삭제") {
+                        store.send(.deleteAccount)
+                    }
+                    .padding(.horizontal, 20)
+                    .onAppear {
+                        store.send(.dismissToast)
+                    }
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 10)
             }
+            .padding(.bottom, 10)
         }
     }
 }

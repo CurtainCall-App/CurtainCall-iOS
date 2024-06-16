@@ -32,6 +32,17 @@ public struct DeleteAccountFeature {
             case .기타: return "기타"
             }
         }
+        
+        public var APIName: String {
+            switch self {
+            case .기록삭제: return "RECORD_DELETION"
+            case .이용불편: return "INCONVENIENCE_FREQUENT_ERROR"
+            case .타서비스: return "BETTER_OTHER_SERVICE"
+            case .사용빈도: return "LOW_USAGE_FREQUENCY"
+            case .앱기능문제: return "NOT_USEFUL"
+            case .기타: return "ETC"
+            }
+        }
     }
     
     @ObservableState
@@ -45,7 +56,7 @@ public struct DeleteAccountFeature {
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
         case check(DeleteAccountType)
-        case didTappedDeleteAccount
+        case didTappedDeleteAccount(type: DeleteAccountType, content: String)
     }
     
     public var body: some ReducerOf<Self> {
