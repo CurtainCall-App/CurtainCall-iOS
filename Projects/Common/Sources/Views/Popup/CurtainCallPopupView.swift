@@ -15,8 +15,11 @@ public struct CurtainCallPopupView: View {
     
     @Environment (\.dismiss) var dismiss
     
-    public init(store: StoreOf<CurtainCallPopupFeature>) {
+    var allowAction: (() -> Void)
+    
+    public init(store: StoreOf<CurtainCallPopupFeature>, allowAction: @escaping (() -> Void)) {
         self.store = store
+        self.allowAction = allowAction
     }
     
     public var body: some View {
@@ -26,9 +29,14 @@ public struct CurtainCallPopupView: View {
                 Text(store.title)
                     .font(.subTitle4)
                     .foregroundStyle(.black)
-                    .padding(.vertical, 40)
-                if let meessage = store.message {
-                    //
+                    .padding(.top, 40)
+                if let message = store.message {
+                    Text(message)
+                        .font(.body3)
+                        .foregroundStyle(Color.gray5)
+                        .padding(.top, 14)
+                        .padding(.horizontal, 12)
+                    
                 }
                 HStack(spacing: 10) {
                     if let cancel = store.cancelText, let allow = store.allowText {
@@ -50,13 +58,14 @@ public struct CurtainCallPopupView: View {
                             .background(Color.primary1)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                             .onTapGestureRectangle {
-                                store.send(.didTappedAllow)
+                                allowAction()
                             }
                     } else {
                         
                     }
                 }
                 .padding([.horizontal, .bottom], 12)
+                .padding(.top, 30)
             }
             .frame(maxWidth: .infinity)
             .background(Color.white)
@@ -80,10 +89,12 @@ public struct CurtainCallPopupFeature {
         
         public init(
             title: String,
+            message: String? = nil,
             cancelText: String? = nil,
             allowText: String? = nil
         ) {
             self.title = title
+            self.message = message
             self.cancelText = cancelText
             self.allowText = allowText
         }

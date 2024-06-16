@@ -13,7 +13,7 @@ public struct Utils {
         UserDefaultKeys.allCases.forEach {
             UserDefaults.standard.removeObject(forKey: $0.rawValue)
         }
-        AppRootManager.shared.currentRoot = .login
+        AppRootManager.shared.currentRoot = .splash
     }
     
     public static let yearMonthDateFormatter: DateFormatter = {

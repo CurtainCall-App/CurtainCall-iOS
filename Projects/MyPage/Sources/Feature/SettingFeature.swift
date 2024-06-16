@@ -17,34 +17,51 @@ public struct SettingFeature {
     @ObservableState
     public struct State: Equatable {
         public static func == (lhs: SettingFeature.State, rhs: SettingFeature.State) -> Bool {
-            lhs.popup == rhs.popup
+            lhs.logoutPopup == rhs.logoutPopup
         }
         
         public init() { }
-        var popup: CurtainCallPopupFeature.State?
+        var logoutPopup: CurtainCallPopupFeature.State?
+        var deleteAccountPopup: CurtainCallPopupFeature.State?
     }
     
     public enum Action {
-        case popup(CurtainCallPopupFeature.Action)
+        case logoutPopup(CurtainCallPopupFeature.Action)
+        case deleteAccountPopup(CurtainCallPopupFeature.Action)
         case didTappedLogout
+        case didTappedDeleteAccount
+        case deleteAccount
     }
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .popup(.didTappedAllow):
-                Utils.logout()
+            case .logoutPopup(.didTappedCancel):
+                state.logoutPopup = nil
                 return .none
-            case .popup(.didTappedCancel):
-                state.popup = nil
+            case .logoutPopup:
                 return .none
-            case .popup: return .none
+            case .deleteAccountPopup(.didTappedCancel):
+                state.deleteAccountPopup = nil
+                return .none
+            case .deleteAccountPopup:
+                return .none
             case .didTappedLogout:
-                state.popup = .init(
+                state.logoutPopup = .init(
                     title: "로그아웃 할까요?",
                     cancelText: "아니요",
                     allowText: "로그아웃"
                 )
+                return .none
+            case .didTappedDeleteAccount:
+                state.deleteAccountPopup = .init(
+                    title: "계정을 삭제할까요?",
+                    message: "계정을 삭제하면 해당 기기의 모든 데이터가 삭제된다는 점을 유의해주세요. 계속할까요?",
+                    cancelText: "아니요",
+                    allowText: "네, 삭제할게요"
+                )
+                return .none
+            case .deleteAccount:
                 return .none
             }
         }

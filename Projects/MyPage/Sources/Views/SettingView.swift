@@ -50,6 +50,9 @@ struct SettingView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 20)
+                .onTapGestureRectangle {
+                    store.send(.didTappedDeleteAccount)
+                }
                 
                 Color.gray9.frame(height: 10).padding(.vertical, 10)
                 
@@ -97,8 +100,15 @@ struct SettingView: View {
                 }
             }
             
-            if let store = store.scope(state: \.popup, action: \.popup) {
-                CurtainCallPopupView(store: store)
+            if let store = store.scope(state: \.logoutPopup, action: \.logoutPopup) {
+                CurtainCallPopupView(store: store) {
+                    Utils.logout()
+                }
+            }
+            if let store = store.scope(state: \.deleteAccountPopup, action: \.deleteAccountPopup) {
+                CurtainCallPopupView(store: store) {
+                    self.store.send(.deleteAccount)
+                }
             }
         }
     }
