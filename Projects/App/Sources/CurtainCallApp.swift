@@ -19,7 +19,7 @@ import FirebaseCore
 @main
 struct CurtainCallApp: App {
     
-    @StateObject var appRootManager: AppRootManager = AppRootManager()
+    @StateObject var appRootManager: AppRootManager = AppRootManager.shared
     
     init() {
         NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
@@ -57,7 +57,6 @@ struct CurtainCallApp: App {
                 })
             }
         }
-        .environmentObject(appRootManager)
     }
     
     func initKakaoLoginSDK() {

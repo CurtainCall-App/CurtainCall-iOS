@@ -12,7 +12,6 @@ import ComposableArchitecture
 
 public struct NicknameSettingView: View {
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var appRootManager: AppRootManager
     
     @Bindable private var store: StoreOf<NicknameSettingFeature>
     
@@ -96,7 +95,7 @@ public struct NicknameSettingView: View {
             }
         }
         .onChange(of: store.appRoot) { _, newValue in
-            appRootManager.currentRoot = newValue
+            AppRootManager.shared.currentRoot = newValue
         }
         
     }

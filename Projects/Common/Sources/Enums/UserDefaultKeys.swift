@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum UserDefaultKeys: String {
+public enum UserDefaultKeys: String, CaseIterable {
     case accessToken
     case refreshToken
     case userId

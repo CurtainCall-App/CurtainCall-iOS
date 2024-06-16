@@ -207,7 +207,10 @@ public struct PartyRecruitFeature {
                 return .none
             case .successCreateParty:
                 state.isSuccessCreateParty = true
-                return .none
+                return .run { send in
+                    try await Task.sleep(for: .seconds(1))
+                    await send(.dismissToast)
+                }.animation()
             case .failToCreateParty:
                 state.isFailedToCreateParty = true
                 return .run { send in

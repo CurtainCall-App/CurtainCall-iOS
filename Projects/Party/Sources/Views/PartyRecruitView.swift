@@ -386,11 +386,11 @@ public struct PartyRecruitView: View {
                     .padding(.horizontal, 14)
                     .padding(.vertical, 12)
                 
-                .frame(maxWidth: .infinity)
-                .frame(minHeight: 130)
-                .background(Color.gray9)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding(.top, 12)
+                    .frame(maxWidth: .infinity)
+                    .frame(minHeight: 130)
+                    .background(Color.gray9)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(.top, 12)
                 
                 if store.partyContent.count > 500 {
                     HStack {

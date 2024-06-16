@@ -44,7 +44,19 @@ public struct MyPageView: View {
                 if let store = store.scope(state: \.FAQ, action: \.FAQ) {
                     FAQView(store: store)
                 }
-            }
+            case .setting:
+                if let store = store.scope(state: \.setting, action: \.setting) {
+                    SettingView(store: store)
+                }
+            case .deleteAccount:
+                if let store = store.scope(state: \.deleteAccount, action: \.deleteAccount) {
+                    DeleteAccountView(store: store)
+                }
+            case .deleteAccountDetail:
+                if let store = store.scope(state: \.deleteAccountDetail, action: \.deleteAccountDetail) {
+                    DeleteAccountDetailView(store: store)
+                }
+             }
         }
 
         
@@ -111,6 +123,10 @@ public struct MyPageView: View {
                 Image(asset: CommonAsset.arrowRightIcon16px)
             }
             .frame(height: 51)
+            .padding(.top, 15)
+            .onTapGestureRectangle {
+                store.send(.didTappedSettingView)
+            }
             HStack {
                 Text("공지사항")
                     .font(.body2_M)

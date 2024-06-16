@@ -21,6 +21,7 @@ public struct MyPageFeature {
     public enum Action {
         case didTappedNoticeView
         case didTappedFAQView
+        case didTappedSettingView
         case path(StackAction<Path.State, Path.Action>)
     }
     
@@ -33,8 +34,17 @@ public struct MyPageFeature {
             case .didTappedFAQView:
                 state.path.append(.FAQ())
                 return .none
+            case .didTappedSettingView:
+                state.path.append(.setting())
+                return .none
             case .path(.element(id: _, action: .notice(.didTappedNoticeView(let id)))):
                 state.path.append(.noticeDetail(.init(id: id)))
+                return .none
+            case .path(.element(id: _, action: .setting(.deleteAccount))):
+                state.path.append(.deleteAccount(.init()))
+                return .none
+            case .path(.element(id: _, action: .deleteAccount(.didTappedDeleteAccount(let type, let content)))):
+                state.path.append(.deleteAccountDetail(.init(body: .init(reason: type.APIName, content: content))))
                 return .none
             case .path:
                 return .none
@@ -53,12 +63,18 @@ public struct MyPageFeature {
             case notice(NoticeFeature.State = .init())
             case noticeDetail(NoticeDetailFeature.State = .init(id: 0))
             case FAQ(FAQFeature.State = .init())
+            case setting(SettingFeature.State = .init())
+            case deleteAccount(DeleteAccountFeature.State = .init())
+            case deleteAccountDetail(DeleteAccountDetailFeature.State = .init(body: DeleteAccountBody(reason: "", content: "")))
         }
         
         public enum Action {
             case notice(NoticeFeature.Action)
             case noticeDetail(NoticeDetailFeature.Action)
             case FAQ(FAQFeature.Action)
+            case setting(SettingFeature.Action)
+            case deleteAccount(DeleteAccountFeature.Action)
+            case deleteAccountDetail(DeleteAccountDetailFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
@@ -70,6 +86,15 @@ public struct MyPageFeature {
             }
             Scope(state: \.FAQ, action: \.FAQ) {
                 FAQFeature()
+            }
+            Scope(state: \.setting, action: \.setting) {
+                SettingFeature()
+            }
+            Scope(state: \.deleteAccount, action: \.deleteAccount) {
+                DeleteAccountFeature()
+            }
+            Scope(state: \.deleteAccountDetail, action: \.deleteAccountDetail) {
+                DeleteAccountDetailFeature()
             }
         }
     }

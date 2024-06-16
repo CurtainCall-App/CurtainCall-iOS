@@ -15,8 +15,6 @@ import ComposableArchitecture
 public struct LoginView: View {
     @Bindable private var store: StoreOf<LoginFeature>
     
-    @EnvironmentObject var appRootManager: AppRootManager
-    
     public init(store: StoreOf<LoginFeature>) {
         self.store = store
     }
@@ -49,7 +47,7 @@ public struct LoginView: View {
                             .underline()
                             .foregroundStyle(.white)
                             .onTapGesture {
-                                appRootManager.currentRoot = .main
+                                AppRootManager.shared.currentRoot = .main
                             }
                         Spacer()
                     }
@@ -58,7 +56,7 @@ public struct LoginView: View {
                 }
             }
             .onChange(of: store.appRootView) { _ , newValue in
-                appRootManager.currentRoot = newValue
+                AppRootManager.shared.currentRoot = newValue
             }
         
             
