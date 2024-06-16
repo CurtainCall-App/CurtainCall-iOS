@@ -30,7 +30,7 @@ public struct DeleteAccountDetailFeature {
         case dismissToast
     }
     
-    @Dependency(\.deleteAccountClient) var client
+    @Dependency(\.userClient) var client
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in

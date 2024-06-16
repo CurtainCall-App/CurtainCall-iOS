@@ -56,7 +56,14 @@ public struct MyPageView: View {
                 if let store = store.scope(state: \.deleteAccountDetail, action: \.deleteAccountDetail) {
                     DeleteAccountDetailView(store: store)
                 }
+            case .profile:
+                if let store = store.scope(state: \.profile, action: \.profile) {
+                    ProfileView(store: store)
+                }
              }
+        }
+        .onAppear {
+            store.send(.fetchUserInfo)
         }
 
         
@@ -65,7 +72,7 @@ public struct MyPageView: View {
     private var profileView: some View {
         HStack(spacing: 14) {
             Image(asset: CommonAsset.mypageDefaultProfile)
-            Text("커튼콜님")
+            Text("\(store.userInfo?.nickname ?? "") 님")
                 .font(.subTitle4)
                 .foregroundStyle(.black)
             Spacer()
@@ -82,6 +89,9 @@ public struct MyPageView: View {
         }
         .padding(.horizontal, 20)
         .frame(height: 136)
+        .onTapGestureRectangle {
+            store.send(.didTappedProfileView)
+        }
     }
     
     private var myActivityView: some View {
