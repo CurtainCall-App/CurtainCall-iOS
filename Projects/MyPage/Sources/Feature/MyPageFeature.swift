@@ -40,6 +40,9 @@ public struct MyPageFeature {
             case .path(.element(id: _, action: .notice(.didTappedNoticeView(let id)))):
                 state.path.append(.noticeDetail(.init(id: id)))
                 return .none
+            case .path(.element(id: _, action: .setting(.deleteAccount))):
+                state.path.append(.deleteAccount(.init()))
+                return .none
             case .path:
                 return .none
             }
@@ -58,6 +61,7 @@ public struct MyPageFeature {
             case noticeDetail(NoticeDetailFeature.State = .init(id: 0))
             case FAQ(FAQFeature.State = .init())
             case setting(SettingFeature.State = .init())
+            case deleteAccount(DeleteAccountFeature.State = .init())
         }
         
         public enum Action {
@@ -65,6 +69,7 @@ public struct MyPageFeature {
             case noticeDetail(NoticeDetailFeature.Action)
             case FAQ(FAQFeature.Action)
             case setting(SettingFeature.Action)
+            case deleteAccount(DeleteAccountFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
@@ -79,6 +84,9 @@ public struct MyPageFeature {
             }
             Scope(state: \.setting, action: \.setting) {
                 SettingFeature()
+            }
+            Scope(state: \.deleteAccount, action: \.deleteAccount) {
+                DeleteAccountFeature()
             }
         }
     }
