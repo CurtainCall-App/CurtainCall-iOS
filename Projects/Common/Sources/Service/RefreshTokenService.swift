@@ -14,7 +14,7 @@ enum RefreshTokenAPI {
 }
 
 extension RefreshTokenAPI: TargetType {
-    var baseURL: URL { URL(string: "\(Secret.BASE_URL)")! }
+    var baseURL: URL { URL(string: "\( Secret.BASE_URL)")! }
     var path: String { "/login/refresh" }
     var method: Moya.Method { .post }
     var task: Moya.Task {

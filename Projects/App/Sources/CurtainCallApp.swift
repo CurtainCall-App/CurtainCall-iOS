@@ -15,6 +15,7 @@ import KakaoSDKCommon
 import KakaoSDKAuth
 import NaverThirdPartyLogin
 import FirebaseCore
+import FirebaseRemoteConfig
 
 @main
 struct CurtainCallApp: App {
@@ -27,6 +28,8 @@ struct CurtainCallApp: App {
         initNaverLoginSDK()
         FirebaseApp.configure()
         UITextField.appearance().clearButtonMode = .whileEditing
+        RemoteConfigManager.remoteConfig = RemoteConfig.remoteConfig()
+        RemoteConfigManager.fetchConfig()
     }
     
     var body: some Scene {
