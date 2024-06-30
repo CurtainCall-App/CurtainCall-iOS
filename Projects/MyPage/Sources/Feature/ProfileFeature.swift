@@ -17,9 +17,12 @@ public struct ProfileFeature {
     @ObservableState
     public struct State: Equatable {
         public init() { }
+        var userInfo: FetchUserInfoResponseDTO?
+        var enableComplete: Bool = false
     }
     
-    public enum Action {
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
         case fetchUserInfo
         case responseUserInfo(FetchUserInfoResponseDTO)
         case responseError(Error)
@@ -30,6 +33,7 @@ public struct ProfileFeature {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .binding: return .none
             case .fetchUserInfo:
                 return .run { send in
                     do {
@@ -39,7 +43,7 @@ public struct ProfileFeature {
                     }
                 }
             case .responseUserInfo(let response):
-                print(response)
+                state.userInfo = response
                 return .none
             case .responseError(let error):
                 return .none

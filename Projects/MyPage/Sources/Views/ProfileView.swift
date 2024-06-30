@@ -10,10 +10,11 @@ import SwiftUI
 import Common
 
 import ComposableArchitecture
+import NukeUI
 
 struct ProfileView: View {
     
-    private let store: StoreOf<ProfileFeature>
+    @Bindable private var store: StoreOf<ProfileFeature>
     
     @Environment(\.dismiss) var dismiss
     
@@ -23,8 +24,34 @@ struct ProfileView: View {
     
     var body: some View {
         VStack {
-            
+            VStack(spacing: 16) {
+                if let imageURL = store.userInfo?.imageUrl {
+                    LazyImage(url: URL(string: imageURL)) { state in
+                        if let image = state.image {
+                            image.resizable()
+                                .frame(width: 80, height: 80)
+                                .aspectRatio(contentMode: .fill)
+                        } else {
+                            ProgressView()
+                        }
+                    }
+                } else {
+                    Image(asset: CommonAsset.mypageDefaultProfile80px)
+                }
+                HStack(spacing: 6) {
+                    Text(store.userInfo?.nickname ?? "")
+                        .font(.subTitle2)
+                        .foregroundStyle(.black)
+                    Image(asset: CommonAsset.mypageEditIcon18px)
+                }
+            }
+            .padding(.top, 50)
+            Spacer()
+            RectangleBottomButton(isEnable: $store.enableComplete, text: "프로필 변경 완료") {
+            }
+            .padding(.bottom, 10)
         }
+        .padding(.horizontal, 20)
         .onAppear {
             store.send(.fetchUserInfo)
         }
