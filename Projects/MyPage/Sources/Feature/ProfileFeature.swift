@@ -8,6 +8,7 @@
 import Foundation
 
 import Common
+import NicknameSetting
 
 import ComposableArchitecture
 
@@ -38,11 +39,13 @@ public struct ProfileFeature {
         case fetchUserInfo
         case responseUserInfo(FetchUserInfoResponseDTO)
         case responseError(Error)
+        case responseNicknameDuplicated(Bool)
         case didTappedEditButton
         case duplicatedCheckButtonTapped
     }
     
     @Dependency(\.userClient) var client
+    @Dependency (\.nicknameSettingClient) var nicknameSettingClient
     
     public var body: some ReducerOf<Self> {
         BindingReducer()
@@ -75,6 +78,14 @@ public struct ProfileFeature {
                 return .none
             case .duplicatedCheckButtonTapped:
                 guard state.isValidCount && state.isValidRegex else { return .none }
+                
+                return .run { [nickname = state.nicknameText] send in
+                    let result = try await nicknameSettingClient.checkDuplicatedNickname(nickname)
+                    await send(.responseNicknameDuplicated(result.result))
+                }
+            case .responseNicknameDuplicated(let result):
+                state.isPossibleNickname = !result
+                state.isTappedDuplicatedButton = true
                 return .none
             }
         }

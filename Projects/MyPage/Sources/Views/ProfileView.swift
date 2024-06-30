@@ -76,10 +76,13 @@ struct ProfileView: View {
                     }
                     Spacer().frame(height: 12)
                     if store.isTappedDuplicatedButton {
-                        Text(store.isPossibleNickname ? "사용 가능한 닉네임이에요:)" : "이미 동일한 닉네임이 있어요:(\n다른 닉네임을 입력해주세요!")
-                            .font(.body3)
-                            .foregroundStyle(Color(asset: store.isPossibleNickname ? CommonAsset.hex00C271 : CommonAsset.hexFF334B))
-                            .padding(.leading, 14)
+                        HStack {
+                            Text(store.isPossibleNickname ? "사용 가능한 닉네임이에요:)" : "이미 동일한 닉네임이 있어요:(\n다른 닉네임을 입력해주세요!")
+                                .font(.body3)
+                                .foregroundStyle(Color(asset: store.isPossibleNickname ? CommonAsset.hex00C271 : CommonAsset.hexFF334B))
+                                .padding(.leading, 14)
+                            Spacer()
+                        }
                     }
                 }
             }

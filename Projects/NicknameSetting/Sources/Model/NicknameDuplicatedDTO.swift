@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct NicknameDuplicatedDTO: Decodable {
-    let result: Bool
+public struct NicknameDuplicatedDTO: Decodable {
+    public let result: Bool
 }
