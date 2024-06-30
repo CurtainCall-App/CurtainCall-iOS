@@ -24,7 +24,7 @@ struct ProfileView: View {
     
     var body: some View {
         VStack {
-            VStack(spacing: 16) {
+            VStack(spacing: 0) {
                 if let imageURL = store.userInfo?.imageUrl {
                     LazyImage(url: URL(string: imageURL)) { state in
                         if let image = state.image {
@@ -38,11 +38,49 @@ struct ProfileView: View {
                 } else {
                     Image(asset: CommonAsset.mypageDefaultProfile80px)
                 }
-                HStack(spacing: 6) {
-                    Text(store.userInfo?.nickname ?? "")
-                        .font(.subTitle2)
-                        .foregroundStyle(.black)
-                    Image(asset: CommonAsset.mypageEditIcon18px)
+                if store.modeType == .normal {
+                    Spacer().frame(height: 16)
+                    HStack(spacing: 6) {
+                        Text(store.userInfo?.nickname ?? "")
+                            .font(.subTitle2)
+                            .foregroundStyle(.black)
+                        Image(asset: CommonAsset.mypageEditIcon18px)
+                            .onTapGestureRectangle {
+                                store.send(.didTappedEditButton)
+                            }
+                    }
+                } else {
+                    Spacer().frame(height: 40)
+                    HStack {
+                        TextField("닉네임을 입력해주세요.", text: $store.nicknameText)
+                            .padding()
+                            .frame(height: 45)
+                            .background(Color.gray9)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                        Spacer().frame(width: 12)
+                        Text("중복 확인")
+                            .font(.body2_M)
+                            .foregroundStyle(Color(
+                                asset: store.isValidCount && store.isValidRegex ? CommonAsset.white : CommonAsset.hexC6C8CD
+                            ))
+                            .frame(width: 96, height: 45)
+                            .background {
+                                Color(
+                                    asset: store.isValidCount && store.isValidRegex ? CommonAsset.hex0D1327 : CommonAsset.hexF1F1F5
+                                )
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .onTapGesture {
+                                store.send(.duplicatedCheckButtonTapped)
+                            }
+                    }
+                    Spacer().frame(height: 12)
+                    if store.isTappedDuplicatedButton {
+                        Text(store.isPossibleNickname ? "사용 가능한 닉네임이에요:)" : "이미 동일한 닉네임이 있어요:(\n다른 닉네임을 입력해주세요!")
+                            .font(.body3)
+                            .foregroundStyle(Color(asset: store.isPossibleNickname ? CommonAsset.hex00C271 : CommonAsset.hexFF334B))
+                            .padding(.leading, 14)
+                    }
                 }
             }
             .padding(.top, 50)
