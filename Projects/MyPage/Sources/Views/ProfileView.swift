@@ -31,12 +31,19 @@ struct ProfileView: View {
                             image.resizable()
                                 .frame(width: 80, height: 80)
                                 .aspectRatio(contentMode: .fill)
+                                .onTapGestureRectangle {
+                                    store.send(.didTappedProfileImage)
+                                }
                         } else {
                             ProgressView()
                         }
                     }
                 } else {
                     Image(asset: CommonAsset.mypageDefaultProfile80px)
+                        .onTapGestureRectangle {
+                            store.send(.didTappedProfileImage)
+                        }
+                    
                 }
                 if store.modeType == .normal {
                     Spacer().frame(height: 16)
@@ -107,6 +114,39 @@ struct ProfileView: View {
                     }
             }
         }
+        .sheet(isPresented: $store.didTappedProfileImage) {
+            sheet
+                .presentationDetents([.height(174)])
+                .presentationDragIndicator(.hidden)
+        }
+    }
+    
+    var sheet: some View {
+        VStack {
+            Spacer().frame(height: 20)
+            HStack {
+                Text("앨범에서 사진 선택")
+                    .font(.body2_SB)
+                    .foregroundStyle(Color.primary1)
+                Spacer()
+            }
+            .frame(height: 50)
+            .onTapGestureRectangle {
+                store.send(.didTappedPhotoLibrary)
+            }
+            HStack {
+                Text("기본 프로필로 변경")
+                    .font(.body2_SB)
+                    .foregroundStyle(Color.primary1)
+                Spacer()
+            }
+            .frame(height: 50)
+            .onTapGestureRectangle {
+                store.send(.didTappedBasicProfile)
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 30)
     }
 }
 

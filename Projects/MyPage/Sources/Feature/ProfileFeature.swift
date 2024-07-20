@@ -32,6 +32,7 @@ public struct ProfileFeature {
         var isValidRegex: Bool = false
         var isTappedDuplicatedButton: Bool = false
         var isPossibleNickname: Bool = false
+        var didTappedProfileImage: Bool = false
     }
     
     public enum Action: BindableAction {
@@ -42,6 +43,9 @@ public struct ProfileFeature {
         case responseNicknameDuplicated(Bool)
         case didTappedEditButton
         case duplicatedCheckButtonTapped
+        case didTappedProfileImage
+        case didTappedPhotoLibrary
+        case didTappedBasicProfile
     }
     
     @Dependency(\.userClient) var client
@@ -75,6 +79,15 @@ public struct ProfileFeature {
                 return .none
             case .didTappedEditButton:
                 state.modeType = .edit
+                return .none
+            case .didTappedProfileImage:
+                state.didTappedProfileImage.toggle()
+                return .none
+            case .didTappedPhotoLibrary:
+                state.didTappedProfileImage = false
+                return .none
+            case .didTappedBasicProfile:
+                state.didTappedProfileImage = false
                 return .none
             case .duplicatedCheckButtonTapped:
                 guard state.isValidCount && state.isValidRegex else { return .none }
