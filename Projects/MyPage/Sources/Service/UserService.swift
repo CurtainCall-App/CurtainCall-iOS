@@ -13,6 +13,7 @@ import Moya
 enum UserAPI {
     case fetchUserInfo(id: Int)
     case deleteAccount(body: DeleteAccountBody)
+    case saveData(data: Data)
 }
 
 extension UserAPI: TargetType {
@@ -22,6 +23,7 @@ extension UserAPI: TargetType {
         switch self {
         case .fetchUserInfo(let id): return "members/\(id)"
         case .deleteAccount: return "/member"
+        case .saveData: return "/images"
         }
     }
     
@@ -29,6 +31,7 @@ extension UserAPI: TargetType {
         switch self {
         case .fetchUserInfo: return .get
         case .deleteAccount: return .delete
+        case .saveData: return .post
         }
         
     }
@@ -38,6 +41,10 @@ extension UserAPI: TargetType {
         case .fetchUserInfo: return .requestPlain
         case .deleteAccount(let body):
             return .requestJSONEncodable(body)
+        case .saveData(let data):
+            let formData = [MultipartFormData(provider: .data(data), name: "image", fileName: "\(UUID().uuidString).jpg", mimeType: "image/jpeg")]
+                        
+            return .uploadMultipart(formData)
         }
     }
     

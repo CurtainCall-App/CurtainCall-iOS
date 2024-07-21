@@ -11,6 +11,7 @@ import Common
 
 import ComposableArchitecture
 import NukeUI
+import PhotosUI
 
 struct ProfileView: View {
     
@@ -31,6 +32,7 @@ struct ProfileView: View {
                             image.resizable()
                                 .frame(width: 80, height: 80)
                                 .aspectRatio(contentMode: .fill)
+                                .clipShape(Circle())
                                 .onTapGestureRectangle {
                                     store.send(.didTappedProfileImage)
                                 }
@@ -38,6 +40,16 @@ struct ProfileView: View {
                             ProgressView()
                         }
                     }
+                } else if let imageData = store.imageData,
+                          let uiImage = UIImage(data: imageData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .frame(width: 80, height: 80)
+                        .aspectRatio(contentMode: .fill)
+                        .clipShape(Circle())
+                        .onTapGestureRectangle {
+                            store.send(.didTappedProfileImage)
+                        }
                 } else {
                     Image(asset: CommonAsset.mypageDefaultProfile80px)
                         .onTapGestureRectangle {
@@ -124,15 +136,14 @@ struct ProfileView: View {
     var sheet: some View {
         VStack {
             Spacer().frame(height: 20)
-            HStack {
-                Text("앨범에서 사진 선택")
-                    .font(.body2_SB)
-                    .foregroundStyle(Color.primary1)
-                Spacer()
-            }
-            .frame(height: 50)
-            .onTapGestureRectangle {
-                store.send(.didTappedPhotoLibrary)
+            PhotosPicker(selection: $store.selectedImage, matching: .any(of: [.images])) {
+                HStack {
+                    Text("앨범에서 사진 선택")
+                        .font(.body2_SB)
+                        .foregroundStyle(Color.primary1)
+                    Spacer()
+                }
+                .frame(height: 50)
             }
             HStack {
                 Text("기본 프로필로 변경")
@@ -147,6 +158,15 @@ struct ProfileView: View {
             Spacer()
         }
         .padding(.horizontal, 30)
+        .onChange(of: store.selectedImage) { oldValue, newValue in
+            Task {
+                if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                    DispatchQueue.main.async {
+                        store.send(.saveImage(data))
+                    }
+                }
+            }
+        }
     }
 }
 

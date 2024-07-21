@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import PhotosUI
 
 import Common
 import NicknameSetting
 
 import ComposableArchitecture
+import _PhotosUI_SwiftUI
 
 @Reducer
 public struct ProfileFeature {
@@ -33,6 +35,8 @@ public struct ProfileFeature {
         var isTappedDuplicatedButton: Bool = false
         var isPossibleNickname: Bool = false
         var didTappedProfileImage: Bool = false
+        var selectedImage: PhotosPickerItem?
+        var imageData: Data?
     }
     
     public enum Action: BindableAction {
@@ -46,6 +50,8 @@ public struct ProfileFeature {
         case didTappedProfileImage
         case didTappedPhotoLibrary
         case didTappedBasicProfile
+        case saveImage(Data)
+        case didSuccessUploadImage(Int)
     }
     
     @Dependency(\.userClient) var client
@@ -61,6 +67,7 @@ public struct ProfileFeature {
                 state.isValidRegex = isValidRegex(state.nicknameText)
                 state.enableComplete = false
                 state.enableDuplicatedButtonTapped = false
+                state.isTappedDuplicatedButton = false
                 return .none
             case .binding: return .none
             case .fetchUserInfo:
@@ -88,6 +95,8 @@ public struct ProfileFeature {
                 return .none
             case .didTappedBasicProfile:
                 state.didTappedProfileImage = false
+                state.imageData = nil
+                state.selectedImage = nil
                 return .none
             case .duplicatedCheckButtonTapped:
                 guard state.isValidCount && state.isValidRegex else { return .none }
@@ -96,9 +105,22 @@ public struct ProfileFeature {
                     let result = try await nicknameSettingClient.checkDuplicatedNickname(nickname)
                     await send(.responseNicknameDuplicated(result.result))
                 }
+            case .saveImage(let data):
+                state.imageData = data
+                return .run { send in
+                    do {
+                        try await send(.didSuccessUploadImage(client.saveImage(data).id))
+                    } catch {
+                        await send(.responseError(error))
+                    }
+                }
+            case .didSuccessUploadImage(let id):
+                state.didTappedProfileImage = false
+                return .none
             case .responseNicknameDuplicated(let result):
                 state.isPossibleNickname = !result
                 state.isTappedDuplicatedButton = true
+                state.enableComplete = true
                 return .none
             }
         }

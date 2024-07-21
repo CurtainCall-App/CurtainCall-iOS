@@ -13,12 +13,14 @@ import ComposableArchitecture
 struct UserClient {
     var fetchUserInfo: (Int) async throws -> FetchUserInfoResponseDTO
     var deleteAccount: (DeleteAccountBody) async throws -> Bool
+    var saveImage: (Data) async throws -> UploadImageResponse
 }
 
 extension UserClient: DependencyKey {
     static var liveValue: UserClient = {
         Self(fetchUserInfo: fetchUserInfo,
-            deleteAccount: deleteAccount
+            deleteAccount: deleteAccount,
+             saveImage: saveImage
         )
     }()
     
@@ -28,6 +30,9 @@ extension UserClient: DependencyKey {
     
     static func deleteAccount(body: DeleteAccountBody) async throws -> Bool {
         try await MoyaProvider<UserAPI>().request(.deleteAccount(body: body))
+    }
+    static func saveImage(data: Data) async throws -> UploadImageResponse {
+        try await MoyaProvider<UserAPI>().request(.saveData(data: data))
     }
     
 }
