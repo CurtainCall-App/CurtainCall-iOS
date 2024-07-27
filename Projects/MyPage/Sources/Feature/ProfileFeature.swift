@@ -1,0 +1,151 @@
+//
+//  ProfileFeature.swift
+//  MyPage
+//
+//  Created by 김민석 on 6/16/24.
+//
+
+import Foundation
+import PhotosUI
+
+import Common
+import NicknameSetting
+
+import ComposableArchitecture
+import _PhotosUI_SwiftUI
+
+@Reducer
+public struct ProfileFeature {
+    
+    public enum ProfileModeType {
+        case normal
+        case edit
+    }
+    
+    @ObservableState
+    public struct State: Equatable {
+        public init() { }
+        var userInfo: FetchUserInfoResponseDTO?
+        var enableComplete: Bool = false
+        var enableDuplicatedButtonTapped: Bool = false
+        var modeType: ProfileModeType = .normal
+        var nicknameText: String = ""
+        var isValidCount: Bool = false
+        var isValidRegex: Bool = false
+        var isTappedDuplicatedButton: Bool = false
+        var isPossibleNickname: Bool = false
+        var didTappedProfileImage: Bool = false
+        var selectedImage: PhotosPickerItem?
+        var imageData: Data?
+    }
+    
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
+        case fetchUserInfo
+        case responseUserInfo(FetchUserInfoResponseDTO)
+        case responseError(Error)
+        case responseNicknameDuplicated(Bool)
+        case didTappedEditButton
+        case duplicatedCheckButtonTapped
+        case didTappedProfileImage
+        case didTappedPhotoLibrary
+        case didTappedBasicProfile
+        case saveImage(Data)
+        case didSuccessUploadImage(Int)
+        case updateUserInfo(String?, Int?)
+        case isSuccessUpdateUserInfo(Bool)
+    }
+    
+    @Dependency(\.userClient) var client
+    @Dependency (\.nicknameSettingClient) var nicknameSettingClient
+    
+    public var body: some ReducerOf<Self> {
+        BindingReducer()
+        
+        Reduce { state, action in
+            switch action {
+            case .binding(\.nicknameText):
+                state.isValidCount = isValidCount(state.nicknameText)
+                state.isValidRegex = isValidRegex(state.nicknameText)
+                state.enableComplete = false
+                state.enableDuplicatedButtonTapped = false
+                state.isTappedDuplicatedButton = false
+                return .none
+            case .binding: return .none
+            case .fetchUserInfo:
+                return .run { send in
+                    do {
+                        try await send(.responseUserInfo(client.fetchUserInfo(UserDefaults.standard.integer(forKey: UserDefaultKeys.userId.rawValue))))
+                    } catch {
+                        await send(.responseError(error))
+                    }
+                }
+            case .responseUserInfo(let response):
+                state.userInfo = response
+                return .none
+            case .responseError(let error):
+                print(error)
+                return .none
+            case .didTappedEditButton:
+                state.modeType = .edit
+                return .none
+            case .didTappedProfileImage:
+                state.didTappedProfileImage.toggle()
+                return .none
+            case .didTappedPhotoLibrary:
+                state.didTappedProfileImage = false
+                return .none
+            case .didTappedBasicProfile:
+                state.didTappedProfileImage = false
+                state.imageData = nil
+                state.selectedImage = nil
+                return .none
+            case .duplicatedCheckButtonTapped:
+                guard state.isValidCount && state.isValidRegex else { return .none }
+                
+                return .run { [nickname = state.nicknameText] send in
+                    let result = try await nicknameSettingClient.checkDuplicatedNickname(nickname)
+                    await send(.responseNicknameDuplicated(result.result))
+                }
+            case .saveImage(let data):
+                state.imageData = data
+                return .run { send in
+                    do {
+                        try await send(.didSuccessUploadImage(client.saveImage(data).id))
+                    } catch {
+                        await send(.responseError(error))
+                    }
+                }
+            case .didSuccessUploadImage(let id):
+                state.didTappedProfileImage = false
+                return .run { [userInfo = state.userInfo] send in
+                    await send(.updateUserInfo(userInfo?.nickname ?? "", id))
+                }
+            case .responseNicknameDuplicated(let result):
+                state.isPossibleNickname = !result
+                state.isTappedDuplicatedButton = true
+                state.enableComplete = true
+                return .none
+            case .updateUserInfo(let nickname, let imageID):
+                return .run { send in
+                    do {
+                        try await send(.isSuccessUpdateUserInfo(client.updateUserInfo(nickname, imageID)))
+                    } catch {
+                        await send(.responseError(error))
+                    }
+                }
+            case .isSuccessUpdateUserInfo(let isSuccess):
+                return .none
+            }
+        }
+    }
+    
+    private func isValidCount(_ nickname: String) -> Bool {
+        return !nickname.contains(" ") && (1...15) ~= nickname.count
+    }
+    
+    private func isValidRegex(_ nickname: String) -> Bool {
+        return nickname.isValidRegex("^[가-힣a-zA-Z0-9]*$") && !nickname.isEmpty
+    }
+}
+

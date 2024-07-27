@@ -10,20 +10,20 @@ import Foundation
 import Moya
 import ComposableArchitecture
 
-struct NicknameSettingClient {
-    var checkDuplicatedNickname: (String) async throws -> NicknameDuplicatedDTO
+public struct NicknameSettingClient {
+    public var checkDuplicatedNickname: (String) async throws -> NicknameDuplicatedDTO
     var signup: (String) async throws -> SignupResponseDTO
 }
 
 extension NicknameSettingClient: DependencyKey {
-    static var liveValue: NicknameSettingClient = {
+    public static var liveValue: NicknameSettingClient = {
         Self(
             checkDuplicatedNickname: checkDuplicatedNickname(nickname:),
             signup: signup(nickname:)
         )
     }()
     
-    static func checkDuplicatedNickname(nickname: String) async throws -> NicknameDuplicatedDTO {
+    public static func checkDuplicatedNickname(nickname: String) async throws -> NicknameDuplicatedDTO {
         return try await MoyaProvider<NicknameAPI>().request(.duplicatedNickname(nickname))
     }
     static func signup(nickname: String) async throws -> SignupResponseDTO {
@@ -32,7 +32,7 @@ extension NicknameSettingClient: DependencyKey {
 }
 
 extension DependencyValues {
-    var nicknameSettingClient: NicknameSettingClient {
+    public var nicknameSettingClient: NicknameSettingClient {
         get { self[NicknameSettingClient.self] }
         set { self[NicknameSettingClient.self] = newValue }
     }

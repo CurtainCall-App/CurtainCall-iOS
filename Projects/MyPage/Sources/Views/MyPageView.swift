@@ -10,6 +10,7 @@ import SwiftUI
 import Common
 
 import ComposableArchitecture
+import NukeUI
 
 public struct MyPageView: View {
     private var store: StoreOf<MyPageFeature>
@@ -56,16 +57,40 @@ public struct MyPageView: View {
                 if let store = store.scope(state: \.deleteAccountDetail, action: \.deleteAccountDetail) {
                     DeleteAccountDetailView(store: store)
                 }
+            case .profile:
+                if let store = store.scope(state: \.profile, action: \.profile) {
+                    ProfileView(store: store)
+                }
              }
         }
-
+        .onAppear {
+            store.send(.fetchUserInfo)
+        }
+        .onChange(of: store.path) { _, _ in
+            store.send(.fetchUserInfo)
+            
+        }
         
     }
     
+    @MainActor
     private var profileView: some View {
         HStack(spacing: 14) {
-            Image(asset: CommonAsset.mypageDefaultProfile)
-            Text("커튼콜님")
+            if let imageURL = store.userInfo?.imageUrl {
+                LazyImage(url: URL(string: imageURL)) { state in
+                    if let image = state.image {
+                        image.resizable()
+                            .frame(width: 56, height: 56)
+                            .aspectRatio(contentMode: .fill)
+                            .clipShape(Circle())
+                    } else {
+                        ProgressView()
+                    }
+                }
+            } else {
+                Image(asset: CommonAsset.mypageDefaultProfile)
+            }
+            Text("\(store.userInfo?.nickname ?? "") 님")
                 .font(.subTitle4)
                 .foregroundStyle(.black)
             Spacer()
@@ -82,6 +107,9 @@ public struct MyPageView: View {
         }
         .padding(.horizontal, 20)
         .frame(height: 136)
+        .onTapGestureRectangle {
+            store.send(.didTappedProfileView)
+        }
     }
     
     private var myActivityView: some View {

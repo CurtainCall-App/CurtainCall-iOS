@@ -15,6 +15,10 @@ let project = Project.makeModule(
         .project(
             target: "Common",
             path: .relativeToRoot("Projects/Common")
+        ),
+        .project(
+            target: "NicknameSetting",
+            path: .relativeToRoot("Projects/NicknameSetting")
         )
     ]
 )
