@@ -73,6 +73,11 @@ public struct MyPageFeature {
             case .path(.element(id: _, action: .deleteAccount(.didTappedDeleteAccount(let type, let content)))):
                 state.path.append(.deleteAccountDetail(.init(body: .init(reason: type.APIName, content: content))))
                 return .none
+            case .path(.element(id: _, action: .profile(.isSuccessUpdateUserInfo(let isSuccess)))):
+                if isSuccess {
+                    state.path.removeLast()
+                }
+                return .none
             case .path:
                 return .none
             }

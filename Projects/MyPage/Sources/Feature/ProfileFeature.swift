@@ -52,6 +52,8 @@ public struct ProfileFeature {
         case didTappedBasicProfile
         case saveImage(Data)
         case didSuccessUploadImage(Int)
+        case updateUserInfo(String?, Int?)
+        case isSuccessUpdateUserInfo(Bool)
     }
     
     @Dependency(\.userClient) var client
@@ -116,11 +118,23 @@ public struct ProfileFeature {
                 }
             case .didSuccessUploadImage(let id):
                 state.didTappedProfileImage = false
-                return .none
+                return .run { [userInfo = state.userInfo] send in
+                    await send(.updateUserInfo(userInfo?.nickname ?? "", id))
+                }
             case .responseNicknameDuplicated(let result):
                 state.isPossibleNickname = !result
                 state.isTappedDuplicatedButton = true
                 state.enableComplete = true
+                return .none
+            case .updateUserInfo(let nickname, let imageID):
+                return .run { send in
+                    do {
+                        try await send(.isSuccessUpdateUserInfo(client.updateUserInfo(nickname, imageID)))
+                    } catch {
+                        await send(.responseError(error))
+                    }
+                }
+            case .isSuccessUpdateUserInfo(let isSuccess):
                 return .none
             }
         }

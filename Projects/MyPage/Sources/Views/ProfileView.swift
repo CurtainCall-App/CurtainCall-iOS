@@ -108,6 +108,7 @@ struct ProfileView: View {
             .padding(.top, 50)
             Spacer()
             RectangleBottomButton(isEnable: $store.enableComplete, text: "프로필 변경 완료") {
+                store.send(.updateUserInfo(store.nicknameText, store.userInfo?.imageId))
             }
             .padding(.bottom, 10)
         }

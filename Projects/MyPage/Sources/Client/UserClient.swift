@@ -14,13 +14,15 @@ struct UserClient {
     var fetchUserInfo: (Int) async throws -> FetchUserInfoResponseDTO
     var deleteAccount: (DeleteAccountBody) async throws -> Bool
     var saveImage: (Data) async throws -> UploadImageResponse
+    var updateUserInfo: (String?, Int?) async throws -> Bool
 }
 
 extension UserClient: DependencyKey {
     static var liveValue: UserClient = {
         Self(fetchUserInfo: fetchUserInfo,
             deleteAccount: deleteAccount,
-             saveImage: saveImage
+             saveImage: saveImage,
+             updateUserInfo: updateUserInfo
         )
     }()
     
@@ -33,6 +35,9 @@ extension UserClient: DependencyKey {
     }
     static func saveImage(data: Data) async throws -> UploadImageResponse {
         try await MoyaProvider<UserAPI>().request(.saveData(data: data))
+    }
+    static func updateUserInfo(nickname: String?, imageID: Int?) async throws -> Bool {
+        try await MoyaProvider<UserAPI>().request(.updateUserInfo(nickname: nickname, imageID: imageID))
     }
     
 }

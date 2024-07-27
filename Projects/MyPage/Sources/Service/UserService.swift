@@ -14,6 +14,7 @@ enum UserAPI {
     case fetchUserInfo(id: Int)
     case deleteAccount(body: DeleteAccountBody)
     case saveData(data: Data)
+    case updateUserInfo(nickname: String?, imageID: Int?)
 }
 
 extension UserAPI: TargetType {
@@ -24,6 +25,7 @@ extension UserAPI: TargetType {
         case .fetchUserInfo(let id): return "members/\(id)"
         case .deleteAccount: return "/member"
         case .saveData: return "/images"
+        case .updateUserInfo: return "/member"
         }
     }
     
@@ -32,6 +34,7 @@ extension UserAPI: TargetType {
         case .fetchUserInfo: return .get
         case .deleteAccount: return .delete
         case .saveData: return .post
+        case .updateUserInfo: return .patch
         }
         
     }
@@ -43,8 +46,12 @@ extension UserAPI: TargetType {
             return .requestJSONEncodable(body)
         case .saveData(let data):
             let formData = [MultipartFormData(provider: .data(data), name: "image", fileName: "\(UUID().uuidString).jpg", mimeType: "image/jpeg")]
-                        
             return .uploadMultipart(formData)
+        case .updateUserInfo(let nickname, let imageID):
+            var params: [String: Any] = [:]
+            if let nickname { params.updateValue(nickname, forKey: "nickname") }
+            if let imageID { params.updateValue(imageID, forKey: "imageId")}
+            return .requestParameters(parameters: params, encoding: JSONEncoding.default)
         }
     }
     
