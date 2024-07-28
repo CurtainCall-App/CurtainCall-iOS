@@ -210,6 +210,7 @@ public struct HomeView: View {
                     .foregroundStyle(.black)
                 Spacer()
             }
+            .padding(.leading, 20)
             ScrollView(.horizontal) {
                 LazyHGrid(rows: [.init(.flexible(maximum: 120))], spacing: 12, content: {
                     ForEach(Array(zip(store.showTop10.indices, store.showTop10)), id: \.0) { index, info in
@@ -272,12 +273,12 @@ public struct HomeView: View {
                     }
                     Spacer().frame(width: 20)
                 })
+                .padding(.leading, 20)
             }
             .padding(.top, 12)
             .scrollIndicators(.hidden)
         }
         .padding(.top, 40)
-        .padding(.leading, 20)
     }
     
     @MainActor
@@ -289,6 +290,7 @@ public struct HomeView: View {
                     .foregroundStyle(.black)
                 Spacer()
             }
+            .padding(.leading, 20)
             ScrollView(.horizontal) {
                 LazyHGrid(rows: [.init(.flexible(maximum: 120))], spacing: 12, content: {
                     ForEach(Array(zip(store.showToOpen.indices, store.showToOpen)), id: \.0) { index, info in
@@ -362,12 +364,12 @@ public struct HomeView: View {
                     }
                     Spacer().frame(width: 20)
                 })
+                .padding(.leading, 20)
             }
             .padding(.top, 12)
             .scrollIndicators(.hidden)
         }
         .padding(.top, 40)
-        .padding(.leading, 20)
     }
     
     @MainActor
@@ -379,6 +381,7 @@ public struct HomeView: View {
                     .foregroundStyle(.black)
                 Spacer()
             }
+            .padding(.leading, 20)
             ScrollView(.horizontal) {
                 LazyHGrid(rows: [.init(.flexible(maximum: 120))], spacing: 12, content: {
                     ForEach(Array(zip(store.showToEnd.indices, store.showToEnd)), id: \.0) { index, info in
@@ -452,12 +455,12 @@ public struct HomeView: View {
                     }
                     Spacer().frame(width: 20)
                 })
+                .padding(.leading, 20)
             }
             .padding(.top, 12)
             .scrollIndicators(.hidden)
         }
         .padding(.top, 40)
-        .padding(.leading, 20)
     }
     
     @MainActor
@@ -469,6 +472,7 @@ public struct HomeView: View {
                     .foregroundStyle(.black)
                 Spacer()
             }
+            .padding(.leading, 20)
             ScrollView(.horizontal) {
                 LazyHGrid(rows: [.init(.flexible(maximum: 120))], spacing: 12, content: {
                     ForEach(Array(zip(store.showToCost.indices, store.showToCost)), id: \.0) { index, info in
@@ -530,12 +534,12 @@ public struct HomeView: View {
                     }
                     Spacer().frame(width: 20)
                 })
+                .padding(.leading, 20)
             }
             .padding(.top, 12)
             .scrollIndicators(.hidden)
         }
         .padding(.top, 40)
-        .padding(.leading, 20)
     }
 }
 
