@@ -62,6 +62,7 @@ public struct PartyRecruitFeature {
         case successCreateParty(CreatePartyResponseDTO)
         case failToCreateParty
         case dismissToast
+        case didTappedBackground
     }
     
     @Dependency (\.showClient) var showClient
@@ -220,6 +221,9 @@ public struct PartyRecruitFeature {
             case .dismissToast:
                 state.isFailedToCreateParty = false
                 state.isSuccessCreateParty = false
+                return .none
+            case .didTappedBackground:
+                state.calendar = nil
                 return .none
             case .timeSelect: return .none
             case .bottomSheet: return .none
