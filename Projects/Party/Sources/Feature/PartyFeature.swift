@@ -52,6 +52,9 @@ public struct PartyFeature {
                         try await send(.partyListResponse(partyClient.fetchPartyList(0, startDate, endDate).content))
                     }
                 }
+            case .calendar(.didTappedResetbutton):
+                state.selectedDates = []
+                return .none
             case .didTappedDurationButton:
                 state.calendar = .init(month: Date())
                 return .none
