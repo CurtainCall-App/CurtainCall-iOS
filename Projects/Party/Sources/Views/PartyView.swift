@@ -56,15 +56,22 @@ public struct PartyView: View {
                 }
                 VStack {
                     if let pickCalendarStore = self.store.scope(state: \.calendar, action: \.calendar) {
-                        VStack {
-                            Spacer().frame(height: 54)
-                            TwoPickCalendarView(store: pickCalendarStore)
-                                .background(.white)
-                                .clipShape(RoundedRectangle(cornerRadius: 16))
-                                .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
-                                .padding(.horizontal, 20)
-                            
-                            Spacer()
+                        ZStack {
+                            Color.black.opacity(0.1)
+                                .ignoresSafeArea(.container, edges: .top)
+                                .onTapGesture {
+                                    store.send(.didTappedBackground)
+                                }
+                            VStack {
+                                Spacer().frame(height: 54)
+                                TwoPickCalendarView(store: pickCalendarStore)
+                                    .background(.white)
+                                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                                    .shadow(color: .black.opacity(0.1) ,radius: 16, y: 10)
+                                    .padding(.horizontal, 20)
+                                
+                                Spacer()
+                            }
                         }
                     }
                 }

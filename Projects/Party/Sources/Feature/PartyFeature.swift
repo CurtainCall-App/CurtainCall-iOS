@@ -28,6 +28,7 @@ public struct PartyFeature {
         case didTappedDurationButton
         case didTappedRecruitMemberButton
         case didTappedPartyList(id: Int)
+        case didTappedBackground
         case calendar(TwoPickCalendarFeature.Action)
         case partyListResponse([FetchPartyListResult])
         case path(StackAction<Path.State, Path.Action>)
@@ -62,6 +63,9 @@ public struct PartyFeature {
                 return .none
             case .didTappedPartyList(let id):
                 state.path.append(.partyDetail(.init(id: id)))
+                return .none
+            case .didTappedBackground:
+                state.calendar = nil
                 return .none
             case .calendar:
                 return .none

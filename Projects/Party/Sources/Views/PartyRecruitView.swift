@@ -26,6 +26,13 @@ public struct PartyRecruitView: View {
     
     public var body: some View {
         ZStack {
+            if store.calendar != nil {
+                Color.black.opacity(0.01)
+                    .ignoresSafeArea(.container, edges: .top)
+                    .onTapGestureRectangle {
+                        store.send(.didTappedBackground)
+                    }
+            }
             VStack {
                 topView
                 switch store.viewType {
