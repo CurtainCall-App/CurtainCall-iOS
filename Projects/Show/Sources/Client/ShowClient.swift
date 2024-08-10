@@ -14,6 +14,7 @@ public struct ShowClient {
     public var fetchShowList: (Int, ShowFeature.ShowType, ShowSortFeature.CategoryType) async throws -> FetchShowResponseDTO
     var fetchShowSearchList: (String) async throws -> FetchShowResponseDTO
     var fetchShowDetail: (String) async throws -> ShowDetailResponseContent
+    var fetchFavoriteShowList: ([String]) async throws -> FetchFavoriteShowListResponseDTO
 }
 
 extension ShowClient: DependencyKey {
@@ -21,7 +22,8 @@ extension ShowClient: DependencyKey {
         Self(
             fetchShowList: fetchShowList,
             fetchShowSearchList: fetchShowSearchList(keyword:),
-            fetchShowDetail: fetchShowDetail(id:)
+            fetchShowDetail: fetchShowDetail(id:),
+            fetchFavoriteShowList: fetchFavoriteShowList(ids:)
         )
     }()
     
@@ -34,6 +36,10 @@ extension ShowClient: DependencyKey {
     }
     public static func fetchShowDetail(id: String) async throws -> ShowDetailResponseContent {
         return try await MoyaProvider<ShowAPI>().request(.fetchShowDetail(id: id))
+    }
+    
+    public static func fetchFavoriteShowList(ids: [String]) async throws -> FetchFavoriteShowListResponseDTO {
+        return try await MoyaProvider<ShowAPI>().request(.fetchFavoriteShow(ids: ids))
     }
 }
 

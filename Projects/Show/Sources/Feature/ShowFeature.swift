@@ -56,6 +56,8 @@ public struct ShowFeature {
         case path(StackAction<Path.State, Path.Action>)
         case didTappedSearch
         case didTappedShow(showId: String)
+        case showFavoriteListResponse(FetchFavoriteShowListResponseDTO)
+        case fetchFavoriteShowList(ids: [String])
     }
     
     @Dependency (\.showClient) var showClient
@@ -97,6 +99,16 @@ public struct ShowFeature {
                 return .none
             case .showListResponse(let response):
                 state.showList.append(contentsOf: response)
+                return .run { send in
+                    let ids = response.map { $0.id }
+                    await send(.fetchFavoriteShowList(ids: ids))
+                }
+            case .fetchFavoriteShowList(let ids):
+                return .run { send in
+                    try await send(.showFavoriteListResponse(showClient.fetchFavoriteShowList(ids)))
+                }
+            case .showFavoriteListResponse(let response):
+                print("######", response)
                 return .none
             case .didScrollToLastItem:
                 return .run { [page = state.page] send in

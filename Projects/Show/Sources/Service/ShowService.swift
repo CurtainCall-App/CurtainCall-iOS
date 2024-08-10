@@ -15,6 +15,7 @@ enum ShowAPI {
     case fetchShowList(page: Int, genre: ShowFeature.ShowType, sort: ShowSortFeature.CategoryType)
     case fetchShowSearchList(keyword: String)
     case fetchShowDetail(id: String)
+    case fetchFavoriteShow(ids: [String])
 }
 
 extension ShowAPI: TargetType {
@@ -24,6 +25,7 @@ extension ShowAPI: TargetType {
         case .fetchShowList: return "/shows"
         case .fetchShowSearchList: return "/search/shows"
         case .fetchShowDetail(let id): return "/shows/\(id)"
+        case .fetchFavoriteShow: return "/member/favorite"
         }
     }
     var method: Moya.Method { .get }
@@ -41,8 +43,18 @@ extension ShowAPI: TargetType {
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
         case .fetchShowDetail:
             return .requestPlain
+        case .fetchFavoriteShow(let ids):
+            for id in ids {
+                param.updateValue(id, forKey: "showIds")
+            }
+            return .requestParameters(parameters: param, encoding: URLEncoding.default)
         }
     }
     
-    var headers: [String : String]? { nil }
+    var headers: [String : String]? {
+        switch self {
+        case .fetchFavoriteShow: return Utils.authHeader
+        default: return nil
+        }
+    }
 }
