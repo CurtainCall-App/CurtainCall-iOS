@@ -42,6 +42,7 @@ public struct ShowFeature {
         var page: Int = 0
         @Presents var bottomSheet: ShowSortFeature.State?
         var isShowTooltip = !UserDefaults.standard.bool(forKey: UserDefaultKeys.isShowPopluarTooltip.rawValue)
+        var favoriteShowList: Set<String> = []
         var path = StackState<Path.State>()
     }
     
@@ -57,7 +58,7 @@ public struct ShowFeature {
         case didTappedSearch
         case didTappedShow(showId: String)
         case showFavoriteListResponse(FetchFavoriteShowListResponseDTO)
-        case fetchFavoriteShowList(ids: [String])
+        case fetchFavoriteShowList
         case failedToFavoriteList(Error)
     }
     
@@ -100,19 +101,17 @@ public struct ShowFeature {
                 return .none
             case .showListResponse(let response):
                 state.showList.append(contentsOf: response)
-                return .run { send in
-                    let ids = response.map { $0.id }
-                    await send(.fetchFavoriteShowList(ids: ids))
-                }
-            case .fetchFavoriteShowList(let ids):
+                return .none
+            case .fetchFavoriteShowList:
                 return .run { send in
                     do {
-                        try await send(.showFavoriteListResponse(showClient.fetchFavoriteShowList(ids)))
+                        try await send(.showFavoriteListResponse(showClient.fetchFavoriteShowList()))
                     } catch {
                         await send(.failedToFavoriteList(error))
                     }
                 }
             case .showFavoriteListResponse(let response):
+                state.favoriteShowList = Set(response.content.map { $0.id })
                 return .none
             case .failedToFavoriteList(let error):
                 print(error.localizedDescription)

@@ -74,7 +74,7 @@ public struct ShowView: View {
                                     
                                     HStack {
                                         Spacer()
-                                        Image(asset: CommonAsset.showFavoriteUnfill)
+                                        Image(asset: store.favoriteShowList.contains(show.id) ? CommonAsset.showFavoriteFill : CommonAsset.showFavoriteUnfill)
                                             .frame(width: 28, height: 28)
                                     }
                                     .padding([.bottom, .trailing], 10)
@@ -92,6 +92,7 @@ public struct ShowView: View {
             }
             .onAppear {
                 store.send(.fetchShowList(page: 0))
+                store.send(.fetchFavoriteShowList)
             }
             .sheet(item: $store.scope(state: \.bottomSheet, action: \.bottomSheet)) { store in
                 ShowSortBottomSheet(store: store)
