@@ -19,7 +19,7 @@ enum ShowAPI {
 }
 
 extension ShowAPI: TargetType {
-    var baseURL: URL { URL(string: "\(Secret.BASE_URL)")! }
+    var baseURL: URL { URL(string: "\(Secret.BASE_URL)")!.absoluteURL }
     var path: String {
         switch self {
         case .fetchShowList: return "/shows"
@@ -44,10 +44,8 @@ extension ShowAPI: TargetType {
         case .fetchShowDetail:
             return .requestPlain
         case .fetchFavoriteShow(let ids):
-            for id in ids {
-                param.updateValue(id, forKey: "showIds")
-            }
-            return .requestParameters(parameters: param, encoding: URLEncoding.default)
+            param.updateValue(ids, forKey: "showIds")
+            return .requestParameters(parameters: param, encoding: URLEncoding(arrayEncoding: .noBrackets))
         }
     }
     

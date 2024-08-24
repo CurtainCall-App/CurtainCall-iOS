@@ -58,6 +58,7 @@ public struct ShowFeature {
         case didTappedShow(showId: String)
         case showFavoriteListResponse(FetchFavoriteShowListResponseDTO)
         case fetchFavoriteShowList(ids: [String])
+        case failedToFavoriteList(Error)
     }
     
     @Dependency (\.showClient) var showClient
@@ -105,10 +106,16 @@ public struct ShowFeature {
                 }
             case .fetchFavoriteShowList(let ids):
                 return .run { send in
-                    try await send(.showFavoriteListResponse(showClient.fetchFavoriteShowList(ids)))
+                    do {
+                        try await send(.showFavoriteListResponse(showClient.fetchFavoriteShowList(ids)))
+                    } catch {
+                        await send(.failedToFavoriteList(error))
+                    }
                 }
             case .showFavoriteListResponse(let response):
-                print("######", response)
+                return .none
+            case .failedToFavoriteList(let error):
+                print(error.localizedDescription)
                 return .none
             case .didScrollToLastItem:
                 return .run { [page = state.page] send in
