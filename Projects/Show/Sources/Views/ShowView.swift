@@ -76,6 +76,9 @@ public struct ShowView: View {
                                         Spacer()
                                         Image(asset: store.favoriteShowList.contains(show.id) ? CommonAsset.showFavoriteFill : CommonAsset.showFavoriteUnfill)
                                             .frame(width: 28, height: 28)
+                                            .onTapGestureRectangle {
+                                                store.send(.didTappedFavorite(id: show.id))
+                                            }
                                     }
                                     .padding([.bottom, .trailing], 10)
                                 }

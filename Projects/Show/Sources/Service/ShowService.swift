@@ -16,6 +16,8 @@ enum ShowAPI {
     case fetchShowSearchList(keyword: String)
     case fetchShowDetail(id: String)
     case fetchFavoriteShow
+    case putFavoriteShow(id: String)
+    case deleteFavoriteShow(id: String)
 }
 
 extension ShowAPI: TargetType {
@@ -28,9 +30,17 @@ extension ShowAPI: TargetType {
         case .fetchFavoriteShow:
             let memberId = UserDefaults.standard.integer(forKey: UserDefaultKeys.userId.rawValue)
             return "/members/\(memberId)/favorite"
+        case .putFavoriteShow(let id): return "/shows/\(id)/favorite"
+        case .deleteFavoriteShow(let id): return "/shows/\(id)/favorite"
         }
     }
-    var method: Moya.Method { .get }
+    var method: Moya.Method {
+        switch self {
+        case .putFavoriteShow: return .put
+        case .deleteFavoriteShow: return .delete
+        default: return .get
+        }
+    }
     
     var task: Moya.Task {
         var param: [String: Any] = [:]
@@ -43,16 +53,18 @@ extension ShowAPI: TargetType {
         case .fetchShowSearchList(let keyword):
             param.updateValue(keyword, forKey: "keyword")
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
-        case .fetchShowDetail:
-            return .requestPlain
-        case .fetchFavoriteShow:
-            return .requestPlain
+        case .fetchShowDetail: return .requestPlain
+        case .fetchFavoriteShow: return .requestPlain
+        case .putFavoriteShow: return .requestPlain
+        case .deleteFavoriteShow: return .requestPlain
         }
     }
     
     var headers: [String : String]? {
         switch self {
         case .fetchFavoriteShow: return Utils.authHeader
+        case .putFavoriteShow: return Utils.authHeader
+        case .deleteFavoriteShow: return Utils.authHeader
         default: return nil
         }
     }

@@ -15,6 +15,8 @@ public struct ShowClient {
     var fetchShowSearchList: (String) async throws -> FetchShowResponseDTO
     var fetchShowDetail: (String) async throws -> ShowDetailResponseContent
     var fetchFavoriteShowList: () async throws -> FetchFavoriteShowListResponseDTO
+    var putFavoriteShow: (String) async throws -> Bool
+    var deleteFavoriteShow: (String) async throws -> Bool
 }
 
 extension ShowClient: DependencyKey {
@@ -23,7 +25,9 @@ extension ShowClient: DependencyKey {
             fetchShowList: fetchShowList,
             fetchShowSearchList: fetchShowSearchList(keyword:),
             fetchShowDetail: fetchShowDetail(id:),
-            fetchFavoriteShowList: fetchFavoriteShowList
+            fetchFavoriteShowList: fetchFavoriteShowList,
+            putFavoriteShow: putFavoriteShow(id:),
+            deleteFavoriteShow: deleteFavoriteShow(id:)
         )
     }()
     
@@ -40,6 +44,14 @@ extension ShowClient: DependencyKey {
     
     public static func fetchFavoriteShowList() async throws -> FetchFavoriteShowListResponseDTO {
         return try await MoyaProvider<ShowAPI>().request(.fetchFavoriteShow)
+    }
+    
+    public static func putFavoriteShow(id: String) async throws -> Bool {
+        return try await MoyaProvider<ShowAPI>().request(.putFavoriteShow(id: id))
+    }
+    
+    public static func deleteFavoriteShow(id: String) async throws -> Bool {
+        return try await MoyaProvider<ShowAPI>().request(.deleteFavoriteShow(id: id))
     }
 }
 

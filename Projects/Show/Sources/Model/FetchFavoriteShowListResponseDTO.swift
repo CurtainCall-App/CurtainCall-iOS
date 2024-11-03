@@ -27,6 +27,6 @@ public struct FetchFavoriteShowListContent: Hashable, Equatable, Decodable {
     public let genre: Genre
     public let showTimes: [ShowTime]
     public let runtime: String
-    public let reviewCount: Int
-    public let reviewGradeSum: Int
+    public let reviewCount: Int?
+    public let reviewGradeSum: Int?
 }

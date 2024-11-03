@@ -60,6 +60,11 @@ public struct ShowFeature {
         case showFavoriteListResponse(FetchFavoriteShowListResponseDTO)
         case fetchFavoriteShowList
         case failedToFavoriteList(Error)
+        case didTappedFavorite(id: String)
+        case selectedFavorite(id: String)
+        case deselectedFavorite(id: String)
+        case isSucessSelectedFavorite(Bool)
+        case isSucessDeselectedFavorite(Bool)
     }
     
     @Dependency (\.showClient) var showClient
@@ -127,6 +132,35 @@ public struct ShowFeature {
             case .didTappedSearch:
                 state.path.append(.showSearch())
                 return .none
+            case .didTappedFavorite(let id):
+                let isCancle = state.favoriteShowList.contains(id)
+                return .run { send in
+                    isCancle ? await send(.deselectedFavorite(id: id)) : await send(.selectedFavorite(id: id))
+                }
+            case .selectedFavorite(let id):
+                return .run { send in
+                    do {
+                        try await send(.isSucessSelectedFavorite(showClient.putFavoriteShow(id)))
+                    } catch {
+                        await send(.isSucessSelectedFavorite(false))
+                    }
+                }
+            case .deselectedFavorite(let id):
+                return .run { send in
+                    do {
+                        try await send(.isSucessDeselectedFavorite(showClient.deleteFavoriteShow(id)))
+                    } catch {
+                        await send(.isSucessDeselectedFavorite(false))
+                    }
+                }
+            case .isSucessSelectedFavorite:
+                return .run { send in
+                    await send(.fetchFavoriteShowList)
+                }
+            case .isSucessDeselectedFavorite:
+                return .run { send in
+                    await send(.fetchFavoriteShowList)
+                }
             case .path(.element(id: _, action: .showSearch(.didTappedCancelButton))):
                 state.path.removeAll()
                 return .none
