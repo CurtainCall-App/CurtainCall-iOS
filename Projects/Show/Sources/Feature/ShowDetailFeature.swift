@@ -31,6 +31,7 @@ public struct ShowDetailFeature {
         var currentSelectedCategory: ShowDetailCategoryType = .detail
         var facilityInfo: FetchFacilityResponseDTO?
         var detailImageHeight: CGFloat = 300
+        var isLikeShow: Bool = false
         var review: ReviewFeature.State?
     }
     
@@ -41,7 +42,10 @@ public struct ShowDetailFeature {
         case fetchFacilityDetail(id: String)
         case facilityDetailResponse(FetchFacilityResponseDTO)
         case didTappedMoreDetailImage
+        case fetchIsFavoriteShow
         case review(ReviewFeature.Action)
+        case isFavoriteShowResponse(Bool)
+        case failedToFetchIsList(Error)
     }
     
     @Dependency (\.showClient) var showClient
@@ -90,6 +94,20 @@ public struct ShowDetailFeature {
                 return .none
             case .didTappedMoreDetailImage:
                 state.detailImageHeight = state.detailImageHeight == 300 ? .infinity: 300
+                return .none
+            case .fetchIsFavoriteShow:
+                return .run { [id = state.showId] send in
+                    do {
+                        try await send(.isFavoriteShowResponse(showClient.fetchIsFavoriteShow(id).content.first?.favorite ?? false))
+                    } catch {
+                        await send(.failedToFetchIsList(error))
+                    }
+                }
+            case .isFavoriteShowResponse(let isFavorite):
+                state.isLikeShow = isFavorite
+                return .none
+            case .failedToFetchIsList(let error):
+                print(error.localizedDescription)
                 return .none
             case .review:
                 return .none
