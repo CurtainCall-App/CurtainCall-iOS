@@ -61,7 +61,7 @@ extension ShowAPI: TargetType {
         case .putFavoriteShow: return .requestPlain
         case .deleteFavoriteShow: return .requestPlain
         case .fetchIsFavoriteShow(let id):
-            param.updateValue(id, forKey: "showId")
+            param.updateValue(id, forKey: "showIds")
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
         }
     }

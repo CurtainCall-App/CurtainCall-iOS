@@ -30,7 +30,7 @@ public struct ShowDetailView: View {
                     VStack(spacing: 0) {
                         HStack {
                             Spacer()
-                            Image(asset: CommonAsset.showDetailFavoriteHeartUnfill)
+                            Image(asset: store.isLikeShow ? CommonAsset.showDetailFavoriteHeartFill : CommonAsset.showDetailFavoriteHeartUnfill)
                         }
                         .padding([.top, .trailing], 18)
                         

@@ -45,7 +45,7 @@ public struct ShowDetailFeature {
         case fetchIsFavoriteShow
         case review(ReviewFeature.Action)
         case isFavoriteShowResponse(Bool)
-        case failedToFetchIsList(Error)
+        case failedToFetchIsLike(Error)
     }
     
     @Dependency (\.showClient) var showClient
@@ -58,6 +58,7 @@ public struct ShowDetailFeature {
                 return .run { [id = state.showId] send in
                     do {
                         try await send(.showDetailResponse(showClient.fetchShowDetail(id)))
+                        try await send(.fetchIsFavoriteShow)
                     } catch {
                         print(error.localizedDescription)
                     }
@@ -100,13 +101,13 @@ public struct ShowDetailFeature {
                     do {
                         try await send(.isFavoriteShowResponse(showClient.fetchIsFavoriteShow(id).content.first?.favorite ?? false))
                     } catch {
-                        await send(.failedToFetchIsList(error))
+                        await send(.failedToFetchIsLike(error))
                     }
                 }
             case .isFavoriteShowResponse(let isFavorite):
                 state.isLikeShow = isFavorite
                 return .none
-            case .failedToFetchIsList(let error):
+            case .failedToFetchIsLike(let error):
                 print(error.localizedDescription)
                 return .none
             case .review:
