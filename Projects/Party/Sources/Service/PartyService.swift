@@ -12,7 +12,7 @@ import Common
 import Moya
 
 enum PartyAPI {
-    case fetchPartyList(page: Int, startDate: String, endDate: String)
+    case fetchPartyList(page: Int, startDate: String? = nil, endDate: String? = nil)
     case createParty(body: CreatePartyBody)
     case fetchPartyDetail(id: Int)
     case fetchDidParticipated(id: Int)
@@ -50,8 +50,8 @@ extension PartyAPI: TargetType {
         case .fetchPartyList(let page, let startDate, let endDate):
             param.updateValue(page, forKey: "page")
             param.updateValue(20, forKey: "size")
-            param.updateValue(startDate, forKey: "startDate")
-            param.updateValue(endDate, forKey: "endDate")
+            if let startDate { param.updateValue(startDate, forKey: "startDate") }
+            if let endDate { param.updateValue(endDate, forKey: "endDate") }
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
         case .createParty(let body):
             return .requestJSONEncodable(body)
