@@ -14,6 +14,10 @@ public struct ShowClient {
     public var fetchShowList: (Int, ShowFeature.ShowType, ShowSortFeature.CategoryType) async throws -> FetchShowResponseDTO
     var fetchShowSearchList: (String) async throws -> FetchShowResponseDTO
     var fetchShowDetail: (String) async throws -> ShowDetailResponseContent
+    var fetchFavoriteShowList: () async throws -> FetchFavoriteShowListResponseDTO
+    var putFavoriteShow: (String) async throws -> Bool
+    var deleteFavoriteShow: (String) async throws -> Bool
+    var fetchIsFavoriteShow: (String) async throws -> FetchIsFavoriteShowResponseDTO
 }
 
 extension ShowClient: DependencyKey {
@@ -21,7 +25,11 @@ extension ShowClient: DependencyKey {
         Self(
             fetchShowList: fetchShowList,
             fetchShowSearchList: fetchShowSearchList(keyword:),
-            fetchShowDetail: fetchShowDetail(id:)
+            fetchShowDetail: fetchShowDetail(id:),
+            fetchFavoriteShowList: fetchFavoriteShowList,
+            putFavoriteShow: putFavoriteShow(id:),
+            deleteFavoriteShow: deleteFavoriteShow(id:),
+            fetchIsFavoriteShow: fetchIsFavoriteShow(id:)
         )
     }()
     
@@ -34,6 +42,22 @@ extension ShowClient: DependencyKey {
     }
     public static func fetchShowDetail(id: String) async throws -> ShowDetailResponseContent {
         return try await MoyaProvider<ShowAPI>().request(.fetchShowDetail(id: id))
+    }
+    
+    public static func fetchFavoriteShowList() async throws -> FetchFavoriteShowListResponseDTO {
+        return try await MoyaProvider<ShowAPI>().request(.fetchFavoriteShow)
+    }
+    
+    public static func putFavoriteShow(id: String) async throws -> Bool {
+        return try await MoyaProvider<ShowAPI>().request(.putFavoriteShow(id: id))
+    }
+    
+    public static func deleteFavoriteShow(id: String) async throws -> Bool {
+        return try await MoyaProvider<ShowAPI>().request(.deleteFavoriteShow(id: id))
+    }
+    
+    static func fetchIsFavoriteShow(id: String) async throws -> FetchIsFavoriteShowResponseDTO {
+        return try await MoyaProvider<ShowAPI>().request(.fetchIsFavoriteShow(id: id))
     }
 }
 

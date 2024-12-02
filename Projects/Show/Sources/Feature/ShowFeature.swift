@@ -42,6 +42,7 @@ public struct ShowFeature {
         var page: Int = 0
         @Presents var bottomSheet: ShowSortFeature.State?
         var isShowTooltip = !UserDefaults.standard.bool(forKey: UserDefaultKeys.isShowPopluarTooltip.rawValue)
+        var favoriteShowList: Set<String> = []
         var path = StackState<Path.State>()
     }
     
@@ -56,6 +57,14 @@ public struct ShowFeature {
         case path(StackAction<Path.State, Path.Action>)
         case didTappedSearch
         case didTappedShow(showId: String)
+        case showFavoriteListResponse(FetchFavoriteShowListResponseDTO)
+        case fetchFavoriteShowList
+        case failedToFavoriteList(Error)
+        case didTappedFavorite(id: String)
+        case selectedFavorite(id: String)
+        case deselectedFavorite(id: String)
+        case isSucessSelectedFavorite(Bool)
+        case isSucessDeselectedFavorite(Bool)
     }
     
     @Dependency (\.showClient) var showClient
@@ -98,6 +107,20 @@ public struct ShowFeature {
             case .showListResponse(let response):
                 state.showList.append(contentsOf: response)
                 return .none
+            case .fetchFavoriteShowList:
+                return .run { send in
+                    do {
+                        try await send(.showFavoriteListResponse(showClient.fetchFavoriteShowList()))
+                    } catch {
+                        await send(.failedToFavoriteList(error))
+                    }
+                }
+            case .showFavoriteListResponse(let response):
+                state.favoriteShowList = Set(response.content.map { $0.id })
+                return .none
+            case .failedToFavoriteList(let error):
+                print(error.localizedDescription)
+                return .none
             case .didScrollToLastItem:
                 return .run { [page = state.page] send in
                     await send(.fetchShowList(page: page + 1))
@@ -109,6 +132,35 @@ public struct ShowFeature {
             case .didTappedSearch:
                 state.path.append(.showSearch())
                 return .none
+            case .didTappedFavorite(let id):
+                let isCancle = state.favoriteShowList.contains(id)
+                return .run { send in
+                    isCancle ? await send(.deselectedFavorite(id: id)) : await send(.selectedFavorite(id: id))
+                }
+            case .selectedFavorite(let id):
+                return .run { send in
+                    do {
+                        try await send(.isSucessSelectedFavorite(showClient.putFavoriteShow(id)))
+                    } catch {
+                        await send(.isSucessSelectedFavorite(false))
+                    }
+                }
+            case .deselectedFavorite(let id):
+                return .run { send in
+                    do {
+                        try await send(.isSucessDeselectedFavorite(showClient.deleteFavoriteShow(id)))
+                    } catch {
+                        await send(.isSucessDeselectedFavorite(false))
+                    }
+                }
+            case .isSucessSelectedFavorite:
+                return .run { send in
+                    await send(.fetchFavoriteShowList)
+                }
+            case .isSucessDeselectedFavorite:
+                return .run { send in
+                    await send(.fetchFavoriteShowList)
+                }
             case .path(.element(id: _, action: .showSearch(.didTappedCancelButton))):
                 state.path.removeAll()
                 return .none

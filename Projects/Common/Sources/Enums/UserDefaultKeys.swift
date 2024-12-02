@@ -14,4 +14,5 @@ public enum UserDefaultKeys: String, CaseIterable {
     case refreshTokenExpiresAt
     case isShowPopluarTooltip
     case showRecentSearches
+    case favoriteShow
 }

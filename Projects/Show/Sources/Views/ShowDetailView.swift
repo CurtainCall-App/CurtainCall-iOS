@@ -30,7 +30,10 @@ public struct ShowDetailView: View {
                     VStack(spacing: 0) {
                         HStack {
                             Spacer()
-                            Image(asset: CommonAsset.showDetailFavoriteHeartUnfill)
+                            Image(asset: store.isLikeShow ? CommonAsset.showDetailFavoriteHeartFill : CommonAsset.showDetailFavoriteHeartUnfill)
+                                .onTapGestureRectangle {
+                                    store.send(.didTappedFaovorite)
+                                }
                         }
                         .padding([.top, .trailing], 18)
                         
