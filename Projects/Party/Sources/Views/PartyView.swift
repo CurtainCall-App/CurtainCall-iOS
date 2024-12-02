@@ -85,6 +85,9 @@ public struct PartyView: View {
                         }
                 }
             }
+            .onAppear {
+                store.send(.onAppear)
+            }
         } destination: { store in
             switch store.state {
             case .partyRecruit:

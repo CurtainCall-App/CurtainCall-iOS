@@ -25,6 +25,7 @@ public struct PartyFeature {
     }
     
     public enum Action {
+        case onAppear
         case didTappedDurationButton
         case didTappedRecruitMemberButton
         case didTappedPartyList(id: Int)
@@ -39,6 +40,10 @@ public struct PartyFeature {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .onAppear:
+                return .run { send in
+                    try await send(.partyListResponse(partyClient.fetchPartyList(0, nil, nil).content))
+                }
             case .calendar(.didTappedConfirmButton):
                 if (state.calendar?.clickedDates ?? []).isEmpty {
                     return .none
