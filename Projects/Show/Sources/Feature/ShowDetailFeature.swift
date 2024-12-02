@@ -46,6 +46,11 @@ public struct ShowDetailFeature {
         case review(ReviewFeature.Action)
         case isFavoriteShowResponse(Bool)
         case failedToFetchIsLike(Error)
+        case didTappedFaovorite
+        case selectedFavorite
+        case deselectedFavorite
+        case isSucessSelectedFavorite(Bool)
+        case isSucessDeselectedFavorite(Bool)
     }
     
     @Dependency (\.showClient) var showClient
@@ -112,6 +117,40 @@ public struct ShowDetailFeature {
                 return .none
             case .review:
                 return .none
+            case .didTappedFaovorite:
+                return .run { [isFavorite = state.isLikeShow ] send in
+                    if isFavorite {
+                        await send(.deselectedFavorite)
+                    } else {
+                        await send(.selectedFavorite)
+                    }
+                }
+            case .selectedFavorite:
+                return .run { [showId = state.showId] send in
+                    do {
+                        try await send(.isSucessSelectedFavorite(showClient.putFavoriteShow(showId)))
+                    } catch {
+                        await send(.isSucessSelectedFavorite(false))
+                    }
+                }
+            case .deselectedFavorite:
+                return .run { [showId = state.showId] send in
+                    do {
+                        try await send(.isSucessDeselectedFavorite(showClient.deleteFavoriteShow(showId)))
+                    } catch {
+                        await send(.isSucessDeselectedFavorite(false))
+                    }
+                }
+            case .isSucessSelectedFavorite(let isSuccess):
+                guard isSuccess else { return .none }
+                return .run { send in
+                    await send(.fetchDetailResponse)
+                }
+            case .isSucessDeselectedFavorite(let isSuccess):
+                guard isSuccess else { return .none }
+                return .run { send in
+                    await send(.fetchDetailResponse)
+                }
             }
         }
         .ifLet(\.review, action: \.review) {

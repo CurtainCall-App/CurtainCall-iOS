@@ -31,6 +31,9 @@ public struct ShowDetailView: View {
                         HStack {
                             Spacer()
                             Image(asset: store.isLikeShow ? CommonAsset.showDetailFavoriteHeartFill : CommonAsset.showDetailFavoriteHeartUnfill)
+                                .onTapGestureRectangle {
+                                    store.send(.didTappedFaovorite)
+                                }
                         }
                         .padding([.top, .trailing], 18)
                         
