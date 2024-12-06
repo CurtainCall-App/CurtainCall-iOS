@@ -74,3 +74,4 @@ Projects/App/Secret/*.xcconfig
 Projects/App/Secret/*
 Projects/Common/Secret/*
 Tuist/.bulid/*
+.env
