@@ -42,7 +42,7 @@ public struct FavoriteShowView: View {
                                 .frame(width: 160, height: 250)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .onTapGesture {
-//                                    store.send(.didTappedShow(showId: show.id))
+                                    store.send(.didTappedShow(id: show.id))
                                 }
                                 
                                 HStack {

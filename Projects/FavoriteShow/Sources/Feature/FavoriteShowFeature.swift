@@ -29,6 +29,7 @@ public struct FavoriteShowFeature {
         case showFavoriteListResponse(FetchFavoriteShowListResponseDTO)
         case didTappedShowType(ShowType)
         case didTappedFavorite(id: String)
+        case didTappedShow(id: String)
     }
     
     @Dependency (\.favoriteShowClient) var client
@@ -61,6 +62,8 @@ public struct FavoriteShowFeature {
                         await send(.fetchFavoriteShowList)
                     }
                 }
+            case .didTappedShow(let id):
+                return .none
             }
         }
     }

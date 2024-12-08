@@ -9,6 +9,7 @@ import Foundation
 
 import Common
 import FavoriteShow
+import Show
 
 import ComposableArchitecture
 
@@ -83,6 +84,9 @@ public struct MyPageFeature {
                     state.path.removeLast()
                 }
                 return .none
+            case .path(.element(id: _, action: .favorite(.didTappedShow(let id)))):
+                state.path.append(.showDetail(.init(showId: id)))
+                return .none
             case .path:
                 return .none
             }
@@ -105,6 +109,7 @@ public struct MyPageFeature {
             case deleteAccountDetail(DeleteAccountDetailFeature.State = .init(body: DeleteAccountBody(reason: "", content: "")))
             case profile(ProfileFeature.State = .init())
             case favorite(FavoriteShowFeature.State = .init())
+            case showDetail(ShowDetailFeature.State = .init(showId: ""))
         }
         
         public enum Action {
@@ -116,6 +121,7 @@ public struct MyPageFeature {
             case deleteAccountDetail(DeleteAccountDetailFeature.Action)
             case profile(ProfileFeature.Action)
             case favorite(FavoriteShowFeature.Action)
+            case showDetail(ShowDetailFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
@@ -142,6 +148,9 @@ public struct MyPageFeature {
             }
             Scope(state: \.favorite, action: \.favorite) {
                 FavoriteShowFeature()
+            }
+            Scope(state: \.showDetail, action: \.showDetail) {
+                ShowDetailFeature()
             }
         }
     }

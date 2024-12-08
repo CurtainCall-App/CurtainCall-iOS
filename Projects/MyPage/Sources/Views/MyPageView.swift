@@ -9,6 +9,7 @@ import SwiftUI
 
 import Common
 import FavoriteShow
+import Show
 
 import ComposableArchitecture
 import NukeUI
@@ -65,6 +66,10 @@ public struct MyPageView: View {
             case .favorite:
                 if let store = store.scope(state: \.favorite, action: \.favorite) {
                     FavoriteShowView(store: store)
+                }
+            case .showDetail:
+                if let store = store.scope(state: \.showDetail, action: \.showDetail) {
+                    ShowDetailView(store: store)
                 }
              }
         }
