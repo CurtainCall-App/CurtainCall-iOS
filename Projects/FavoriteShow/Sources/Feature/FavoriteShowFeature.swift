@@ -19,7 +19,7 @@ public struct FavoriteShowFeature {
     @ObservableState
     public struct State: Equatable {
         public init() { }
-        var selectedShowType: ShowType = .theater
+        var selectedShowType: Genre = .play
         var showList: [FetchFavoriteShowListContent] = []
     }
     
@@ -27,7 +27,7 @@ public struct FavoriteShowFeature {
         case fetchFavoriteShowList
         case failedToFavoriteList(Error)
         case showFavoriteListResponse(FetchFavoriteShowListResponseDTO)
-        case didTappedShowType(ShowType)
+        case didTappedShowType(Genre)
         case didTappedFavorite(id: String)
         case didTappedShow(id: String)
     }
@@ -46,15 +46,16 @@ public struct FavoriteShowFeature {
                     }
                 }
             case .showFavoriteListResponse(let response):
-                print("##", response)
-                state.showList = response.content
+                state.showList = response.content.filter { $0.genre == state.selectedShowType }
                 return .none
             case .failedToFavoriteList(let error):
                 print(error.localizedDescription)
                 return .none
             case .didTappedShowType(let type):
                 state.selectedShowType = type
-                return .none
+                return .run { send in
+                    await send(.fetchFavoriteShowList)
+                }
             case .didTappedFavorite(let id):
                 return .run { send in
                     let isSuccess = try await client.deleteFavoriteShow(id)
@@ -62,7 +63,7 @@ public struct FavoriteShowFeature {
                         await send(.fetchFavoriteShowList)
                     }
                 }
-            case .didTappedShow(let id):
+            case .didTappedShow:
                 return .none
             }
         }

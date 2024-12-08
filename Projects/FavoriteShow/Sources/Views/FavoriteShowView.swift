@@ -87,7 +87,7 @@ public struct FavoriteShowView: View {
         VStack {
             Spacer().frame(height: 20)
             HStack(spacing: 8) {
-                makeShowTypeButton(type: .theater)
+                makeShowTypeButton(type: .play)
                 makeShowTypeButton(type: .musical)
                 Spacer()
             }
@@ -97,8 +97,8 @@ public struct FavoriteShowView: View {
         }
     }
     
-    private func makeShowTypeButton(type: ShowType) -> some View {
-        Text(type.title)
+    private func makeShowTypeButton(type: Genre) -> some View {
+        Text(type.nameKR)
             .font(.body2_SB)
             .foregroundStyle(store.selectedShowType == type ? Color.white : Color.gray6)
             .padding(.horizontal, 11)
