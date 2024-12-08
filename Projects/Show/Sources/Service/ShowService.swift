@@ -12,7 +12,7 @@ import Common
 import Moya
 
 enum ShowAPI {
-    case fetchShowList(page: Int, genre: ShowFeature.ShowType, sort: ShowSortFeature.CategoryType)
+    case fetchShowList(page: Int, genre: ShowType, sort: ShowSortFeature.CategoryType)
     case fetchShowSearchList(keyword: String)
     case fetchShowDetail(id: String)
 }

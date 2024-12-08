@@ -7,11 +7,13 @@
 
 import Foundation
 
+import Common
+
 import ComposableArchitecture
 import Moya
 
 public struct ShowClient {
-    public var fetchShowList: (Int, ShowFeature.ShowType, ShowSortFeature.CategoryType) async throws -> FetchShowResponseDTO
+    public var fetchShowList: (Int, ShowType, ShowSortFeature.CategoryType) async throws -> FetchShowResponseDTO
     var fetchShowSearchList: (String) async throws -> FetchShowResponseDTO
     var fetchShowDetail: (String) async throws -> ShowDetailResponseContent
 }
@@ -25,7 +27,7 @@ extension ShowClient: DependencyKey {
         )
     }()
     
-    public static func fetchShowList(page: Int, genre: ShowFeature.ShowType, sort: ShowSortFeature.CategoryType) async throws -> FetchShowResponseDTO {
+    public static func fetchShowList(page: Int, genre: ShowType, sort: ShowSortFeature.CategoryType) async throws -> FetchShowResponseDTO {
         return try await MoyaProvider<ShowAPI>().request(.fetchShowList(page: page, genre: genre, sort: sort))
     }
     
