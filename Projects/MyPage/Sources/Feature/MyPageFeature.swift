@@ -8,6 +8,7 @@
 import Foundation
 
 import Common
+import FavoriteShow
 
 import ComposableArchitecture
 
@@ -27,6 +28,7 @@ public struct MyPageFeature {
         case didTappedFAQView
         case didTappedSettingView
         case didTappedProfileView
+        case didTappedFavorite
         case fetchUserInfo
         case responseUserInfo(FetchUserInfoResponseDTO)
         case responseError(Error)
@@ -64,6 +66,9 @@ public struct MyPageFeature {
             case .didTappedProfileView:
                 state.path.append(.profile())
                 return .none
+            case .didTappedFavorite:
+                state.path.append(.favorite())
+                return .none
             case .path(.element(id: _, action: .notice(.didTappedNoticeView(let id)))):
                 state.path.append(.noticeDetail(.init(id: id)))
                 return .none
@@ -99,6 +104,7 @@ public struct MyPageFeature {
             case deleteAccount(DeleteAccountFeature.State = .init())
             case deleteAccountDetail(DeleteAccountDetailFeature.State = .init(body: DeleteAccountBody(reason: "", content: "")))
             case profile(ProfileFeature.State = .init())
+            case favorite(FavoriteShowFeature.State = .init())
         }
         
         public enum Action {
@@ -109,6 +115,7 @@ public struct MyPageFeature {
             case deleteAccount(DeleteAccountFeature.Action)
             case deleteAccountDetail(DeleteAccountDetailFeature.Action)
             case profile(ProfileFeature.Action)
+            case favorite(FavoriteShowFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
@@ -132,6 +139,9 @@ public struct MyPageFeature {
             }
             Scope(state: \.profile, action: \.profile) {
                 ProfileFeature()
+            }
+            Scope(state: \.favorite, action: \.favorite) {
+                FavoriteShowFeature()
             }
         }
     }
