@@ -20,6 +20,10 @@ let project = Project.makeModule(
         .project(
             target: "Review",
             path: .relativeToRoot("Projects/Review")
+        ),
+        .project(
+            target: "FavoriteShow",
+            path: .relativeToRoot("Projects/FavoriteShow")
         )
     ]
 )
