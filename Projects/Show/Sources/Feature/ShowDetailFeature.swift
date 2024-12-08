@@ -54,7 +54,8 @@ public struct ShowDetailFeature {
     }
     
     @Dependency (\.showClient) var showClient
-    @Dependency (\.facilityClient) var fetchClient
+    @Dependency (\.facilityClient) var facilityClient
+    @Dependency (\.favoriteShowClient) var favoriteShowClient
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -90,7 +91,7 @@ public struct ShowDetailFeature {
             case .fetchFacilityDetail(let id):
                 return .run { send in
                     do {
-                        try await send(.facilityDetailResponse(fetchClient.fetchFacilityDetail(id)))
+                        try await send(.facilityDetailResponse(facilityClient.fetchFacilityDetail(id)))
                     } catch {
                         print(error.localizedDescription)
                     }
@@ -104,7 +105,7 @@ public struct ShowDetailFeature {
             case .fetchIsFavoriteShow:
                 return .run { [id = state.showId] send in
                     do {
-                        try await send(.isFavoriteShowResponse(showClient.fetchIsFavoriteShow(id).content.first?.favorite ?? false))
+                        try await send(.isFavoriteShowResponse(favoriteShowClient.fetchIsFavoriteShow(id).content.first?.favorite ?? false))
                     } catch {
                         await send(.failedToFetchIsLike(error))
                     }
@@ -128,7 +129,7 @@ public struct ShowDetailFeature {
             case .selectedFavorite:
                 return .run { [showId = state.showId] send in
                     do {
-                        try await send(.isSucessSelectedFavorite(showClient.putFavoriteShow(showId)))
+                        try await send(.isSucessSelectedFavorite(favoriteShowClient.putFavoriteShow(showId)))
                     } catch {
                         await send(.isSucessSelectedFavorite(false))
                     }
@@ -136,7 +137,7 @@ public struct ShowDetailFeature {
             case .deselectedFavorite:
                 return .run { [showId = state.showId] send in
                     do {
-                        try await send(.isSucessDeselectedFavorite(showClient.deleteFavoriteShow(showId)))
+                        try await send(.isSucessDeselectedFavorite(favoriteShowClient.deleteFavoriteShow(showId)))
                     } catch {
                         await send(.isSucessDeselectedFavorite(false))
                     }

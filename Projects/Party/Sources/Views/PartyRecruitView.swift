@@ -97,7 +97,7 @@ public struct PartyRecruitView: View {
         .frame(height: 44)
     }
     
-    private func makeShowTypeButton(type: ShowFeature.ShowType) -> some View {
+    private func makeShowTypeButton(type: ShowType) -> some View {
         Text(type.title)
             .font(.body2_SB)
             .foregroundStyle(store.selectedShowType == type ? Color.white : Color.gray6)
