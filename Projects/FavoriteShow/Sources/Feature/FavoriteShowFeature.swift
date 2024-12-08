@@ -28,6 +28,7 @@ public struct FavoriteShowFeature {
         case failedToFavoriteList(Error)
         case showFavoriteListResponse(FetchFavoriteShowListResponseDTO)
         case didTappedShowType(ShowType)
+        case didTappedFavorite(id: String)
     }
     
     @Dependency (\.favoriteShowClient) var client
@@ -53,6 +54,13 @@ public struct FavoriteShowFeature {
             case .didTappedShowType(let type):
                 state.selectedShowType = type
                 return .none
+            case .didTappedFavorite(let id):
+                return .run { send in
+                    let isSuccess = try await client.deleteFavoriteShow(id)
+                    if isSuccess {
+                        await send(.fetchFavoriteShowList)
+                    }
+                }
             }
         }
     }

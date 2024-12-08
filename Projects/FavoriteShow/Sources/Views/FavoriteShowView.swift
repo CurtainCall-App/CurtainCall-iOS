@@ -41,11 +41,6 @@ public struct FavoriteShowView: View {
                                 }
                                 .frame(width: 160, height: 250)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                                .onAppear {
-                                    if show == store.showList.last {
-//                                        store.send(.didScrollToLastItem)
-                                    }
-                                }
                                 .onTapGesture {
 //                                    store.send(.didTappedShow(showId: show.id))
                                 }
@@ -55,7 +50,7 @@ public struct FavoriteShowView: View {
                                     Image(asset: CommonAsset.showFavoriteFill)
                                         .frame(width: 28, height: 28)
                                         .onTapGestureRectangle {
-//                                            store.send(.didTappedFavorite(id: show.id))
+                                            store.send(.didTappedFavorite(id: show.id))
                                         }
                                 }
                                 .padding([.bottom, .trailing], 10)
