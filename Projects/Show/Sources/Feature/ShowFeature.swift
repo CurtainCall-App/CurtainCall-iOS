@@ -9,6 +9,8 @@ import Foundation
 
 import Common
 import Review
+import FavoriteShow
+
 import ComposableArchitecture
 
 @Reducer
@@ -68,6 +70,8 @@ public struct ShowFeature {
     }
     
     @Dependency (\.showClient) var showClient
+    @Dependency (\.favoriteShowClient) var favoriteShowClient
+    
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -110,7 +114,7 @@ public struct ShowFeature {
             case .fetchFavoriteShowList:
                 return .run { send in
                     do {
-                        try await send(.showFavoriteListResponse(showClient.fetchFavoriteShowList()))
+                        try await send(.showFavoriteListResponse(favoriteShowClient.fetchFavoriteShowList()))
                     } catch {
                         await send(.failedToFavoriteList(error))
                     }
@@ -140,7 +144,7 @@ public struct ShowFeature {
             case .selectedFavorite(let id):
                 return .run { send in
                     do {
-                        try await send(.isSucessSelectedFavorite(showClient.putFavoriteShow(id)))
+                        try await send(.isSucessSelectedFavorite(favoriteShowClient.putFavoriteShow(id)))
                     } catch {
                         await send(.isSucessSelectedFavorite(false))
                     }
@@ -148,7 +152,7 @@ public struct ShowFeature {
             case .deselectedFavorite(let id):
                 return .run { send in
                     do {
-                        try await send(.isSucessDeselectedFavorite(showClient.deleteFavoriteShow(id)))
+                        try await send(.isSucessDeselectedFavorite(favoriteShowClient.deleteFavoriteShow(id)))
                     } catch {
                         await send(.isSucessDeselectedFavorite(false))
                     }
