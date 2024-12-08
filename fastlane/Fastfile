@@ -1,23 +1,50 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
 default_platform(:ios)
 
 platform :ios do
-  desc "Description of what the lane does"
-  lane :custom_lane do
-    # add actions here: https://docs.fastlane.tools/actions
+  lane :test_flight do
+  clear_derived_data
+
+  build_app(
+    workspace: "CurtainCall.xcworkspace",
+    scheme: "App",
+    configuration: "Release",
+    clean: true,
+    export_options: {
+      method: "app-store",
+      provisioningProfiles: {
+        "com.mandos.curtain.call" => "CurtainCall_Dev"
+      }
+    }
+
+  )
+  upload_to_testflight(
+    skip_waiting_for_build_processing: true
+  )
   end
+end
+
+def bump_version
+    info_plist_path = "Support/Info.plist"
+
+    current_version = get_info_plist_value(path: info_plist_path, key: "CFBundleShortVersionString")
+    current_build_number = get_info_plist_value(path: info_plist_path, key: "CFBundleVersion").to_i
+
+    current_version_number = version_string(current_version, current_build_number)
+    puts("Current version -> #{ current_version_number}")
+
+    new_build_number = current_build_number + 1
+    set_info_plist_value(path: info_plist_path, key: "CFBundleVersion", value: new_build_number.to_s)
+    
+    new_version_number = version_string(current_version, new_build_number)
+    puts("New version -> #{ new_version_number}")
+
+    git_commit(
+      path: [info_plist_path], 
+      message: "Bump version to #{new_version_number}"
+    )
+    new_version_number
+end
+
+def version_string(version_number, build_number)
+  "CurtainCall #{version_number} (#{build_number})"
 end

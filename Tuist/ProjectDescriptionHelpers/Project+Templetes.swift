@@ -20,7 +20,8 @@ public extension Project {
                 .debug(
                     name: .debug,
                     settings: SettingsDictionary()
-                        .automaticCodeSigning(devTeam: "H2N9KXXP3M"),
+                        .automaticCodeSigning(devTeam: "H2N9KXXP3M")
+                        .manualCodeSigning(provisioningProfileSpecifier: "CurtainCall_Dev"),
                     xcconfig: path
                 ),
                 .release(
