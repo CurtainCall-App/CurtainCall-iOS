@@ -51,6 +51,7 @@ public struct ShowDetailFeature {
         case deselectedFavorite
         case isSucessSelectedFavorite(Bool)
         case isSucessDeselectedFavorite(Bool)
+        case didTappedLiveTalk
     }
     
     @Dependency (\.showClient) var showClient
@@ -64,7 +65,7 @@ public struct ShowDetailFeature {
                 return .run { [id = state.showId] send in
                     do {
                         try await send(.showDetailResponse(showClient.fetchShowDetail(id)))
-                        try await send(.fetchIsFavoriteShow)
+                        await send(.fetchIsFavoriteShow)
                     } catch {
                         print(error.localizedDescription)
                     }
@@ -152,6 +153,8 @@ public struct ShowDetailFeature {
                 return .run { send in
                     await send(.fetchDetailResponse)
                 }
+            case .didTappedLiveTalk:
+                return .none
             }
         }
         .ifLet(\.review, action: \.review) {

@@ -9,6 +9,7 @@ import SwiftUI
 
 import Common
 import Review
+import LiveTalk
 
 import ComposableArchitecture
 import NukeUI
@@ -123,6 +124,10 @@ public struct ShowView: View {
             case .reviewList:
                 if let store = store.scope(state: \.reviewList, action: \.reviewList) {
                     ReviewListView(store: store)
+                }
+            case .liveTalk:
+                if let store = store.scope(state: \.liveTalk, action: \.liveTalk) {
+                    LiveTalkView(store: store)
                 }
             }
             

@@ -19,6 +19,7 @@ let package = Package(
         .package(url: "https://github.com/Moya/Moya", from: "15.0.0"),
         .package(url: "https://github.com/kakao/kakao-ios-sdk", from: "2.20.0"),
         .package(url: "https://github.com/kean/Nuke", from: "12.0.0"),
-        .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "10.24.0")
+        .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "10.24.0"),
+        .package(url: "https://github.com/getstream/stream-chat-swift", from: "4.69.0")
     ]
 )

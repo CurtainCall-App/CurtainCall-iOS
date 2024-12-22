@@ -67,6 +67,9 @@ public struct ShowDetailView: View {
                         liveTalkButton
                             .padding(.top, 18)
                             .padding(.horizontal, 20)
+                            .onTapGestureRectangle {
+                                store.send(.didTappedLiveTalk)
+                            }
                     }
                     .frame(height: 558)
                     .background(Color.white)

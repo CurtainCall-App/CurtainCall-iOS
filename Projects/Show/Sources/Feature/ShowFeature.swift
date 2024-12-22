@@ -10,6 +10,7 @@ import Foundation
 import Common
 import Review
 import FavoriteShow
+import LiveTalk
 
 import ComposableArchitecture
 
@@ -165,6 +166,9 @@ public struct ShowFeature {
             case .path(.element(id: _, action: .reviewList(.didTappedCreateReview(let info)))):
                 state.path.append(.reviewWrite(.init(showInfo: info)))
                 return .none
+            case .path(.element(id: _, action: .showDetail(.didTappedLiveTalk))):
+                state.path.append(.liveTalk(.init()))
+                return .none
             case .didTappedShow(let showId):
                 state.path.append(.showDetail(.init(showId: showId)))
                 return .none
@@ -190,6 +194,7 @@ public struct ShowFeature {
             case showDetail(ShowDetailFeature.State = .init(showId: ""))
             case reviewWrite(ReviewWriteFeature.State = .init(showInfo: ReviewWriteViewComponents(showId: "", showImage: "", showName: "", genre: .musical)))
             case reviewList(ReviewListFeature.State = .init(showInfo: ReviewWriteViewComponents(showId: "", showImage: "", showName: "", genre: .musical)))
+            case liveTalk(LiveTalkFeature.State = .init())
         }
         
         public enum Action {
@@ -197,6 +202,7 @@ public struct ShowFeature {
             case showDetail(ShowDetailFeature.Action)
             case reviewWrite(ReviewWriteFeature.Action)
             case reviewList(ReviewListFeature.Action)
+            case liveTalk(LiveTalkFeature.Action)
         }
         
         public var body: some Reducer<State, Action> {
@@ -212,6 +218,9 @@ public struct ShowFeature {
             }
             Scope(state: \.reviewList, action: \.reviewList) {
                 ReviewListFeature()
+            }
+            Scope(state: \.liveTalk, action: \.liveTalk) {
+                LiveTalkFeature()
             }
         }
     }

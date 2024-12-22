@@ -24,6 +24,10 @@ let project = Project.makeModule(
         .project(
             target: "FavoriteShow",
             path: .relativeToRoot("Projects/FavoriteShow")
+        ),
+        .project(
+            target: "LiveTalk",
+            path: .relativeToRoot("Projects/LiveTalk")
         )
     ]
 )

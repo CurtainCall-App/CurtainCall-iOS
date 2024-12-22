@@ -7,8 +7,16 @@
 
 import SwiftUI
 
+import Common
+
+import ComposableArchitecture
+
 public struct LiveTalkView: View {
-    public init() { }
+    @Bindable private var store: StoreOf<LiveTalkFeature>
+    
+    public init(store: StoreOf<LiveTalkFeature>) {
+        self.store = store
+    }
     
     public var body: some View {
         Text("라이브톡")

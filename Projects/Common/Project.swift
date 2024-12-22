@@ -16,7 +16,8 @@ let project = Project.makeModule(
         .external(name: "Moya"),
         .external(name: "NukeUI"),
         .external(name: "FirebaseAnalytics"),
-        .external(name: "FirebaseRemoteConfig")
+        .external(name: "FirebaseRemoteConfig"),
+        .external(name: "StreamChat")
     ],
     sources: ["Sources/**", "Secret/**"],
     resources: ["Resources/**"]
