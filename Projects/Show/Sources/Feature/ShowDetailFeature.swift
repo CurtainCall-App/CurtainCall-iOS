@@ -31,6 +31,7 @@ public struct ShowDetailFeature {
         var currentSelectedCategory: ShowDetailCategoryType = .detail
         var facilityInfo: FetchFacilityResponseDTO?
         var detailImageHeight: CGFloat = 300
+        var isLikeShow: Bool = false
         var review: ReviewFeature.State?
     }
     
@@ -41,11 +42,20 @@ public struct ShowDetailFeature {
         case fetchFacilityDetail(id: String)
         case facilityDetailResponse(FetchFacilityResponseDTO)
         case didTappedMoreDetailImage
+        case fetchIsFavoriteShow
         case review(ReviewFeature.Action)
+        case isFavoriteShowResponse(Bool)
+        case failedToFetchIsLike(Error)
+        case didTappedFaovorite
+        case selectedFavorite
+        case deselectedFavorite
+        case isSucessSelectedFavorite(Bool)
+        case isSucessDeselectedFavorite(Bool)
     }
     
     @Dependency (\.showClient) var showClient
-    @Dependency (\.facilityClient) var fetchClient
+    @Dependency (\.facilityClient) var facilityClient
+    @Dependency (\.favoriteShowClient) var favoriteShowClient
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -54,6 +64,7 @@ public struct ShowDetailFeature {
                 return .run { [id = state.showId] send in
                     do {
                         try await send(.showDetailResponse(showClient.fetchShowDetail(id)))
+                        try await send(.fetchIsFavoriteShow)
                     } catch {
                         print(error.localizedDescription)
                     }
@@ -80,7 +91,7 @@ public struct ShowDetailFeature {
             case .fetchFacilityDetail(let id):
                 return .run { send in
                     do {
-                        try await send(.facilityDetailResponse(fetchClient.fetchFacilityDetail(id)))
+                        try await send(.facilityDetailResponse(facilityClient.fetchFacilityDetail(id)))
                     } catch {
                         print(error.localizedDescription)
                     }
@@ -91,8 +102,56 @@ public struct ShowDetailFeature {
             case .didTappedMoreDetailImage:
                 state.detailImageHeight = state.detailImageHeight == 300 ? .infinity: 300
                 return .none
+            case .fetchIsFavoriteShow:
+                return .run { [id = state.showId] send in
+                    do {
+                        try await send(.isFavoriteShowResponse(favoriteShowClient.fetchIsFavoriteShow(id).content.first?.favorite ?? false))
+                    } catch {
+                        await send(.failedToFetchIsLike(error))
+                    }
+                }
+            case .isFavoriteShowResponse(let isFavorite):
+                state.isLikeShow = isFavorite
+                return .none
+            case .failedToFetchIsLike(let error):
+                print(error.localizedDescription)
+                return .none
             case .review:
                 return .none
+            case .didTappedFaovorite:
+                return .run { [isFavorite = state.isLikeShow ] send in
+                    if isFavorite {
+                        await send(.deselectedFavorite)
+                    } else {
+                        await send(.selectedFavorite)
+                    }
+                }
+            case .selectedFavorite:
+                return .run { [showId = state.showId] send in
+                    do {
+                        try await send(.isSucessSelectedFavorite(favoriteShowClient.putFavoriteShow(showId)))
+                    } catch {
+                        await send(.isSucessSelectedFavorite(false))
+                    }
+                }
+            case .deselectedFavorite:
+                return .run { [showId = state.showId] send in
+                    do {
+                        try await send(.isSucessDeselectedFavorite(favoriteShowClient.deleteFavoriteShow(showId)))
+                    } catch {
+                        await send(.isSucessDeselectedFavorite(false))
+                    }
+                }
+            case .isSucessSelectedFavorite(let isSuccess):
+                guard isSuccess else { return .none }
+                return .run { send in
+                    await send(.fetchDetailResponse)
+                }
+            case .isSucessDeselectedFavorite(let isSuccess):
+                guard isSuccess else { return .none }
+                return .run { send in
+                    await send(.fetchDetailResponse)
+                }
             }
         }
         .ifLet(\.review, action: \.review) {

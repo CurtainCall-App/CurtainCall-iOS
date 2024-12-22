@@ -2,27 +2,20 @@
 //  Project.swift
 //  ProjectDescriptionHelpers
 //
-//  Created by 김민석 on 2/22/24.
+//  Created by 김민석 on 12/8/24.
 //
 
 import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.makeModule(
-    name: "MyPage",
+    name: "FavoriteShow",
     product: .staticFramework,
     dependencies: [
         .project(
             target: "Common",
             path: .relativeToRoot("Projects/Common")
-        ),
-        .project(
-            target: "NicknameSetting",
-            path: .relativeToRoot("Projects/NicknameSetting")
-        ),
-        .project(
-            target: "FavoriteShow",
-            path: .relativeToRoot("Projects/FavoriteShow")
         )
     ]
 )
+

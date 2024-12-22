@@ -12,7 +12,7 @@ import ComposableArchitecture
 import Moya
 
 struct PartyClient {
-    var fetchPartyList: (Int, Date, Date) async throws ->  FetchPartyListResponseDTO
+    var fetchPartyList: (Int, Date?, Date?) async throws ->  FetchPartyListResponseDTO
     var createParty: (CreatePartyBody) async throws -> CreatePartyResponseDTO
     var fetchPartyDetail: (Int) async throws -> FetchPartyDetailResponseDTO
     var fetchDidParticipated: (Int) async throws -> FetchDidParticipatedResponseDTO
@@ -31,13 +31,18 @@ extension PartyClient: DependencyKey {
         )
     }()
     
-    static func fetchPartyList(page: Int, startDate: Date, endDate: Date) async throws -> FetchPartyListResponseDTO {
-        return try await MoyaProvider<PartyAPI>()
-            .request(.fetchPartyList(
-                page: page,
-                startDate: Utils.convertDateToAPIString(date: startDate),
-                endDate: Utils.convertDateToAPIString(date: endDate))
-            )
+    static func fetchPartyList(page: Int, startDate: Date? = nil, endDate: Date? = nil) async throws -> FetchPartyListResponseDTO {
+        if let startDate, let endDate {
+            return try await MoyaProvider<PartyAPI>()
+                .request(.fetchPartyList(
+                    page: page,
+                    startDate: Utils.convertDateToAPIString(date: startDate),
+                    endDate: Utils.convertDateToAPIString(date: endDate))
+                )
+        } else {
+            return try await MoyaProvider<PartyAPI>()
+                .request(.fetchPartyList(page: page))
+        }
     }
     
     static func createParty(body: CreatePartyBody) async throws -> CreatePartyResponseDTO {

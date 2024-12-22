@@ -25,22 +25,26 @@ public struct ShowView: View {
             VStack {
                 topbar
                 Spacer().frame(height: 20)
-                HStack(spacing: 8) {
-                    makeShowTypeButton(type: .theater)
-                        .onTapGesture {
-                            store.send(.didTappedShowType(.theater))
-                        }
-                    makeShowTypeButton(type: .musical)
-                        .onTapGesture {
-                            store.send(.didTappedShowType(.musical))
-                        }
-                    Spacer()
-                    categoryButton
-                        .onTapGesture {
-                            store.send(.didTappedCategory)
-                        }
+                VStack {
+                    HStack(spacing: 8) {
+                        makeShowTypeButton(type: .theater)
+                            .onTapGesture {
+                                store.send(.didTappedShowType(.theater))
+                            }
+                        makeShowTypeButton(type: .musical)
+                            .onTapGesture {
+                                store.send(.didTappedShowType(.musical))
+                            }
+                        Spacer()
+                        categoryButton
+                            .onTapGesture {
+                                store.send(.didTappedCategory)
+                            }
+                    }
+                    .padding(.horizontal, 20)
+                    
+                    Spacer().frame(height: 5)
                 }
-                .padding(.horizontal, 20)
                 ZStack {
                     if store.isShowTooltip {
                         tooltipView
@@ -74,8 +78,11 @@ public struct ShowView: View {
                                     
                                     HStack {
                                         Spacer()
-                                        Image(asset: CommonAsset.showFavoriteUnfill)
+                                        Image(asset: store.favoriteShowList.contains(show.id) ? CommonAsset.showFavoriteFill : CommonAsset.showFavoriteUnfill)
                                             .frame(width: 28, height: 28)
+                                            .onTapGestureRectangle {
+                                                store.send(.didTappedFavorite(id: show.id))
+                                            }
                                     }
                                     .padding([.bottom, .trailing], 10)
                                 }
@@ -92,6 +99,7 @@ public struct ShowView: View {
             }
             .onAppear {
                 store.send(.fetchShowList(page: 0))
+                store.send(.fetchFavoriteShowList)
             }
             .sheet(item: $store.scope(state: \.bottomSheet, action: \.bottomSheet)) { store in
                 ShowSortBottomSheet(store: store)
@@ -139,7 +147,7 @@ public struct ShowView: View {
         .frame(height: 44)
     }
     
-    private func makeShowTypeButton(type: ShowFeature.ShowType) -> some View {
+    private func makeShowTypeButton(type: ShowType) -> some View {
         Text(type.title)
             .font(.body2_SB)
             .foregroundStyle(store.selectedShowType == type ? Color.white : Color.gray6)

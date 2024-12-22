@@ -8,6 +8,8 @@
 import SwiftUI
 
 import Common
+import FavoriteShow
+import Show
 
 import ComposableArchitecture
 import NukeUI
@@ -60,6 +62,14 @@ public struct MyPageView: View {
             case .profile:
                 if let store = store.scope(state: \.profile, action: \.profile) {
                     ProfileView(store: store)
+                }
+            case .favorite:
+                if let store = store.scope(state: \.favorite, action: \.favorite) {
+                    FavoriteShowView(store: store)
+                }
+            case .showDetail:
+                if let store = store.scope(state: \.showDetail, action: \.showDetail) {
+                    ShowDetailView(store: store)
                 }
              }
         }
@@ -134,6 +144,9 @@ public struct MyPageView: View {
                     .font(.body2_M)
             }
             .padding(.bottom, 30)
+            .onTapGestureRectangle {
+                store.send(.didTappedFavorite)
+            }
         }
         .padding(.leading, 20)
     }

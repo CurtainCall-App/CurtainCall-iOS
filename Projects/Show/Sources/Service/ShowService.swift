@@ -12,7 +12,7 @@ import Common
 import Moya
 
 enum ShowAPI {
-    case fetchShowList(page: Int, genre: ShowFeature.ShowType, sort: ShowSortFeature.CategoryType)
+    case fetchShowList(page: Int, genre: ShowType, sort: ShowSortFeature.CategoryType)
     case fetchShowSearchList(keyword: String)
     case fetchShowDetail(id: String)
 }
@@ -39,8 +39,7 @@ extension ShowAPI: TargetType {
         case .fetchShowSearchList(let keyword):
             param.updateValue(keyword, forKey: "keyword")
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
-        case .fetchShowDetail:
-            return .requestPlain
+        case .fetchShowDetail: return .requestPlain
         }
     }
     

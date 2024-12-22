@@ -26,7 +26,7 @@ public struct PartyRecruitFeature {
     public struct State: Equatable {
         public init() { }
         var viewType: ViewType = .step1
-        var selectedShowType: ShowFeature.ShowType = .theater
+        var selectedShowType: ShowType = .theater
         var selectedCategory: ShowSortFeature.CategoryType = .popular
         var selectedShow: ShowResponseContent?
         var showList: [ShowResponseContent] = []
@@ -53,7 +53,7 @@ public struct PartyRecruitFeature {
         case bottomSheet(PresentationAction<ShowSortFeature.Action>)
         case didTappedNextButton
         case didTappedShowItem(ShowResponseContent)
-        case didTappedShowTypeButton(ShowFeature.ShowType)
+        case didTappedShowTypeButton(ShowType)
         case didTappedSelectedShowDate
         case didTappedSelectedShowTime
         case didTappedStepper(Int)
