@@ -20,5 +20,8 @@ public struct LiveTalkView: View {
     
     public var body: some View {
         Text("라이브톡")
+            .onAppear {
+                store.send(.viewDidLoad)
+            }
     }
 }

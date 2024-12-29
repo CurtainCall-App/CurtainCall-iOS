@@ -64,6 +64,4 @@ extension HomeAPI: TargetType {
     }
     
     var headers: [String : String]? { nil }
-    
-    
 }
